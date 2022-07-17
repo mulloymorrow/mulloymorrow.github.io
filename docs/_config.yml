@@ -45,7 +45,7 @@ instagram_username: mulloymorrow
 domain: code.mulloymorrow.com
 url: https://code.mulloymorrow.com 
 baseurl: /docs/
-
+markdown: GFM
 # Build settings
 theme: minima
 plugins:
