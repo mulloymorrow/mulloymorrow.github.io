@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 domain: code.mulloymorrow.com
-url: https://code.mulloymorrow.com 
+url: "https://code.mulloymorrow.com"
 baseurl: /docs/
 
 # Build settings
@@ -46,6 +46,10 @@ minima:
     instagram: mulloymorrow
     linkedin: mulloymorrow
     telegram: mulloy
+  skin: solarized-dark
+
+header_pages:
+  - about.md  
 
 twitter_username: thismulloy 
 github_username:  mulloymorrow
