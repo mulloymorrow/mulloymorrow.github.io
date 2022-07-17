@@ -23,7 +23,7 @@ baseurl: /docs/
 
 # Build settings
 markdown: GFM
-theme: jekyll-theme-minima
+theme: minima
 plugins:
   - jekyll-feed
 
