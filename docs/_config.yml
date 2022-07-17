@@ -47,7 +47,7 @@ url: https://code.mulloymorrow.com
 baseurl: /docs/
 markdown: GFM
 # Build settings
-theme: minima
+theme: jekyll-theme-minimal
 plugins:
   - jekyll-feed
 
