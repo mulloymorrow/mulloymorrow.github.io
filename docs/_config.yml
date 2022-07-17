@@ -48,8 +48,8 @@ minima:
     telegram: mulloy
   skin: solarized-dark
 
-header_pages:
-  - about.md  
+# header_pages:
+#   - about.md  
 
 twitter_username: thismulloy 
 github_username:  mulloymorrow
