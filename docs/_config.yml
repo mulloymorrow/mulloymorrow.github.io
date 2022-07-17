@@ -17,14 +17,23 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
+domain: code.mulloymorrow.com
+url: https://code.mulloymorrow.com 
+baseurl: /docs/
+
+# Build settings
+markdown: GFM
+theme: jekyll-theme-minimal
+plugins:
+  - jekyll-feed
 
 title: Mulloy Morrow
 description: A personal static website. 
+shortcut icon: favicon.ico
 logo: favicon.png
 
-email: mulloymorrow@gmail.com
 author: Mulloy Morrow
-shortcut icon: favicon.ico
+email: mulloymorrow@gmail.com
 
 # Google Analytics
 google_analytics: G-VLHNVPE3GR
@@ -41,15 +50,6 @@ twitter_username: thismulloy
 github_username:  mulloymorrow
 linkedin_username: mulloymorrow
 instagram_username: mulloymorrow
-
-domain: code.mulloymorrow.com
-url: https://code.mulloymorrow.com 
-baseurl: /docs/
-markdown: GFM
-# Build settings
-theme: jekyll-theme-minimal
-plugins:
-  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default.
