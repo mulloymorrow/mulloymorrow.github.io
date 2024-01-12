@@ -17,19 +17,5 @@ permalink: /spotify/
 
 #### Connect
 <!-- Google Calendar Appointment Scheduling begin -->
-<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
-<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
-<script>
-(function() {
-  var target = document.currentScript;
-  window.addEventListener('load', function() {
-    calendar.schedulingButton.load({
-      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2gyJtrQjpLbwHaksjGIq8lDm9t45E8tCFJKRZe9tATjuQJqBV_WywPbz-RdAyPBl5t_S-xVdZg?gv=true',
-      color: '#039BE5',
-      label: "Book a call with me.",
-      target,
-    });
-  });
-})();
-</script>
+<iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2gyJtrQjpLbwHaksjGIq8lDm9t45E8tCFJKRZe9tATjuQJqBV_WywPbz-RdAyPBl5t_S-xVdZg?gv=true" style="border: 0" width="100%" height="600" frameborder="0"></iframe>
 <!-- end Google Calendar Appointment Scheduling -->
