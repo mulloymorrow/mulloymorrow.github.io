@@ -41,11 +41,10 @@ google_analytics: G-VLHNVPE3GR
 
 minima:
   social_links:
-    twitter: thismulloy
-    github:  mulloymorrow
-    instagram: mulloymorrow
-    linkedin: mulloymorrow
-    telegram: mulloy
+    - { platform: twitter, user_url: "https://twitter.com/thismulloy" }
+    - { platform: github,  user_url: "https://github.com/mulloymorrow" }
+    - { platform: linkedin, user_url: "https://linkedin.com/in/mulloymorrow" }
+    - { platform: telegram, user_url: "https://t.me/mulloy" }
   skin: solarized-dark
 
 # header_pages:
