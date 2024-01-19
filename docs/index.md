@@ -17,9 +17,9 @@ I'm curious about AI/ML methods and applications that improve the efficacy of co
   var target = document.currentScript;
   window.addEventListener('load', function() {
     calendar.schedulingButton.load({
-      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2gyJtrQjpLbwHaksjGIq8lDm9t45E8tCFJKRZe9tATjuQJqBV_WywPbz-RdAyPBl5t_S-xVdZg?gv=true',
+      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0idFDVb8-dqPGLbJc4d7KAypdPYcQxTXl9rlC8EimDBQIoncGQexdWWxDQr8wLdhIG8OWKC7FT?gv=true',
       color: '#039BE5',
-      label: 'Book an appointment',
+      label: "Let's Connect!",
       target,
     });
   });
