@@ -4,7 +4,7 @@
 
 layout: home
 ---
-Hi 👋 this is Mulloy's personal website. I'm Mulloy. And I'm just playing around with the capabilities of a static website. Advice is welcomed. My expertise is in AI/ML, so more backend and data engineering, and people management. In addition to dabbling in the frontend desktop sites, I'm curious about the latest ways to create mobile apps (However, I'm hearing apps might not be the future in a world where LLMs become the common default interface). 
+Hi 👋 this is Mulloy's personal website. I'm Mulloy. And I'm just playing around with the capabilities of a static website. Advice is welcomed. My expertise is in AI/ML, so more backend and data engineering experience than frontend, and people management. In addition to dabbling in the frontend desktop sites, I'm curious about the latest ways to create mobile apps (However, I'm hearing apps might not be the future in a world where LLMs become the common default interface). 
 
 
 #### Currently
