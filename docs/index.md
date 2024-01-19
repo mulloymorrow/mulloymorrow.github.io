@@ -5,9 +5,8 @@
 layout: home
 ---
 
-
-
-Currently, I'm curious about AI/ML methods and applications that improve the efficacy of collaboration, with a particular focus on science. I'm also deeply curious about causal graphs and how we might leverage them for improving decision making in our daily lives through asking the question, "what if?" If you're curious too, let's chat!
+### Currently
+I'm curious about AI/ML methods and applications that improve the efficacy of collaboration, with a particular focus on science. I'm also deeply curious about causal graphs and how we might leverage them for improving decision making in our daily lives through asking the question, "what if?" If you're curious too, let's chat!
 
 <!-- Google Calendar Appointment Scheduling begin -->
 <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
