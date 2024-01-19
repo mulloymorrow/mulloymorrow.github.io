@@ -4,6 +4,8 @@
 
 layout: home
 ---
+Hi 👋 this is Mulloy's personal website. I'm Mulloy. And I'm just playing around with the capabilities of a static website. Advice is welcomed. My expertise is in AI/ML, so more backend and data engineering, and people management. In addition to dabbling in the frontend desktop sites, I'm curious about the latest ways to create mobile apps (However, I'm hearing apps might not be the future in a world where LLMs become the common default interface). 
+
 
 #### Currently
 I'm curious about AI/ML methods and applications that improve the efficacy of collaboration, with a particular focus on science. I'm also deeply curious about causal graphs and how we might leverage them for improving decision making in our daily lives through asking the question, "what if?" If you're curious too, let's chat!
