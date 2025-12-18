@@ -11,6 +11,158 @@
   let animationFrame;
   let time = 0;
   let isHovering = false;
+  let mazePath = '';
+  let mazeData = { startX: 0, startY: 0, endX: 0, endY: 0, cellSize: 16 };
+  
+  // Generate a solvable maze using recursive backtracking
+  function generateMaze() {
+    const cellSize = 16;
+    const cols = 75;
+    const rows = 50;
+    
+    // Seeded random for consistent maze
+    let seed = 42;
+    const random = () => {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      return seed / 0x7fffffff;
+    };
+    
+    // Shuffle array using seeded random
+    const shuffle = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+    
+    // Initialize grid - each cell tracks which walls exist
+    // walls: top, right, bottom, left
+    const grid = [];
+    for (let y = 0; y < rows; y++) {
+      grid[y] = [];
+      for (let x = 0; x < cols; x++) {
+        grid[y][x] = {
+          visited: false,
+          walls: { top: true, right: true, bottom: true, left: true }
+        };
+      }
+    }
+    
+    // Direction offsets: [dx, dy, wall to remove from current, wall to remove from neighbor]
+    const directions = [
+      { dx: 0, dy: -1, wall: 'top', opposite: 'bottom' },
+      { dx: 1, dy: 0, wall: 'right', opposite: 'left' },
+      { dx: 0, dy: 1, wall: 'bottom', opposite: 'top' },
+      { dx: -1, dy: 0, wall: 'left', opposite: 'right' }
+    ];
+    
+    // Recursive backtracking maze generation (iterative version to avoid stack overflow)
+    const stack = [];
+    
+    // Pick a random edge for the start position
+    const edge = Math.floor(random() * 4); // 0=top, 1=right, 2=bottom, 3=left
+    let startX, startY;
+    
+    switch (edge) {
+      case 0: // Top edge
+        startX = Math.floor(random() * cols);
+        startY = 0;
+        break;
+      case 1: // Right edge
+        startX = cols - 1;
+        startY = Math.floor(random() * rows);
+        break;
+      case 2: // Bottom edge
+        startX = Math.floor(random() * cols);
+        startY = rows - 1;
+        break;
+      case 3: // Left edge
+      default:
+        startX = 0;
+        startY = Math.floor(random() * rows);
+        break;
+    }
+    
+    const endX = Math.floor(cols / 2);
+    const endY = Math.floor(rows / 2);
+    
+    let currentX = startX;
+    let currentY = startY;
+    grid[currentY][currentX].visited = true;
+    
+    while (true) {
+      // Get unvisited neighbors
+      const neighbors = [];
+      for (const dir of directions) {
+        const nx = currentX + dir.dx;
+        const ny = currentY + dir.dy;
+        if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && !grid[ny][nx].visited) {
+          neighbors.push({ x: nx, y: ny, dir });
+        }
+      }
+      
+      if (neighbors.length > 0) {
+        // Choose random unvisited neighbor
+        shuffle(neighbors);
+        const next = neighbors[0];
+        
+        // Push current cell to stack
+        stack.push({ x: currentX, y: currentY });
+        
+        // Remove walls between current and next
+        grid[currentY][currentX].walls[next.dir.wall] = false;
+        grid[next.y][next.x].walls[next.dir.opposite] = false;
+        
+        // Move to next cell
+        currentX = next.x;
+        currentY = next.y;
+        grid[currentY][currentX].visited = true;
+      } else if (stack.length > 0) {
+        // Backtrack
+        const prev = stack.pop();
+        currentX = prev.x;
+        currentY = prev.y;
+      } else {
+        // Done
+        break;
+      }
+    }
+    
+    // Generate SVG path from maze walls
+    let path = '';
+    
+    // Draw outer border
+    const totalWidth = cols * cellSize;
+    const totalHeight = rows * cellSize;
+    path += `M 0 0 L ${totalWidth} 0 L ${totalWidth} ${totalHeight} L 0 ${totalHeight} Z `;
+    
+    // Draw internal walls
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const px = x * cellSize;
+        const py = y * cellSize;
+        const cell = grid[y][x];
+        
+        // Only draw right and bottom walls to avoid duplicates
+        if (cell.walls.right && x < cols - 1) {
+          path += `M ${px + cellSize} ${py} L ${px + cellSize} ${py + cellSize} `;
+        }
+        if (cell.walls.bottom && y < rows - 1) {
+          path += `M ${px} ${py + cellSize} L ${px + cellSize} ${py + cellSize} `;
+        }
+      }
+    }
+    
+    return {
+      path,
+      startX: startX * cellSize + cellSize / 2,
+      startY: startY * cellSize + cellSize / 2,
+      endX: endX * cellSize + cellSize / 2,
+      endY: endY * cellSize + cellSize / 2,
+      cellSize
+    };
+  }
   
   // Generate organic blob path using noise-like distortion
   function generateBlobPath(cx, cy, baseRadius, t) {
@@ -118,6 +270,15 @@
   
   onMount(() => {
     mounted = true;
+    const maze = generateMaze();
+    mazePath = maze.path;
+    mazeData = {
+      startX: maze.startX,
+      startY: maze.startY,
+      endX: maze.endX,
+      endY: maze.endY,
+      cellSize: maze.cellSize
+    };
     animate();
   });
   
@@ -139,61 +300,107 @@
   on:touchend={handleTouchEnd}
   role="presentation"
 >
-  <!-- SVG mask with halftone reveal -->
+  <!-- SVG mask with maze reveal -->
   <svg class="cursor-reveal__svg" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <clipPath id="blob-clip">
         <path d={blobPath} />
       </clipPath>
       
-      <!-- Primary halftone pattern - larger dots -->
-      <pattern id="halftone-primary" patternUnits="userSpaceOnUse" width="8" height="8">
-        <circle cx="4" cy="4" r="3" fill="#e76f51" />
-      </pattern>
-      
-      <!-- Secondary halftone - smaller, offset dots -->
-      <pattern id="halftone-secondary" patternUnits="userSpaceOnUse" width="6" height="6">
-        <circle cx="3" cy="3" r="1.8" fill="#f4a261" />
-      </pattern>
-      
-      <!-- Tertiary accent dots -->
-      <pattern id="halftone-accent" patternUnits="userSpaceOnUse" width="12" height="12">
-        <circle cx="6" cy="6" r="2" fill="#2a9d8f" />
-      </pattern>
-      
       <!-- Soft edge blur -->
       <filter id="blob-blur" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
       </filter>
       
-      <!-- Noise texture filter for organic feel -->
-      <filter id="noise-filter" x="0%" y="0%" width="100%" height="100%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      <!-- Glow filter for maze lines -->
+      <filter id="maze-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
     </defs>
     
-    <!-- The revealed layer with collage texture -->
+    <!-- The revealed layer with maze pattern -->
     <g clip-path="url(#blob-clip)">
-      <!-- Base gradient - coral to terracotta -->
-      <rect x="0" y="0" width="100%" height="100%" fill="#d95b43" />
+      <!-- Dark mysterious background -->
+      <rect x="0" y="0" width="100%" height="100%" fill="#1a1a2e" />
       
-      <!-- Layered halftone patterns for depth -->
-      <rect x="0" y="0" width="100%" height="100%" fill="url(#halftone-primary)" opacity="0.7" />
-      <rect x="0" y="0" width="100%" height="100%" fill="url(#halftone-secondary)" opacity="0.5" style="transform: translate(3px, 3px)" />
-      <rect x="0" y="0" width="100%" height="100%" fill="url(#halftone-accent)" opacity="0.25" style="transform: translate(-2px, 2px)" />
+      <!-- Primary maze layer - warm accent color -->
+      <path 
+        d={mazePath} 
+        fill="none" 
+        stroke="#e76f51" 
+        stroke-width="1.5"
+        stroke-linecap="square"
+        opacity="0.9"
+      />
       
-      <!-- Inner radial highlight -->
-      <ellipse cx="50%" cy="50%" rx="35%" ry="35%" fill="rgba(255, 220, 180, 0.2)" />
+      <!-- Secondary maze layer - offset for depth -->
+      <g style="transform: translate(0.5px, 0.5px)">
+        <path 
+          d={mazePath} 
+          fill="none" 
+          stroke="#f4a261" 
+          stroke-width="0.5"
+          stroke-linecap="square"
+          opacity="0.4"
+        />
+      </g>
+      
+      <!-- Start point - Green dot (top-left) -->
+      <circle 
+        cx={mazeData.startX} 
+        cy={mazeData.startY} 
+        r={mazeData.cellSize * 0.35}
+        fill="#22c55e"
+        opacity="1"
+      />
+      <!-- Start glow -->
+      <circle 
+        cx={mazeData.startX} 
+        cy={mazeData.startY} 
+        r={mazeData.cellSize * 0.5}
+        fill="#22c55e"
+        opacity="0.3"
+        filter="url(#maze-glow)"
+      />
+      
+      <!-- End point - Red dot (center) -->
+      <circle 
+        cx={mazeData.endX} 
+        cy={mazeData.endY} 
+        r={mazeData.cellSize * 0.35}
+        fill="#ef4444"
+        opacity="1"
+      />
+      <!-- End glow -->
+      <circle 
+        cx={mazeData.endX} 
+        cy={mazeData.endY} 
+        r={mazeData.cellSize * 0.5}
+        fill="#ef4444"
+        opacity="0.3"
+        filter="url(#maze-glow)"
+      />
+      
+      <!-- Subtle radial highlight around end point -->
+      <circle 
+        cx={mazeData.endX} 
+        cy={mazeData.endY} 
+        r={mazeData.cellSize * 3}
+        fill="rgba(239, 68, 68, 0.1)"
+      />
     </g>
     
     <!-- Outer glow for depth -->
     <path 
       d={blobPath} 
       fill="none" 
-      stroke="#f4a261"
+      stroke="#e76f51"
       stroke-width="4"
-      opacity="0.5"
+      opacity="0.4"
       filter="url(#blob-blur)"
     />
     
@@ -201,7 +408,7 @@
     <path 
       d={blobPath} 
       fill="none" 
-      stroke="rgba(255, 255, 255, 0.25)"
+      stroke="rgba(244, 162, 97, 0.5)"
       stroke-width="1.5"
     />
   </svg>
