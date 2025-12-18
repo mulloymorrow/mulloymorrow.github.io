@@ -82,7 +82,10 @@
   >
     <div class="project-header">
       {#if project.logo}
-        {#if project.gallery && project.gallery.length > 0}
+        {@const isEmoji = !project.logo.startsWith('/') && !project.logo.startsWith('http')}
+        {#if isEmoji}
+          <span class="project-emoji" aria-label="{project.title} icon">{project.logo}</span>
+        {:else if project.gallery && project.gallery.length > 0}
           <div 
             class="project-logo-button"
             role="button"
@@ -331,6 +334,21 @@
     padding: 4px;
     border: 1px solid var(--color-border);
     transition: all 0.3s ease;
+  }
+  
+  .project-emoji {
+    font-size: 2rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+  }
+  
+  .project-content:hover .project-emoji {
+    transform: scale(1.1);
   }
   
   .project-content:hover .project-logo {
