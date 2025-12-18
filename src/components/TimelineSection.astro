@@ -1,0 +1,183 @@
+---
+import TimelineCard from './TimelineCard.svelte';
+
+// Experience data - could be moved to content collections for easier editing
+const experiences = [
+  {
+    company: "Stealth AI Startup",
+    role: "Founder & AI Architect",
+    period: "2024 - Present",
+    location: "Remote",
+    summary: "Founder and AI architect for a human-centered agentic-AI product focused on augmenting real-world decision-making.",
+    highlights: [
+      "Leading end-to-end system design including model architecture, data pipelines, evaluation strategy, and deployment",
+      "Building privacy-aware, human-in-the-loop ML systems",
+      "Operating in private beta with early users"
+    ],
+    technologies: ["Python", "LLMs", "RAG", "Vector DBs", "Cloud Infrastructure"],
+    isCurrent: true,
+    logo: "/logos/stealth-ai.png"
+  },
+  {
+    company: "Legal-Tech Joint Venture",
+    role: "Technical Co-founder, AI & Systems Lead",
+    period: "2023 - 2024",
+    location: "Remote",
+    summary: "Led an agentic-AI-enabled remediation initiative applying ML to environmental damage claims related to PFAS in drinking water.",
+    highlights: [
+      "Designed and operationalized data-driven workflows for claims processing in a highly regulated environment",
+      "Built and scaled cross-functional JV to 15 people across legal, product engineering, and operations",
+      "Managed P&L with $4M funding",
+      "Delivered $24M+ in claimant settlements within 6 months"
+    ],
+    technologies: ["Python", "ML/NLP", "Data Pipelines", "Document AI", "Cloud Infrastructure"],
+    isCurrent: false,
+    logo: "/logos/legal-tech-ai.svg"
+  },
+  {
+    company: "Spotify",
+    role: "Engineering Group Manager / ML Personalization Lead",
+    period: "2021 - 2023",
+    location: "New York, NY / Remote",
+    summary: "Led Spotify's Home Construction organization, a multi-disciplinary org of ~25+ engineers powering the homepage and core discovery surfaces.",
+    highlights: [
+      "Managed platform and feature teams including junior to senior-staff engineers and managers",
+      "Modernized personalization and ranking stack during periods of high-ambiguity",
+      "Increased revenue by over $1M/month",
+      "Achieved +26% discovery improvement",
+      "Optimized feed for balance of short- and long-term user retention",
+      "Collaborated with Data Science, ML Research, Product, Design, and Program Management"
+    ],
+    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Apache Beam", "BigQuery", "Kubernetes"],
+    isCurrent: false,
+    logo: "/logos/spotify.png"
+  },
+  {
+    company: "Compass Real Estate",
+    role: "Founding ML Engineer",
+    period: "2014 - 2015",
+    location: "New York, NY",
+    summary: "Early ML engineering at the real estate technology company, building foundational ML systems.",
+    highlights: [
+      "Developed geospatial ML models for service area discovery",
+      "Built activity outlier detection systems",
+      "Created home improvement service propensity models"
+    ],
+    technologies: ["Python", "Scikit-learn", "PostgreSQL", "Geospatial ML"],
+    isCurrent: false,
+    logo: "https://cdn.brandfetch.io/idkzWJO3jq/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667584595553"
+  },
+  {
+    company: "OfferUp",
+    role: "Head of ML & Founding Engineer",
+    period: "2017 - 2021",
+    location: "Seattle, WA",
+    summary: "Built and led the ML organization at one of the largest mobile marketplaces in the US, from founding engineer to Head of ML.",
+    highlights: [
+      "Established ML practice from ground up as founding ML engineer",
+      "Built recommendation and search ranking systems",
+      "Developed identity recognition and fraud detection systems",
+      "Scaled ML team and infrastructure as company grew"
+    ],
+    technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL"],
+    isCurrent: false,
+    logo: "https://cdn.brandfetch.io/id5p1Knwlt/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1668515956474"
+  },
+  {
+    company: "Porch Group",
+    role: "Senior Data Scientist",
+    period: "2015 - 2017",
+    location: "Seattle, WA",
+    summary: "Built ML systems for the home services platform connecting homeowners with service professionals.",
+    highlights: [
+      "Developed predictive models for home service recommendations",
+      "Built customer matching and lead scoring systems",
+      "Created data pipelines for homeowner insights"
+    ],
+    technologies: ["Python", "Scikit-learn", "AWS", "PostgreSQL", "Data Pipelines"],
+    isCurrent: false,
+    logo: "https://cdn.brandfetch.io/id7-jGlWt3/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1668516040149"
+  },
+  {
+    company: "UC San Diego",
+    role: "M.S. Intelligent Systems, Robotics & Control",
+    period: "",
+    location: "",
+    summary: "Graduate research in computer vision under Prof. Nuno Vasconcelos at the Statistical Visual Computing Lab.",
+    highlights: [
+      "Thesis: Computer Vision for Crowd Analysis",
+      "Published: 'Analysis of Crowded Scenes using Holistic Properties' - IEEE PETS 2009",
+      "Published: 'Automated Crowd Counting System Upon A Distributed Camera Network' - ProQuest 2012",
+      "McNair Scholar"
+    ],
+    technologies: ["MATLAB", "C++", "Computer Vision", "Machine Learning", "Statistical Modeling"],
+    isCurrent: false,
+    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+  },
+  {
+    company: "UC San Diego",
+    role: "B.S. Engineering Physics & B.A. Visual Arts, Media",
+    period: "",
+    location: "",
+    summary: "Dual degree combining rigorous physics and engineering fundamentals with creative visual arts and media production.",
+    highlights: [
+      "Engineering Physics: Applied mathematics, quantum mechanics, and electromagnetism",
+      "Visual Arts, Media: Digital media production, interactive design, and creative technology",
+      "Interdisciplinary foundation bridging technical and creative disciplines"
+    ],
+    technologies: ["Physics", "Mathematics", "Digital Media", "Creative Technology"],
+    isCurrent: false,
+    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+  }
+];
+---
+
+<section class="timeline section" id="experience">
+  <div class="container">
+    <div class="timeline__header animate-on-scroll">
+      <h2 class="timeline__title">Experience</h2>
+      <p class="timeline__subtitle">A journey through AI/ML leadership and product development</p>
+    </div>
+    
+    <div class="timeline__list">
+      {experiences.map((exp, index) => (
+        <div class={`animate-on-scroll delay-${Math.min(index + 1, 5)}`}>
+          <TimelineCard experience={exp} client:visible />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    padding: var(--space-24) 0;
+  }
+  
+  .timeline__header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+  
+  .timeline__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .timeline__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .timeline__list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+</style>
+

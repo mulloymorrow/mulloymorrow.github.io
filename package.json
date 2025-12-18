@@ -1,0 +1,19 @@
+{
+  "name": "mulloymorrow-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Personal portfolio site for Mulloy Morrow - AI/ML Leader",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^7.2.4",
+    "astro": "^5.16.6",
+    "svelte": "^5.46.0",
+    "typescript": "^5.9.3"
+  }
+}

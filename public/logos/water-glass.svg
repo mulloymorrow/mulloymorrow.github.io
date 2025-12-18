@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Glass outline -->
+  <path d="M16 8h32l-4 48H20L16 8z" fill="#e0f4ff" stroke="#4a90d9" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Water fill -->
+  <path d="M18.5 24h27l-3 28H21.5L18.5 24z" fill="#4a90d9" opacity="0.7"/>
+  <!-- Water surface highlight -->
+  <ellipse cx="32" cy="24" rx="13.5" ry="2" fill="#6bb3f0" opacity="0.5"/>
+  <!-- Glass rim highlight -->
+  <path d="M17 10h30" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <!-- Bubbles -->
+  <circle cx="26" cy="36" r="1.5" fill="#ffffff" opacity="0.6"/>
+  <circle cx="34" cy="42" r="1" fill="#ffffff" opacity="0.5"/>
+  <circle cx="30" cy="32" r="1" fill="#ffffff" opacity="0.4"/>
+</svg>

@@ -1,0 +1,468 @@
+---
+// Personal section with photo albums and Spotify embeds
+---
+
+<section class="personal section" id="personal">
+  <div class="container">
+    <div class="personal__header animate-on-scroll">
+      <h2 class="personal__title">Beyond Work</h2>
+      <p class="personal__subtitle">Adventures, music, and the things that inspire me</p>
+    </div>
+    
+    <div class="personal__grid">
+      <!-- Photo Adventures -->
+      <div class="personal__card personal__card--adventures animate-on-scroll delay-1">
+        <div class="card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+            <circle cx="12" cy="13" r="3"/>
+          </svg>
+        </div>
+        <h3 class="card__title">Adventures Photo Album</h3>
+        <p class="card__description">
+          Snapshots from travels, hikes, and explorations around the world. Life's best moments captured.
+        </p>
+        <a href="https://photos.app.goo.gl/HWs7ZUXZayy6RWZV6" target="_blank" rel="noopener noreferrer" class="card__link">
+          <span>View Photos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Spotify Profile -->
+      <div class="personal__card personal__card--spotify animate-on-scroll delay-2">
+        <div class="card__icon card__icon--spotify">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+        </div>
+        <h3 class="card__title">My Spotify</h3>
+        <p class="card__description">
+          Follow along for curated playlists, podcast recommendations, and what I'm currently listening to.
+        </p>
+        <a href="https://open.spotify.com/user/mulloymorrow" target="_blank" rel="noopener noreferrer" class="card__link card__link--spotify">
+          <span>Follow on Spotify</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Spotify Embeds -->
+    <div class="personal__spotify-embeds">
+      <h3 class="embeds__title animate-on-scroll">Current Favorites</h3>
+      
+      <div class="embeds__grid">
+        <div class="embed__item animate-on-scroll delay-1">
+          <h4 class="embed__label">🎧 Podcast Pick</h4>
+          <iframe 
+            style="border-radius:12px" 
+            src="https://open.spotify.com/embed/show/79CkJF3UJTHFV8Dse3Oy0P?utm_source=generator&theme=0" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        
+        <div class="embed__item animate-on-scroll delay-2">
+          <h4 class="embed__label">🎙️ Another Great Listen</h4>
+          <iframe 
+            style="border-radius:12px" 
+            src="https://open.spotify.com/embed/show/2MAi0BvDc6GTFvKFPXnkCL?utm_source=generator&theme=0" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        
+        <div class="embed__item embed__item--playlist embed__item--warm animate-on-scroll delay-3">
+          <h4 class="embed__label">🎵 Playlist Vibes</h4>
+          <iframe 
+            style="border-radius:12px" 
+            src="https://open.spotify.com/embed/playlist/6IHC0s1tKVq4cZkhNqdfJG?utm_source=generator&theme=0" 
+            width="100%" 
+            height="352" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        
+        <div class="embed__item embed__item--focus animate-on-scroll delay-4">
+          <h4 class="embed__label">🧠 Deep Focus</h4>
+          <div class="focus-card">
+            <div class="focus-card__content">
+              <div class="focus-card__header">
+                <div class="focus-card__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="10 8 16 12 10 16 10 8"/>
+                  </svg>
+                </div>
+                <div class="focus-card__info">
+                  <h5 class="focus-card__title">Flow State Radio</h5>
+                  <p class="focus-card__subtitle">Music for deep work & concentration</p>
+                </div>
+              </div>
+              <p class="focus-card__description">
+                Hand-curated playlists designed for writers, coders, and builders. No vocals, no distractions — just steady energy to help you lock in.
+              </p>
+              <a href="https://www.flowstateradio.com/welcome" target="_blank" rel="noopener noreferrer" class="focus-card__link">
+                <span>Start Focusing</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            </div>
+            <img 
+              src="/logos/flow-state-radio.png" 
+              alt="Person in flow state with headphones" 
+              class="focus-card__image"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .personal {
+    padding: var(--space-24) 0;
+    background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .personal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-warm), transparent);
+  }
+  
+  .personal__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+  
+  .personal__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-warm) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .personal__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .personal__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-16);
+  }
+  
+  .personal__card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .personal__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-warm));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .personal__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-warm);
+    border-color: var(--color-accent);
+  }
+  
+  .personal__card:hover::before {
+    opacity: 1;
+  }
+  
+  .card__icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-lg);
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+  }
+  
+  .card__icon--spotify {
+    background: rgba(29, 185, 84, 0.1);
+    color: #1db954;
+  }
+  
+  .card__title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .card__description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-6);
+  }
+  
+  .card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 500;
+    color: var(--color-accent);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+  }
+  
+  .card__link:hover {
+    background: var(--color-accent);
+    color: white;
+  }
+  
+  .card__link--spotify {
+    background: rgba(29, 185, 84, 0.1);
+    color: #1db954;
+  }
+  
+  .card__link--spotify:hover {
+    background: #1db954;
+    color: white;
+  }
+  
+  .personal__spotify-embeds {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .embeds__title {
+    font-size: var(--text-2xl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-align: center;
+  }
+  
+  .embeds__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  
+  .embed__item {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    transition: all 0.3s ease;
+  }
+  
+  .embed__item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-border-hover);
+  }
+  
+  .embed__item--playlist {
+    grid-column: span 1;
+  }
+  
+  .embed__item--warm {
+    background: linear-gradient(145deg, #6b4442 0%, #5a3835 40%, #4a2c2a 100%);
+    border-color: rgba(180, 130, 120, 0.35);
+    box-shadow: 0 4px 20px rgba(107, 68, 66, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  
+  .embed__item--warm:hover {
+    border-color: rgba(200, 150, 130, 0.45);
+    box-shadow: 0 8px 30px rgba(107, 68, 66, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .embed__item--warm .embed__label {
+    color: #f0e5e2;
+  }
+  
+  .embed__item--focus {
+    background: linear-gradient(135deg, var(--color-bg-surface) 0%, var(--color-bg-elevated) 100%);
+    border-color: var(--color-accent);
+    overflow: visible;
+  }
+  
+  .focus-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: relative;
+    min-height: 180px;
+    overflow: visible;
+  }
+  
+  .focus-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+    z-index: 2;
+    position: relative;
+  }
+  
+  .focus-card__image {
+    position: absolute;
+    right: -40px;
+    bottom: -120px;
+    width: 320px;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.35;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .embed__item--focus:hover .focus-card__image {
+    opacity: 0.5;
+    transform: scale(1.08) translateX(-5px) translateY(-5px);
+  }
+  
+  .focus-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  
+  .focus-card__icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-md);
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  
+  .focus-card__info {
+    flex: 1;
+  }
+  
+  .focus-card__title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  
+  .focus-card__subtitle {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  
+  .focus-card__description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  .focus-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-accent);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    align-self: flex-start;
+  }
+  
+  .focus-card__link:hover {
+    background: var(--color-accent);
+    color: white;
+  }
+  
+  .embed__label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+  }
+  
+  @media (max-width: 768px) {
+    .embeds__grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .embed__item--playlist {
+      grid-column: span 1;
+    }
+    
+    .personal__grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .focus-card__image {
+      width: 200px;
+      right: -20px;
+      bottom: -50px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .focus-card__image {
+      width: 150px;
+      opacity: 0.25;
+    }
+  }
+</style>
+

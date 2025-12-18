@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Glass gradient -->
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="20%" style="stop-color:#e8f4fc;stop-opacity:0.6"/>
+      <stop offset="50%" style="stop-color:#d0e8f8;stop-opacity:0.3"/>
+      <stop offset="80%" style="stop-color:#e8f4fc;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+    </linearGradient>
+    
+    <!-- Water gradient -->
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#64b5f6"/>
+      <stop offset="50%" style="stop-color:#2196f3"/>
+      <stop offset="100%" style="stop-color:#1565c0"/>
+    </linearGradient>
+    
+    <!-- Water surface gradient -->
+    <linearGradient id="surfaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#90caf9"/>
+      <stop offset="100%" style="stop-color:#42a5f5"/>
+    </linearGradient>
+    
+    <!-- Glass shine -->
+    <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </linearGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="shadowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Drop shadow -->
+  <ellipse cx="32" cy="60" rx="14" ry="3" fill="url(#shadowGradient)"/>
+  
+  <!-- Glass back side (darker for depth) -->
+  <path d="M18 8h28l-3.5 48H21.5L18 8z" fill="#b8d4e8" opacity="0.5"/>
+  
+  <!-- Glass body -->
+  <path d="M16 8h32l-4 48H20L16 8z" fill="url(#glassGradient)" stroke="#a0c4d8" stroke-width="1"/>
+  
+  <!-- Water body -->
+  <path d="M19 26h26l-2.8 26H21.8L19 26z" fill="url(#waterGradient)"/>
+  
+  <!-- Water surface (ellipse for 3D effect) -->
+  <ellipse cx="32" cy="26" rx="13" ry="3" fill="url(#surfaceGradient)"/>
+  
+  <!-- Water surface highlight -->
+  <ellipse cx="30" cy="25" rx="8" ry="1.5" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Glass rim top -->
+  <ellipse cx="32" cy="8" rx="16" ry="3" fill="none" stroke="#c0d8e8" stroke-width="1.5"/>
+  <ellipse cx="32" cy="8" rx="16" ry="3" fill="url(#glassGradient)" opacity="0.5"/>
+  
+  <!-- Glass rim inner -->
+  <ellipse cx="32" cy="9" rx="14" ry="2.5" fill="none" stroke="#a0c4d8" stroke-width="0.5" opacity="0.5"/>
+  
+  <!-- Left shine highlight -->
+  <path d="M19 12 Q17 30 20 50" stroke="url(#shineGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Top rim shine -->
+  <path d="M20 7 Q32 5 44 7" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  
+  <!-- Bubbles with 3D effect -->
+  <circle cx="26" cy="38" r="2" fill="#ffffff" opacity="0.5"/>
+  <circle cx="26" cy="37.5" r="1" fill="#ffffff" opacity="0.8"/>
+  
+  <circle cx="35" cy="44" r="1.5" fill="#ffffff" opacity="0.4"/>
+  <circle cx="35" cy="43.7" r="0.7" fill="#ffffff" opacity="0.7"/>
+  
+  <circle cx="30" cy="32" r="1.2" fill="#ffffff" opacity="0.4"/>
+  <circle cx="30" cy="31.7" r="0.5" fill="#ffffff" opacity="0.7"/>
+  
+  <circle cx="38" cy="36" r="1" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Caustic light effect on water -->
+  <path d="M24 35 Q28 33 32 36 Q36 38 40 35" stroke="#ffffff" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <path d="M22 42 Q26 40 30 43" stroke="#ffffff" stroke-width="0.5" fill="none" opacity="0.2"/>
+</svg>

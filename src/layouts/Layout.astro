@@ -1,0 +1,124 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "Mulloy Morrow | AI & ML Leader",
+  description = "Director / Head of AI & Machine Learning. Building product-critical ML systems at scale. Personalization, Recommenders, and Product-Focused Engineering Leadership."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Mulloy Morrow" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://code.mulloymorrow.com" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@thismulloy" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    
+    <script>
+      // Ensure dark theme on initial load (before any JS runs)
+      // The CSS :root has dark theme by default, this just ensures no stale class remains
+      document.documentElement.classList.remove('theme-warm');
+      
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+      
+      // Theme transition on scroll
+      // Switches from dark theme to warm theme when Personal section comes into view
+      const personalSection = document.getElementById('personal');
+      
+      // Helper function to check if we should be in warm theme
+      function checkTheme() {
+        if (!personalSection) return;
+        const rect = personalSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        // If the personal section is in the viewport (with 20% margin), use warm theme
+        const threshold = viewportHeight * 0.2;
+        if (rect.top < viewportHeight - threshold && rect.bottom > threshold) {
+          document.documentElement.classList.add('theme-warm');
+        } else if (rect.top >= viewportHeight - threshold) {
+          // Section is below viewport - use dark theme
+          document.documentElement.classList.remove('theme-warm');
+        }
+        // If section is above viewport (scrolled past), keep warm theme
+      }
+      
+      // Initial check based on current scroll position
+      checkTheme();
+      
+      if (personalSection) {
+        const themeObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Entering warm section - switch to warm theme
+              document.documentElement.classList.add('theme-warm');
+            } else {
+              // Check if we're above or below the section
+              const rect = entry.boundingClientRect;
+              if (rect.top > 0) {
+                // Section is below viewport - use dark theme
+                document.documentElement.classList.remove('theme-warm');
+              }
+              // If section is above viewport (scrolled past), keep warm theme
+            }
+          });
+        }, {
+          threshold: 0,
+          rootMargin: '-20% 0px -20% 0px' // Trigger when section is 20% into viewport
+        });
+        
+        themeObserver.observe(personalSection);
+      }
+      
+      // Also check scroll position on load for direct navigation to #personal
+      if (window.location.hash === '#personal') {
+        document.documentElement.classList.add('theme-warm');
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
+

@@ -1,0 +1,162 @@
+---
+import ProjectCard from './ProjectCard.svelte';
+
+const projects = [
+  {
+    title: "Spotify's New Home Feed",
+    description: "Led the redesign and modernization of a large-scale Home Feed personalization system, delivering a more relevant, data-driven user experience at massive scale.",
+    longDescription: "Led the Home Feed personalization initiative through a period of high ambiguity, aligning product, design, and multiple ML and engineering teams around a unified vision for the feed. The work included re-architecting the recommendation pipeline, modernizing ranking and candidate generation systems, and replacing heuristic-driven decisioning with data-driven models optimized for long-term engagement and user satisfaction. We balanced competing objectives across content producers and consumers, introduced clearer success metrics, and built infrastructure that supported rapid experimentation and iteration. The result was a more coherent, scalable Home Feed that improved personalization quality while enabling the organization to move faster and make better long-term tradeoffs. Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström.",
+    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Apache Beam", "BigQuery", "Kubernetes", "A/B Testing"],
+    impact: "+$1M/month revenue, +26% discovery, improved retention",
+    featured: true,
+    logo: "/logos/spotify.png",
+    links: {
+      demo: "https://youtu.be/FCN-VP5z2vY?si=IOfxHALzjnR5rm2i&t=594"
+    }
+  },
+  {
+    title: "Agentic-AI for PFAS-Free Drinking Water",
+    description: "Leveraging agentic-AI to accelerate environmental remediation and deliver cleaner drinking water to affected communities.",
+    longDescription: "Applied ML and agentic-AI to environmental damage claims related to PFAS ('forever chemicals') in drinking water. Designed data-driven workflows for claims processing in a highly regulated environment, and built document AI and NLP systems.",
+    technologies: ["Python", "LLMs", "NLP", "Document AI", "Data Pipelines", "PostgreSQL", "Cloud Infrastructure"],
+    impact: "$24M+ in claimant settlements within 6 months",
+    featured: true,
+    logo: "/logos/water-glass-3d.svg"
+  },
+  {
+    title: "Agentic-AI Supported Social Network",
+    description: "A human-centered platform using agentic-AI to help people form deeper, more intentional real-world connections through reflection, alignment, and guided interaction.",
+    longDescription: "The vision is to build a human-centered, agentic-AI platform that helps people form deeper, more intentional connections in the real world. Instead of optimizing for endless swiping or shallow engagement, the system is designed to support reflection, alignment, and momentum—using AI agents to help users understand themselves, evaluate compatibility, and navigate social decisions with greater clarity. At its core is an agentic-AI–supported social network that prioritizes depth over volume: fewer matches, richer context, and guided interaction rather than passive consumption. The platform augments human judgment rather than replacing it, combining privacy-aware design with human-in-the-loop intelligence to help people \"vibe\" with the right people, in the right moments, for the right reasons.",
+    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Privacy-Preserving ML", "Cloud Infrastructure"],
+    impact: "Currently in private beta",
+    featured: true,
+    logo: "/logos/stealth-ai.png"
+  },
+  {
+    title: "Marketplace ML Platform",
+    description: "Built ML infrastructure and recommendation systems at OfferUp, one of the largest mobile marketplaces in the US.",
+    longDescription: "Established ML practice from the ground up as founding engineer. Built search ranking, recommendation, identity recognition, and fraud detection systems that scaled with the platform's growth.",
+    technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL", "Computer Vision"],
+    impact: "Scaled from 0 to full ML organization",
+    logo: "https://cdn.brandfetch.io/id5p1Knwlt/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1668515956474"
+  },
+  {
+    title: "User Lifetime Value Prediction",
+    description: "Developed and scaled Spotify's north star metric: User-LTV, adopted company-wide as the lingua franca to quantify cumulative causal impact and perform financial scenario analysis on user long-term satisfaction.",
+    longDescription: "Led the development of an end-to-end user Lifetime Value (LTV) modeling system to predict long-term user contribution under uncertainty and sparse early-life signals. The project involved defining a rigorous LTV framework, engineering behavioral and temporal features across the user lifecycle, and training scalable ML models that balanced predictive accuracy, interpretability, and operational stability. The outputs were integrated into downstream decision systems—informing personalization strategies, experimentation prioritization, and resource allocation—while accounting for delayed outcomes and changing user behavior over time. This work shifted decision-making from short-term engagement metrics to long-horizon value, aligning product and business strategy around sustainable growth. Featured at Investor Day 2022 by Head of ML Tony Jebara.",
+    technologies: ["Python", "ML/Statistical Modeling", "Feature Engineering", "BigQuery", "Experimentation", "Data Pipelines"],
+    impact: "Adopted company-wide as Spotify's north star metric",
+    featured: true,
+    logo: "/logos/spotify.png",
+    links: {
+      demo: "https://www.youtube.com/watch?v=NlSD0uFALbI"
+    }
+  },
+  {
+    title: "Crowd Understanding",
+    description: "Computer vision platform for automated monitoring and surveillance of crowded scenes using dynamic textures.",
+    longDescription: "Built a distributed system for real-time crowd analysis on a dynamic, open video database. The platform segments crowds by motion, extracts holistic features, and estimates crowd counts using Gaussian processes—all in a privacy-preserving manner without people models or tracking. Developed anomaly detection using mixture of dynamic textures. Published: 'Analysis of Crowded Scenes using Holistic Properties' (IEEE PETS 2009).",
+    technologies: ["MATLAB", "C++", "Computer Vision", "Gaussian Processes", "Dynamic Textures", "Video Analytics", "Distributed Systems"],
+    impact: "Real-time crowd monitoring across multi-camera networks",
+    logo: "/logos/crowd-pedcount.jpg",
+    gallery: [
+      { src: "/logos/crowd-pedcount.jpg", caption: "Pedestrian Crowd Counting: Privacy-preserving crowd estimation using Gaussian processes" },
+      { src: "/logos/crowd-cammap.png", caption: "Distributed Camera Network: Multi-camera surveillance system across UCSD campus" },
+      { src: "/logos/crowd-vismap.png", caption: "Real-time Visualization: Geospatial crowd density mapping with Google Maps integration" },
+      { src: "/logos/crowd-system-overview.png", caption: "System Architecture: End-to-end pipeline from video acquisition to analytics visualization" }
+    ],
+    links: {
+      article: "http://www.svcl.ucsd.edu/projects/crowdanalytics/index.htm"
+    }
+  },
+  {
+    title: "Drone Video Analysis",
+    description: "Cluster video segments into story-telling salient clusters with auto-editing using telemetry data.",
+    longDescription: "Built a system that analyzes drone footage using cleanflight blackbox telemetry to automatically identify and edit compelling video segments.",
+    technologies: ["Python", "Video Processing", "Telemetry Analysis", "Clustering", "Signal Processing"]
+  }
+];
+---
+
+<section class="projects section" id="projects">
+  <div class="container">
+    <div class="projects__header animate-on-scroll">
+      <h2 class="projects__title">Projects</h2>
+      <p class="projects__subtitle">Building AI systems that deliver measurable impact</p>
+    </div>
+    
+    <div class="projects__grid">
+      {projects.map((project, index) => (
+        <div class={`projects__item animate-on-scroll delay-${Math.min(index + 1, 5)}`}>
+          <ProjectCard project={project} client:visible />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    padding: var(--space-24) 0;
+    background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    position: relative;
+  }
+  
+  .projects::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+  }
+  
+  .projects__header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+  
+  .projects__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-cool) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .projects__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .projects__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .projects__item {
+    grid-column: span 1;
+    height: 100%;
+    min-width: 0;
+  }
+  
+  @media (max-width: 1024px) {
+    .projects__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .projects__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
