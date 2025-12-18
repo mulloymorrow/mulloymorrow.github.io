@@ -142,15 +142,17 @@ const projects = [
   }
   
   .projects__item {
-    grid-column: auto;
+    grid-column: span 1;
+    grid-row: span 1;
     height: 100%;
     min-width: 0;
     max-width: 100%;
+    width: 100%;
   }
   
-  /* Prevent last item from spanning full width */
-  .projects__item:last-child {
-    grid-column: auto;
+  /* Global style to handle astro-island wrappers */
+  .projects__grid :global(astro-island) {
+    display: contents;
   }
   
   @media (max-width: 1024px) {

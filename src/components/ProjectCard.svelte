@@ -83,9 +83,12 @@
     <div class="project-header">
       {#if project.logo}
         {#if project.gallery && project.gallery.length > 0}
-          <button 
+          <div 
             class="project-logo-button"
+            role="button"
+            tabindex="0"
             on:click={openGallery}
+            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(e); } }}
             title="Click to view gallery"
           >
             <img 
@@ -101,7 +104,7 @@
               </svg>
               {project.gallery.length}
             </span>
-          </button>
+          </div>
         {:else}
           <img 
             src={project.logo} 
@@ -222,7 +225,7 @@
     aria-modal="true"
     tabindex="-1"
   >
-    <div class="gallery-content" on:click|stopPropagation>
+    <div class="gallery-content" on:click|stopPropagation on:keydown|stopPropagation role="document">
       <button class="gallery-close" on:click={closeGallery} aria-label="Close gallery">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/>
