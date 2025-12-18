@@ -64,8 +64,9 @@
     targetX += (mouseX - targetX) * easing;
     targetY += (mouseY - targetY) * easing;
     
-    // Generate morphing blob path - larger radius
-    const radius = 220;
+    // Responsive blob radius - smaller on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const radius = isMobile ? 140 : 220;
     blobPath = generateBlobPath(targetX, targetY, radius, time);
     
     animationFrame = requestAnimationFrame(animate);
@@ -82,6 +83,36 @@
   function handleMouseLeave() {
     mouseX = -500;
     mouseY = -500;
+    isHovering = false;
+  }
+  
+  // Touch event handlers for mobile
+  function handleTouchStart(e) {
+    if (!container || e.touches.length === 0) return;
+    const rect = container.getBoundingClientRect();
+    const touch = e.touches[0];
+    mouseX = touch.clientX - rect.left;
+    mouseY = touch.clientY - rect.top;
+    isHovering = true;
+  }
+  
+  function handleTouchMove(e) {
+    if (!container || e.touches.length === 0) return;
+    const rect = container.getBoundingClientRect();
+    const touch = e.touches[0];
+    mouseX = touch.clientX - rect.left;
+    mouseY = touch.clientY - rect.top;
+    isHovering = true;
+  }
+  
+  function handleTouchEnd() {
+    // Keep the blob visible for a moment after touch ends, then fade out
+    setTimeout(() => {
+      if (!isHovering) {
+        mouseX = -500;
+        mouseY = -500;
+      }
+    }, 500);
     isHovering = false;
   }
   
@@ -103,6 +134,9 @@
   bind:this={container}
   on:mousemove={handleMouseMove}
   on:mouseleave={handleMouseLeave}
+  on:touchstart={handleTouchStart}
+  on:touchmove={handleTouchMove}
+  on:touchend={handleTouchEnd}
   role="presentation"
 >
   <!-- SVG mask with halftone reveal -->
@@ -213,13 +247,17 @@
     cursor: pointer;
   }
   
-  /* Hide on mobile/touch devices where cursor following doesn't make sense */
-  @media (hover: none), (max-width: 768px) {
+  /* On touch devices, use default cursor instead of crosshair */
+  @media (hover: none) {
     .cursor-reveal {
       cursor: auto;
     }
+  }
+  
+  /* On very small screens, reduce the blob size for better visibility */
+  @media (max-width: 480px) {
     .cursor-reveal__svg {
-      display: none;
+      /* Blob will be smaller on mobile - handled in JS */
     }
   }
 </style>
