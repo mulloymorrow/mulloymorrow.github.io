@@ -4,7 +4,7 @@ import svelte from '@astrojs/svelte';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://mulloymorrow.github.io',
+  site: 'https://code.mulloymorrow.com',
   outDir: './docs',
   integrations: [svelte()],
   build: {
