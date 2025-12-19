@@ -44,9 +44,11 @@
       cellSize = 16; // Desktop
     }
     
-    // Calculate grid dimensions to fill the viewport
-    const cols = Math.floor(viewportWidth / cellSize);
-    const rows = Math.floor(viewportHeight / cellSize);
+    // Calculate grid dimensions to fill 70% of viewport
+    const mazeAreaWidth = viewportWidth * 0.7;
+    const mazeAreaHeight = viewportHeight * 0.7;
+    const cols = Math.floor(mazeAreaWidth / cellSize);
+    const rows = Math.floor(mazeAreaHeight / cellSize);
     
     // Calculate offset to center the maze
     const mazeWidth = cols * cellSize;
