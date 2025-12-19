@@ -19,7 +19,7 @@ import CursorReveal from './CursorReveal.svelte';
     </div>
     
     <h1 class="hero__name animate-on-scroll delay-1">
-      Mulloy Morrow
+      Mulloy Morro<button class="hero__secret-w" id="maze-trigger" aria-label="Trigger maze animation">w</button>
     </h1>
     
     <h2 class="hero__title animate-on-scroll delay-2">
@@ -243,5 +243,50 @@ import CursorReveal from './CursorReveal.svelte';
       display: none;
     }
   }
+  
+  /* Secret 'w' button - looks like normal text */
+  .hero__secret-w {
+    all: unset;
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    background: inherit;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  
+  .hero__secret-w:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+  }
+  
+  .hero__secret-w:active {
+    transform: scale(0.98);
+  }
 </style>
+
+<script>
+  // Secret 'w' click handler - toggles maze solving animation
+  document.addEventListener('DOMContentLoaded', () => {
+    const mazeTrigger = document.getElementById('maze-trigger');
+    if (mazeTrigger) {
+      mazeTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Toggle solveMaze URL parameter
+        const url = new URL(window.location.href);
+        const currentValue = url.searchParams.get('solveMaze');
+        if (currentValue === 'true') {
+          url.searchParams.delete('solveMaze');
+        } else {
+          url.searchParams.set('solveMaze', 'true');
+        }
+        window.history.pushState({}, '', url);
+        // Dispatch custom event for CursorReveal to listen to
+        window.dispatchEvent(new CustomEvent('maze:solve', { detail: { solve: currentValue !== 'true' } }));
+      });
+    }
+  });
+</script>
 

@@ -12,7 +12,19 @@
   let time = 0;
   let isHovering = false;
   let mazePath = '';
-  let mazeData = { startX: 0, startY: 0, endX: 0, endY: 0, cellSize: 16 };
+  let mazeData = { startX: 0, startY: 0, endX: 0, endY: 0, cellSize: 16, cols: 75, rows: 50, startCellX: 0, startCellY: 0, endCellX: 0, endCellY: 0 };
+  let mazeGrid = []; // Store grid for pathfinding
+  
+  // Feature flags from URL parameters
+  let revealMaze = false;
+  let solveMaze = false;
+  
+  // BFS solving animation state
+  let visitedCells = []; // Cells visited during BFS (for visualization)
+  let solutionPath = []; // Final solution path
+  let solveAnimationFrame = 0;
+  let isSolving = false;
+  let solveInterval = null;
   
   // Generate a solvable maze using recursive backtracking
   function generateMaze() {
@@ -156,12 +168,114 @@
     
     return {
       path,
+      grid, // Return grid for pathfinding
       startX: startX * cellSize + cellSize / 2,
       startY: startY * cellSize + cellSize / 2,
       endX: endX * cellSize + cellSize / 2,
       endY: endY * cellSize + cellSize / 2,
-      cellSize
+      startCellX: startX,
+      startCellY: startY,
+      endCellX: endX,
+      endCellY: endY,
+      cellSize,
+      cols,
+      rows
     };
+  }
+  
+  // BFS pathfinding - returns { visited, path }
+  function solveMazeBFS(grid, startX, startY, endX, endY, cols, rows) {
+    const visited = [];
+    const queue = [{ x: startX, y: startY, path: [{ x: startX, y: startY }] }];
+    const seen = new Set();
+    seen.add(`${startX},${startY}`);
+    
+    const directions = [
+      { dx: 0, dy: -1, wall: 'top' },
+      { dx: 1, dy: 0, wall: 'right' },
+      { dx: 0, dy: 1, wall: 'bottom' },
+      { dx: -1, dy: 0, wall: 'left' }
+    ];
+    
+    while (queue.length > 0) {
+      const current = queue.shift();
+      visited.push({ x: current.x, y: current.y });
+      
+      // Check if we reached the end
+      if (current.x === endX && current.y === endY) {
+        return { visited, path: current.path };
+      }
+      
+      // Explore neighbors
+      for (const dir of directions) {
+        const nx = current.x + dir.dx;
+        const ny = current.y + dir.dy;
+        const key = `${nx},${ny}`;
+        
+        // Check bounds and if not visited
+        if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && !seen.has(key)) {
+          // Check if there's no wall between current and neighbor
+          const cell = grid[current.y][current.x];
+          if (!cell.walls[dir.wall]) {
+            seen.add(key);
+            queue.push({
+              x: nx,
+              y: ny,
+              path: [...current.path, { x: nx, y: ny }]
+            });
+          }
+        }
+      }
+    }
+    
+    return { visited, path: [] }; // No path found
+  }
+  
+  // Start the solving animation
+  function startSolveAnimation() {
+    if (isSolving || !mazeGrid.length) return;
+    
+    isSolving = true;
+    visitedCells = [];
+    solutionPath = [];
+    solveAnimationFrame = 0;
+    
+    // Run BFS
+    const result = solveMazeBFS(
+      mazeGrid,
+      mazeData.startCellX,
+      mazeData.startCellY,
+      mazeData.endCellX,
+      mazeData.endCellY,
+      mazeData.cols,
+      mazeData.rows
+    );
+    
+    const allVisited = result.visited;
+    const finalPath = result.path;
+    
+    // Animate visited cells one by one
+    let visitIndex = 0;
+    solveInterval = setInterval(() => {
+      if (visitIndex < allVisited.length) {
+        visitedCells = [...visitedCells, allVisited[visitIndex]];
+        visitIndex++;
+      } else {
+        // Show solution path
+        solutionPath = finalPath;
+        clearInterval(solveInterval);
+        isSolving = false;
+      }
+    }, 10); // Speed of animation (ms per cell)
+  }
+  
+  // Reset solving animation
+  function resetSolveAnimation() {
+    if (solveInterval) clearInterval(solveInterval);
+    isSolving = false;
+    visitedCells = [];
+    solutionPath = [];
+    solveAnimationFrame = 0;
   }
   
   // Generate organic blob path using noise-like distortion
@@ -268,17 +382,53 @@
     isHovering = false;
   }
   
+  // Handle maze:solve event from Hero
+  function handleMazeSolve(e) {
+    if (e.detail.solve) {
+      solveMaze = true;
+      startSolveAnimation();
+    } else {
+      solveMaze = false;
+      resetSolveAnimation();
+    }
+  }
+  
   onMount(() => {
     mounted = true;
+    
+    // Check URL parameters for feature flags
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      revealMaze = urlParams.get('revealMaze') === 'true';
+      solveMaze = urlParams.get('solveMaze') === 'true';
+    }
+    
     const maze = generateMaze();
     mazePath = maze.path;
+    mazeGrid = maze.grid; // Store grid for pathfinding
     mazeData = {
       startX: maze.startX,
       startY: maze.startY,
       endX: maze.endX,
       endY: maze.endY,
-      cellSize: maze.cellSize
+      startCellX: maze.startCellX,
+      startCellY: maze.startCellY,
+      endCellX: maze.endCellX,
+      endCellY: maze.endCellY,
+      cellSize: maze.cellSize,
+      cols: maze.cols,
+      rows: maze.rows
     };
+    
+    // If solveMaze is in URL, start animation
+    if (solveMaze) {
+      // Small delay to ensure maze is rendered
+      setTimeout(() => startSolveAnimation(), 500);
+    }
+    
+    // Listen for maze:solve event from Hero
+    window.addEventListener('maze:solve', handleMazeSolve);
+    
     animate();
   });
   
@@ -286,6 +436,12 @@
     mounted = false;
     if (animationFrame) {
       cancelAnimationFrame(animationFrame);
+    }
+    if (solveInterval) {
+      clearInterval(solveInterval);
+    }
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('maze:solve', handleMazeSolve);
     }
   });
 </script>
@@ -323,9 +479,37 @@
     </defs>
     
     <!-- The revealed layer with maze pattern -->
-    <g clip-path="url(#blob-clip)">
+    <!-- Use clip-path only when not in revealMaze mode -->
+    <g clip-path={revealMaze ? undefined : "url(#blob-clip)"}>
       <!-- Dark mysterious background -->
       <rect x="0" y="0" width="100%" height="100%" fill="#1a1a2e" />
+      
+      <!-- BFS visited cells visualization -->
+      {#each visitedCells as cell}
+        <rect
+          x={cell.x * mazeData.cellSize + 2}
+          y={cell.y * mazeData.cellSize + 2}
+          width={mazeData.cellSize - 4}
+          height={mazeData.cellSize - 4}
+          fill="#3b82f6"
+          opacity="0.3"
+        />
+      {/each}
+      
+      <!-- Solution path visualization -->
+      {#if solutionPath.length > 1}
+        <path
+          d={solutionPath.map((p, i) => 
+            `${i === 0 ? 'M' : 'L'} ${p.x * mazeData.cellSize + mazeData.cellSize / 2} ${p.y * mazeData.cellSize + mazeData.cellSize / 2}`
+          ).join(' ')}
+          fill="none"
+          stroke="#22c55e"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.9"
+        />
+      {/if}
       
       <!-- Primary maze layer - warm accent color -->
       <path 
@@ -349,7 +533,7 @@
         />
       </g>
       
-      <!-- Start point - Green dot (top-left) -->
+      <!-- Start point - Green dot -->
       <circle 
         cx={mazeData.startX} 
         cy={mazeData.startY} 
@@ -394,23 +578,25 @@
       />
     </g>
     
-    <!-- Outer glow for depth -->
-    <path 
-      d={blobPath} 
-      fill="none" 
-      stroke="#e76f51"
-      stroke-width="4"
-      opacity="0.4"
-      filter="url(#blob-blur)"
-    />
-    
-    <!-- Crisp edge highlight -->
-    <path 
-      d={blobPath} 
-      fill="none" 
-      stroke="rgba(244, 162, 97, 0.5)"
-      stroke-width="1.5"
-    />
+    <!-- Outer glow for depth (hidden in revealMaze mode) -->
+    {#if !revealMaze}
+      <path 
+        d={blobPath} 
+        fill="none" 
+        stroke="#e76f51"
+        stroke-width="4"
+        opacity="0.4"
+        filter="url(#blob-blur)"
+      />
+      
+      <!-- Crisp edge highlight -->
+      <path 
+        d={blobPath} 
+        fill="none" 
+        stroke="rgba(244, 162, 97, 0.5)"
+        stroke-width="1.5"
+      />
+    {/if}
   </svg>
   
   <!-- Content slot -->
@@ -461,11 +647,5 @@
     }
   }
   
-  /* On very small screens, reduce the blob size for better visibility */
-  @media (max-width: 480px) {
-    .cursor-reveal__svg {
-      /* Blob will be smaller on mobile - handled in JS */
-    }
-  }
 </style>
 
