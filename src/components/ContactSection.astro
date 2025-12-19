@@ -1,0 +1,143 @@
+---
+// Contact section with Google Calendar booking
+---
+
+<section class="contact section" id="contact">
+  <div class="container">
+    <div class="contact__header animate-on-scroll">
+      <h2 class="contact__title">Let's Connect</h2>
+      <p class="contact__subtitle">
+        Interested in collaborating, discussing AI/ML, or just saying hello? 
+        Book a time that works for you.
+      </p>
+    </div>
+    
+    <div class="contact__content animate-on-scroll delay-1">
+      <div class="contact__intro">
+        <div class="contact__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <p class="contact__description">
+          Whether you're exploring a new venture, need ML expertise, or want to chat about 
+          building AI systems that matter — I'd love to hear from you.
+        </p>
+      </div>
+      
+      <div class="contact__calendar">
+        <iframe 
+          src="https://calendar.google.com/calendar/appointments/AcZssZ0oXa6OFoGV-CgTGC4kL_IqweyP87-YxQeAy1s=?gv=true" 
+          title="Book a meeting with Mulloy"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
+    padding: var(--space-20) 0;
+  }
+  
+  .contact__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+  
+  .contact__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .contact__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .contact__content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .contact__intro {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+  
+  .contact__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+    border-radius: var(--radius-md);
+    color: white;
+  }
+  
+  .contact__description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+  
+  .contact__calendar {
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .contact__calendar iframe {
+    width: 100%;
+    height: 600px;
+    border: 0;
+    display: block;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .contact {
+      padding: var(--space-12) 0;
+    }
+    
+    .contact__intro {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+    
+    .contact__calendar iframe {
+      height: 500px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .contact__calendar iframe {
+      height: 450px;
+    }
+  }
+</style>
