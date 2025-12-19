@@ -12,8 +12,10 @@
   let time = 0;
   let isHovering = false;
   let mazePath = '';
-  let mazeData = { startX: 0, startY: 0, endX: 0, endY: 0, cellSize: 16, cols: 75, rows: 50, startCellX: 0, startCellY: 0, endCellX: 0, endCellY: 0 };
+  let mazeData = { startX: 0, startY: 0, endX: 0, endY: 0, cellSize: 16, cols: 75, rows: 50, startCellX: 0, startCellY: 0, endCellX: 0, endCellY: 0, offsetX: 0, offsetY: 0 };
   let mazeGrid = []; // Store grid for pathfinding
+  let containerWidth = 1200;
+  let containerHeight = 800;
   
   // Feature flags from URL parameters
   let revealMaze = false;
@@ -27,10 +29,30 @@
   let solveInterval = null;
   
   // Generate a solvable maze using recursive backtracking
-  function generateMaze() {
-    const cellSize = 16;
-    const cols = 75;
-    const rows = 50;
+  function generateMaze(viewportWidth, viewportHeight) {
+    // Responsive cell size based on viewport
+    const isMobile = viewportWidth < 768;
+    const isTablet = viewportWidth >= 768 && viewportWidth < 1024;
+    
+    // Calculate cell size to fit viewport while maintaining visibility
+    let cellSize;
+    if (isMobile) {
+      cellSize = 10; // Smaller cells for mobile
+    } else if (isTablet) {
+      cellSize = 12;
+    } else {
+      cellSize = 16; // Desktop
+    }
+    
+    // Calculate grid dimensions to fill the viewport
+    const cols = Math.floor(viewportWidth / cellSize);
+    const rows = Math.floor(viewportHeight / cellSize);
+    
+    // Calculate offset to center the maze
+    const mazeWidth = cols * cellSize;
+    const mazeHeight = rows * cellSize;
+    const offsetX = Math.floor((viewportWidth - mazeWidth) / 2);
+    const offsetY = Math.floor((viewportHeight - mazeHeight) / 2);
     
     // Seeded random for consistent maze
     let seed = 42;
@@ -179,7 +201,9 @@
       endCellY: endY,
       cellSize,
       cols,
-      rows
+      rows,
+      offsetX,
+      offsetY
     };
   }
   
@@ -403,7 +427,17 @@
       solveMaze = urlParams.get('solveMaze') === 'true';
     }
     
-    const maze = generateMaze();
+    // Get container dimensions for responsive maze
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      containerWidth = rect.width || window.innerWidth;
+      containerHeight = rect.height || window.innerHeight;
+    } else {
+      containerWidth = window.innerWidth;
+      containerHeight = window.innerHeight;
+    }
+    
+    const maze = generateMaze(containerWidth, containerHeight);
     mazePath = maze.path;
     mazeGrid = maze.grid; // Store grid for pathfinding
     mazeData = {
@@ -417,7 +451,9 @@
       endCellY: maze.endCellY,
       cellSize: maze.cellSize,
       cols: maze.cols,
-      rows: maze.rows
+      rows: maze.rows,
+      offsetX: maze.offsetX,
+      offsetY: maze.offsetY
     };
     
     // If solveMaze is in URL, start animation
@@ -484,98 +520,101 @@
       <!-- Dark mysterious background -->
       <rect x="0" y="0" width="100%" height="100%" fill="#1a1a2e" />
       
-      <!-- BFS visited cells visualization -->
-      {#each visitedCells as cell}
-        <rect
-          x={cell.x * mazeData.cellSize + 2}
-          y={cell.y * mazeData.cellSize + 2}
-          width={mazeData.cellSize - 4}
-          height={mazeData.cellSize - 4}
-          fill="#3b82f6"
-          opacity="0.3"
-        />
-      {/each}
-      
-      <!-- Solution path visualization -->
-      {#if solutionPath.length > 1}
-        <path
-          d={solutionPath.map((p, i) => 
-            `${i === 0 ? 'M' : 'L'} ${p.x * mazeData.cellSize + mazeData.cellSize / 2} ${p.y * mazeData.cellSize + mazeData.cellSize / 2}`
-          ).join(' ')}
-          fill="none"
-          stroke="#22c55e"
-          stroke-width="3"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          opacity="0.9"
-        />
-      {/if}
-      
-      <!-- Primary maze layer - warm accent color -->
-      <path 
-        d={mazePath} 
-        fill="none" 
-        stroke="#e76f51" 
-        stroke-width="1.5"
-        stroke-linecap="square"
-        opacity="0.9"
-      />
-      
-      <!-- Secondary maze layer - offset for depth -->
-      <g style="transform: translate(0.5px, 0.5px)">
+      <!-- Maze container with centering offset -->
+      <g style="transform: translate({mazeData.offsetX}px, {mazeData.offsetY}px)">
+        <!-- BFS visited cells visualization -->
+        {#each visitedCells as cell}
+          <rect
+            x={cell.x * mazeData.cellSize + 2}
+            y={cell.y * mazeData.cellSize + 2}
+            width={mazeData.cellSize - 4}
+            height={mazeData.cellSize - 4}
+            fill="#3b82f6"
+            opacity="0.3"
+          />
+        {/each}
+        
+        <!-- Solution path visualization -->
+        {#if solutionPath.length > 1}
+          <path
+            d={solutionPath.map((p, i) => 
+              `${i === 0 ? 'M' : 'L'} ${p.x * mazeData.cellSize + mazeData.cellSize / 2} ${p.y * mazeData.cellSize + mazeData.cellSize / 2}`
+            ).join(' ')}
+            fill="none"
+            stroke="#22c55e"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.9"
+          />
+        {/if}
+        
+        <!-- Primary maze layer - warm accent color -->
         <path 
           d={mazePath} 
           fill="none" 
-          stroke="#f4a261" 
-          stroke-width="0.5"
+          stroke="#e76f51" 
+          stroke-width="1.5"
           stroke-linecap="square"
-          opacity="0.4"
+          opacity="0.9"
+        />
+        
+        <!-- Secondary maze layer - offset for depth -->
+        <g style="transform: translate(0.5px, 0.5px)">
+          <path 
+            d={mazePath} 
+            fill="none" 
+            stroke="#f4a261" 
+            stroke-width="0.5"
+            stroke-linecap="square"
+            opacity="0.4"
+          />
+        </g>
+        
+        <!-- Start point - Green dot -->
+        <circle 
+          cx={mazeData.startX} 
+          cy={mazeData.startY} 
+          r={mazeData.cellSize * 0.35}
+          fill="#22c55e"
+          opacity="1"
+        />
+        <!-- Start glow -->
+        <circle 
+          cx={mazeData.startX} 
+          cy={mazeData.startY} 
+          r={mazeData.cellSize * 0.5}
+          fill="#22c55e"
+          opacity="0.3"
+          filter="url(#maze-glow)"
+        />
+        
+        <!-- End point - Red dot (center) -->
+        <circle 
+          cx={mazeData.endX} 
+          cy={mazeData.endY} 
+          r={mazeData.cellSize * 0.35}
+          fill="#ef4444"
+          opacity="1"
+        />
+        <!-- End glow -->
+        <circle 
+          cx={mazeData.endX} 
+          cy={mazeData.endY} 
+          r={mazeData.cellSize * 0.5}
+          fill="#ef4444"
+          opacity="0.3"
+          filter="url(#maze-glow)"
+        />
+        
+        <!-- Subtle radial highlight around end point -->
+        <circle 
+          cx={mazeData.endX} 
+          cy={mazeData.endY} 
+          r={mazeData.cellSize * 3}
+          fill="rgba(239, 68, 68, 0.1)"
         />
       </g>
-      
-      <!-- Start point - Green dot -->
-      <circle 
-        cx={mazeData.startX} 
-        cy={mazeData.startY} 
-        r={mazeData.cellSize * 0.35}
-        fill="#22c55e"
-        opacity="1"
-      />
-      <!-- Start glow -->
-      <circle 
-        cx={mazeData.startX} 
-        cy={mazeData.startY} 
-        r={mazeData.cellSize * 0.5}
-        fill="#22c55e"
-        opacity="0.3"
-        filter="url(#maze-glow)"
-      />
-      
-      <!-- End point - Red dot (center) -->
-      <circle 
-        cx={mazeData.endX} 
-        cy={mazeData.endY} 
-        r={mazeData.cellSize * 0.35}
-        fill="#ef4444"
-        opacity="1"
-      />
-      <!-- End glow -->
-      <circle 
-        cx={mazeData.endX} 
-        cy={mazeData.endY} 
-        r={mazeData.cellSize * 0.5}
-        fill="#ef4444"
-        opacity="0.3"
-        filter="url(#maze-glow)"
-      />
-      
-      <!-- Subtle radial highlight around end point -->
-      <circle 
-        cx={mazeData.endX} 
-        cy={mazeData.endY} 
-        r={mazeData.cellSize * 3}
-        fill="rgba(239, 68, 68, 0.1)"
-      />
     </g>
     
     <!-- Outer glow for depth (hidden in revealMaze mode) -->
