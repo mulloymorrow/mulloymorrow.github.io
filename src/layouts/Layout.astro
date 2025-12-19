@@ -52,10 +52,6 @@ const {
     <slot />
     
     <script>
-      // Ensure dark theme on initial load (before any JS runs)
-      // The CSS :root has dark theme by default, this just ensures no stale class remains
-      document.documentElement.classList.remove('theme-warm');
-      
       // Intersection Observer for scroll animations
       const observerOptions = {
         threshold: 0.1,
@@ -75,7 +71,7 @@ const {
       });
       
       // Theme transition on scroll
-      // Switches from dark theme to warm theme when Personal section comes into view
+      // Switches from dark theme to warm theme when Personal section (or beyond) comes into view
       const personalSection = document.getElementById('personal');
       
       // Helper function to check if we should be in warm theme
@@ -83,19 +79,30 @@ const {
         if (!personalSection) return;
         const rect = personalSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        // If the personal section is in the viewport (with 20% margin), use warm theme
         const threshold = viewportHeight * 0.2;
-        if (rect.top < viewportHeight - threshold && rect.bottom > threshold) {
+        
+        // Warm theme if:
+        // 1. Personal section is in viewport, OR
+        // 2. Personal section is above viewport (we scrolled past it)
+        const inViewport = rect.top < viewportHeight - threshold && rect.bottom > threshold;
+        const scrolledPast = rect.bottom <= threshold; // Section is above the viewport
+        
+        if (inViewport || scrolledPast) {
           document.documentElement.classList.add('theme-warm');
-        } else if (rect.top >= viewportHeight - threshold) {
+        } else {
           // Section is below viewport - use dark theme
           document.documentElement.classList.remove('theme-warm');
         }
-        // If section is above viewport (scrolled past), keep warm theme
       }
       
       // Initial check based on current scroll position
       checkTheme();
+      
+      // Also check for direct navigation to warm sections
+      const warmSections = ['#personal', '#contact'];
+      if (warmSections.includes(window.location.hash)) {
+        document.documentElement.classList.add('theme-warm');
+      }
       
       if (personalSection) {
         const themeObserver = new IntersectionObserver((entries) => {
@@ -119,11 +126,6 @@ const {
         });
         
         themeObserver.observe(personalSection);
-      }
-      
-      // Also check scroll position on load for direct navigation to #personal
-      if (window.location.hash === '#personal') {
-        document.documentElement.classList.add('theme-warm');
       }
     </script>
   </body>
