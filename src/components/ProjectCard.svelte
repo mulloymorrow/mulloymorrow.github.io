@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
+  
   interface Project {
     title: string;
     description: string;
@@ -25,12 +27,35 @@
     isExpanded = !isExpanded;
   }
   
-  function handleKeydown(event: KeyboardEvent) {
+  function closeCard() {
+    isExpanded = false;
+  }
+  
+  function handleCardKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       toggle();
     }
   }
+  
+  // Global escape key handler
+  function handleGlobalKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && isExpanded) {
+      closeCard();
+    }
+  }
+  
+  onMount(() => {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleGlobalKeydown);
+    }
+  });
+  
+  onDestroy(() => {
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('keydown', handleGlobalKeydown);
+    }
+  });
   
   function openGallery(event: MouseEvent) {
     if (project.gallery && project.gallery.length > 0) {
@@ -73,11 +98,16 @@
   }
 </script>
 
+<!-- Backdrop overlay when expanded -->
+{#if isExpanded}
+  <button class="card-backdrop" on:click={closeCard} aria-label="Close expanded card"></button>
+{/if}
+
 <div class="project-card" class:expanded={isExpanded} class:featured={project.featured}>
   <button 
     class="project-content"
     on:click={toggle}
-    on:keydown={handleKeydown}
+    on:keydown={handleCardKeydown}
     aria-expanded={isExpanded}
   >
     <div class="project-header">
@@ -86,12 +116,13 @@
         {#if isEmoji}
           <span class="project-emoji" aria-label="{project.title} icon">{project.logo}</span>
         {:else if project.gallery && project.gallery.length > 0}
-          <div 
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <span 
             class="project-logo-button"
             role="button"
             tabindex="0"
             on:click={openGallery}
-            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(e); } }}
+            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openGallery(e as unknown as MouseEvent); } }}
             title="Click to view gallery"
           >
             <img 
@@ -107,7 +138,7 @@
               </svg>
               {project.gallery.length}
             </span>
-          </div>
+          </span>
         {:else}
           <img 
             src={project.logo} 
@@ -176,6 +207,15 @@
                 Demo
               </a>
             {/if}
+            {#if project.links.vision}
+              <a href={project.links.vision} target="_blank" rel="noopener noreferrer" class="project-link" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Vision
+              </a>
+            {/if}
             {#if project.links.github}
               <a href={project.links.github} target="_blank" rel="noopener noreferrer" class="project-link" on:click|stopPropagation>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -228,7 +268,8 @@
     aria-modal="true"
     tabindex="-1"
   >
-    <div class="gallery-content" on:click|stopPropagation on:keydown|stopPropagation role="document">
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <section class="gallery-content" on:click|stopPropagation on:keydown|stopPropagation role="document">
       <button class="gallery-close" on:click={closeGallery} aria-label="Close gallery">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/>
@@ -264,14 +305,25 @@
             class:active={i === currentImageIndex}
             on:click={(e) => { e.stopPropagation(); currentImageIndex = i; }}
             aria-label="Go to image {i + 1}"
-          />
+          ></button>
         {/each}
       </div>
-    </div>
+    </section>
   </div>
 {/if}
 
 <style>
+  /* Backdrop overlay for modal mode */
+  .card-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99;
+    animation: fadeIn 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
   .project-card {
     height: 100%;
     width: 100%;
@@ -279,6 +331,38 @@
     max-width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+  }
+  
+  /* Expanded modal state */
+  .project-card.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    width: min(90vw, 600px);
+    max-height: 85vh;
+    height: auto;
+    overflow: visible;
+    animation: modalIn 0.25s ease;
+  }
+  
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  .project-card.expanded .project-content {
+    max-height: 85vh;
+    overflow-y: auto;
+    border-color: var(--color-accent);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
   
   .project-content {
@@ -305,9 +389,9 @@
     box-shadow: var(--shadow-warm);
   }
   
-  .project-card.expanded .project-content {
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-warm);
+  /* Remove hover transform when expanded (already centered) */
+  .project-card.expanded .project-content:hover {
+    transform: none;
   }
   
   .project-card.featured .project-content {

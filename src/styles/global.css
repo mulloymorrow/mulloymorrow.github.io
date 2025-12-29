@@ -283,7 +283,7 @@ code, pre {
 
 .animate-on-scroll.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* Staggered animation delays */
