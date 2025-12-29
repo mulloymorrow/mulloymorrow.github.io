@@ -4,10 +4,10 @@ import ProjectCard from './ProjectCard.svelte';
 const projects = [
   {
     title: "Spotify's New Home Feed",
-    description: "Led the redesign and modernization of a large-scale Home Feed personalization system, delivering a more relevant, data-driven user experience at massive scale.",
-    longDescription: "Led the Home Feed personalization initiative through a period of high ambiguity, aligning product, design, and multiple ML and engineering teams around a unified vision for the feed. The work included re-architecting the recommendation pipeline, modernizing ranking and candidate generation systems, and replacing heuristic-driven decisioning with data-driven models optimized for long-term engagement and user satisfaction. We balanced competing objectives across content producers and consumers, introduced clearer success metrics, and built infrastructure that supported rapid experimentation and iteration. The result was a more coherent, scalable Home Feed that improved personalization quality while enabling the organization to move faster and make better long-term tradeoffs. Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström.",
-    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Apache Beam", "BigQuery", "Kubernetes", "A/B Testing"],
-    impact: "+$1M/month revenue, +26% discovery, improved retention. Expanded ranker to support full catalog of audiobooks, podcasts, and video.",
+    description: "Led the redesign and modernization of Spotify's main-feed recommendation system serving 600M+ users. Delivered $10M/month increase in user margins, 26% boost in discovery, and $4M/year reduction in operating costs.",
+    longDescription: "Led the Home Feed personalization initiative through a period of high ambiguity, aligning product, design, and multiple ML and engineering teams around a unified vision for the feed. The work included re-architecting the recommendation pipeline, modernizing ranking and candidate generation systems, and replacing heuristic-driven decisioning with data-driven models optimized for long-term engagement and user satisfaction. Leveraged two-tower models, wide-and-deep, and transformer architectures to personalize emerging formats (video, podcasts, audiobooks). We balanced competing objectives across content producers and consumers, introduced clearer success metrics, and built infrastructure that supported rapid experimentation and iteration. The result was a more coherent, scalable Home Feed that improved personalization quality while enabling the organization to move faster and make better long-term tradeoffs. Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström.",
+    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Transformers", "Two-Tower Models", "Wide-and-Deep", "Apache Beam", "BigQuery", "Kubernetes"],
+    impact: "$10M/month increase in user margins, 26% boost in discovery, $4M/year reduction in operating costs. Expanded ranker to support full catalog of audiobooks, podcasts, and video.",
     featured: true,
     logo: "/logos/spotify.png",
     links: {
@@ -24,10 +24,10 @@ const projects = [
     logo: "/logos/water-glass-3d.svg"
   },
   {
-    title: "Agentic-AI Supported Social Network",
-    description: "A human-centered platform using agentic-AI to help people form deeper, more intentional real-world connections through reflection, alignment, and guided interaction.",
+    title: "ConnectionCompanion.com",
+    description: "A human-centered agentic-AI consumer platform focused on augmenting real-world human connection through privacy-aware, human-in-the-loop ML systems.",
     longDescription: "The vision is to build a human-centered, agentic-AI platform that helps people form deeper, more intentional connections in the real world. Instead of optimizing for endless swiping or shallow engagement, the system is designed to support reflection, alignment, and momentum—using AI agents to help users understand themselves, evaluate compatibility, and navigate social decisions with greater clarity. At its core is an agentic-AI–supported social network that prioritizes depth over volume: fewer matches, richer context, and guided interaction rather than passive consumption. The platform augments human judgment rather than replacing it, combining privacy-aware design with human-in-the-loop intelligence to help people \"vibe\" with the right people, in the right moments, for the right reasons.",
-    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Privacy-Preserving ML", "Cloud Infrastructure"],
+    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Privacy-Preserving ML", "Cloud Infrastructure"],
     impact: "Currently in private beta",
     featured: true,
     logo: "/logos/stealth-ai.png"
@@ -42,10 +42,10 @@ const projects = [
   },
   {
     title: "User Lifetime Value Prediction",
-    description: "Developed and scaled Spotify's north star metric: User-LTV, adopted company-wide as the lingua franca to quantify cumulative causal impact and perform financial scenario analysis on user long-term satisfaction.",
+    description: "Developed and scaled Spotify's north star metric: User-LTV (lifetime value), adopted company-wide to quantify cumulative causal impact and perform financial scenario analysis on long-term retention. Featured at Investor Day 2022 by Head of ML Tony Jebara.",
     longDescription: "Led the development of an end-to-end user Lifetime Value (LTV) modeling system to predict long-term user contribution under uncertainty and sparse early-life signals. The project involved defining a rigorous LTV framework, engineering behavioral and temporal features across the user lifecycle, and training scalable ML models that balanced predictive accuracy, interpretability, and operational stability. The outputs were integrated into downstream decision systems—informing personalization strategies, experimentation prioritization, and resource allocation—while accounting for delayed outcomes and changing user behavior over time. This work shifted decision-making from short-term engagement metrics to long-horizon value, aligning product and business strategy around sustainable growth. Featured at Investor Day 2022 by Head of ML Tony Jebara.",
     technologies: ["Python", "ML/Statistical Modeling", "Feature Engineering", "BigQuery", "Experimentation", "Data Pipelines"],
-    impact: "Adopted company-wide as Spotify's north star metric",
+    impact: "Adopted company-wide as Spotify's north star metric. Featured at Investor Day 2022.",
     featured: true,
     logo: "/logos/spotify.png",
     links: {

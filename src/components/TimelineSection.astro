@@ -4,17 +4,17 @@ import TimelineCard from './TimelineCard.svelte';
 // Experience data - could be moved to content collections for easier editing
 const experiences = [
   {
-    company: "Stealth AI Startup",
+    company: "ConnectionCompanion.com",
     role: "Founder & AI Architect",
-    period: "2025 - Present",
+    period: "April 2025 - Present",
     location: "Remote",
-    summary: "Founder and AI architect for a human-centered agentic-AI product focused on augmenting real-world decision-making.",
+    summary: "Founder and AI architect for a human-centered agentic-AI consumer platform focused on augmenting real-world human connection.",
     highlights: [
       "Leading end-to-end system design including model architecture, data pipelines, evaluation strategy, and deployment",
       "Building privacy-aware, human-in-the-loop ML systems",
       "Operating in private beta with early users"
     ],
-    technologies: ["Python", "LLMs", "Vector DBs", "GenKit", "RAG", "Agentic-AI", "Cloud Infrastructure"],
+    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Cloud Infrastructure"],
     isCurrent: true,
     logo: "/logos/stealth-ai.png"
   },
@@ -23,45 +23,49 @@ const experiences = [
     role: "Technical Co-founder, AI & Systems Lead",
     period: "2024",
     location: "Remote",
-    summary: "Technical leader building data-driven, AI-enabled systems to modernize and scale legal operations. Led hiring, P&L, product research and vision, and development for a early stage venture.",
+    summary: "Led an AI-enabled remediation initiative applying machine learning, LLM-based retrieval systems, and systems thinking to environmental damage claims related to PFAS contamination in drinking water. Grew team from 1 to 15 FTEs with $6M funding, achieving $80M valuation within 6 months.",
     highlights: [
-      "Designed and operationalized data-driven workflows for claims processing in a highly regulated environment",
-      "Built and scaled cross-functional JV to 15 people across legal, product engineering, and operations",
-      "Managed P&L with $4M funding",
-      "Delivered $24M+ in claimant settlements within 6 months"
+      "Designed and deployed production ML and agentic LLM RAG systems with end-to-end decision workflows to analyze legal, environmental, and medical documents, prioritizing speed, reliability, correctness, traceability, and human oversight in a highly regulated environment",
+      "Built and led cross-functional team of 15 across ML, backend, product, legal, and operations; managed P&L with $6M total funding",
+      "Delivered concrete outcomes: accelerated $24M in settlements within 6 months, decreased time-to-settlement for military veterans, and automated surfacing of corporate liability"
     ],
-    technologies: ["Python", "LLMs", "Vector DBs", "GenKit", "RAG", "Agentic-AI", "Document AI", "Cloud Infrastructure"],
+    technologies: ["Python", "LLMs", "Vector DBs", "RAG", "Agentic-AI", "Document AI", "Cloud Infrastructure"],
     isCurrent: false,
     logo: "/logos/legal-tech-ai.svg"
   },
   {
     company: "Spotify",
-    role: "Engineering Group Manager / ML Personalization Lead",
-    period: "2020 - 2023",
-    location: "New York, NY / Remote",
-    summary: "Started as an engineer on a new internal venture, scaling the product from inception before transitioning into Group Engineering Manager for Home Construction during pivotal Home Feed upgrades.",
+    role: "Engineering Group Manager / ML Personalization Lead, Home Construction",
+    period: "2020 - 2024",
+    location: "New York, NY",
+    summary: "Led Spotify's Home Construction organization (25+ engineers and data professionals) spanning ML engineering, backend, and data engineering, owning research, experimentation, and productionization of recommendation systems powering the homepage where 95% of consumption begins for 600M+ MAU globally.",
     highlights: [
-      "Managed platform and feature teams including junior to senior-staff engineers and managers",
-      "Modernized personalization and ranking stack during periods of high-ambiguity",
-      "Increased revenue by over $1M/month",
-      "Achieved +26% discovery improvement",
-      "Optimized feed for balance of short- and long-term user retention",
-      "Collaborated with Data Science, ML Research, Product, Design, and Program Management"
+      "$10M/month increase in user margins",
+      "26% boost in discovery of new content",
+      "$4M/year reduction in operating costs",
+      "Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström",
+      "Led applied ML research and experimentation focused on ranking, personalization, and long-term user value",
+      "Strategized and executed technical overhaul of main-feed recommendation system to personalize emerging formats (video, podcasts, audiobooks) leveraging two-tower models, wide-and-deep, and transformer architectures",
+      "Developed and scaled Spotify's User-LTV (lifetime value) metric, adopted company-wide to quantify cumulative causal impact. Featured at Investor Day 2022 by Head of ML Tony Jebara",
+      "Built experimentation frameworks to safely test high-impact ranking changes under strict reliability and business constraints",
+      "Partnered with Data Science, ML Research, Product, Design, and Engineering to coordinate shared research agendas and launch plans",
+      "Hired, mentored, and developed ML engineers and managers; collaborated with senior leadership on multi-quarter roadmaps"
     ],
-    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Apache Beam", "BigQuery", "Kubernetes"],
+    technologies: ["Python", "TensorFlow", "GCP", "Scala", "Transformers", "Two-Tower Models", "Wide-and-Deep", "Apache Beam", "BigQuery", "Kubernetes"],
     isCurrent: false,
     logo: "/logos/spotify.png"
   },
   {
     company: "Compass Real Estate",
-    role: "Founding MLE",
-    period: "2019",
+    role: "Staff Machine Learning Engineer / Founding MLE",
+    period: "January 2019 - January 2020",
     location: "New York, NY",
-    summary: "Early ML engineering at the real estate technology company, building foundational ML systems.",
+    summary: "Built early ML infrastructure and applied models supporting growth and personalization. Founded AI teams in New York and Seattle, developed ML platform, created new ML product metrics, and increased MRR and CTR of Compass search.",
     highlights: [
-      "Developed geospatial ML models for service area discovery",
-      "Built activity outlier detection systems",
-      "Created home improvement service propensity models"
+      "Founded AI teams in New York and Seattle",
+      "Developed ML platform and infrastructure",
+      "Created new ML product metrics",
+      "Increased MRR and CTR of Compass search"
     ],
     technologies: ["Python", "Scikit-learn", "PostgreSQL", "Geospatial ML"],
     isCurrent: false,
@@ -69,17 +73,18 @@ const experiences = [
   },
   {
     company: "OfferUp",
-    role: "Head of ML & Founding MLE",
-    period: "2015 - 2018",
+    role: "Head of Machine Learning & Founding MLE",
+    period: "July 2015 - August 2018",
     location: "Seattle, WA",
-    summary: "Built and led the ML organization at one of the largest mobile marketplaces in the US, from founding engineer to Head of ML.",
+    summary: "Founded and built Data Engineering (9 ICs) and Machine Learning (7 ICs) teams. Led early ML efforts including personalization, ranking, and marketplace optimization. Cross-functional collaboration grew Gross Market Value to $64B with 100+ 0-to-1 data and ML products across NLP, vision classification, bot/fraud detection, and item recommendations.",
     highlights: [
-      "Established ML practice from ground up as founding ML engineer",
+      "Founded and built Data Engineering (9 ICs) and Machine Learning (7 ICs) teams",
+      "100+ 0-to-1 data and ML products across NLP, vision classification, bot/fraud detection, and item recommendations",
+      "Grew Gross Market Value to $64B through cross-functional collaboration",
       "Built recommendation and search ranking systems",
-      "Developed identity recognition and fraud detection systems",
-      "Scaled ML team and infrastructure as company grew"
+      "Developed identity recognition and fraud detection systems"
     ],
-    technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL"],
+    technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL", "NLP", "Computer Vision"],
     isCurrent: false,
     logo: "https://cdn.brandfetch.io/id5p1Knwlt/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1668515956474"
   },
@@ -103,14 +108,15 @@ const experiences = [
     role: "M.S. Intelligent Systems, Robotics & Control",
     period: "",
     location: "",
-    summary: "Graduate research in computer vision under Prof. Nuno Vasconcelos at the Statistical Visual Computing Lab.",
+    summary: "Graduate research in Computer Vision under Prof. Nuno Vasconcelos. Thesis focused on Generative AI, video segmentation, and person-count regression.",
     highlights: [
       "Thesis: Computer Vision for Crowd Analysis",
+      "Research in Generative AI, video segmentation, and person-count regression",
       "Published: 'Analysis of Crowded Scenes using Holistic Properties' - IEEE PETS 2009",
       "Published: 'Automated Crowd Counting System Upon A Distributed Camera Network' - ProQuest 2012",
       "McNair Scholar"
     ],
-    technologies: ["MATLAB", "C++", "Computer Vision", "Machine Learning", "Statistical Modeling"],
+    technologies: ["MATLAB", "C++", "Computer Vision", "Machine Learning", "Statistical Modeling", "Generative AI"],
     isCurrent: false,
     logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
   },
@@ -119,13 +125,14 @@ const experiences = [
     role: "B.S. Engineering Physics & B.A. Visual Arts, Media",
     period: "",
     location: "",
-    summary: "Dual degree combining rigorous physics and engineering fundamentals with creative visual arts and media production.",
+    summary: "Electrical Engineering and Physics interdisciplinary program combined with creative visual arts and media production.",
     highlights: [
-      "Engineering Physics: Applied mathematics, quantum mechanics, and electromagnetism",
+      "Engineering Physics: Electrical Engineering and Physics interdisciplinary program",
+      "Applied mathematics, quantum mechanics, and electromagnetism",
       "Visual Arts, Media: Digital media production, interactive design, and creative technology",
       "Interdisciplinary foundation bridging technical and creative disciplines"
     ],
-    technologies: ["Physics", "Mathematics", "Digital Media", "Creative Technology"],
+    technologies: ["Physics", "Electrical Engineering", "Mathematics", "Digital Media", "Creative Technology"],
     isCurrent: false,
     logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
   }
