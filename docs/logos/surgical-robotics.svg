@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="12" fill="#1a1a2e"/>
+  <g stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Robotic arm base -->
+    <rect x="40" y="75" width="20" height="10" rx="2" fill="#4ade80" opacity="0.3"/>
+    <!-- Arm segment 1 -->
+    <path d="M50 75 L50 55" stroke-width="4"/>
+    <circle cx="50" cy="55" r="4" fill="#4ade80"/>
+    <!-- Arm segment 2 -->
+    <path d="M50 55 L65 40" stroke-width="3"/>
+    <circle cx="65" cy="40" r="3" fill="#4ade80"/>
+    <!-- Surgical tool -->
+    <path d="M65 40 L75 25" stroke-width="2"/>
+    <path d="M73 27 L77 23 M71 29 L75 25" stroke-width="1.5"/>
+    <!-- Medical cross -->
+    <rect x="20" y="20" width="20" height="20" rx="3" fill="#4ade80" opacity="0.2"/>
+    <path d="M30 24 L30 36 M24 30 L36 30" stroke-width="2.5"/>
+  </g>
+</svg>
+

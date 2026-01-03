@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="12" fill="#1a1a2e"/>
+  <g stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Shield -->
+    <path d="M50 15 L75 25 L75 50 C75 65 62 78 50 85 C38 78 25 65 25 50 L25 25 Z" fill="#4ade80" opacity="0.15"/>
+    <path d="M50 15 L75 25 L75 50 C75 65 62 78 50 85 C38 78 25 65 25 50 L25 25 Z"/>
+    <!-- Medical cross inside shield -->
+    <path d="M50 35 L50 55 M40 45 L60 45" stroke-width="3"/>
+    <!-- Checkmark -->
+    <path d="M38 48 L46 56 L62 38" stroke-width="2.5" stroke="#4ade80"/>
+    <!-- Data lines -->
+    <path d="M30 70 L40 70" stroke-width="1.5" opacity="0.6"/>
+    <path d="M30 75 L45 75" stroke-width="1.5" opacity="0.6"/>
+    <path d="M55 70 L70 70" stroke-width="1.5" opacity="0.6"/>
+    <path d="M60 75 L70 75" stroke-width="1.5" opacity="0.6"/>
+  </g>
+</svg>
+
