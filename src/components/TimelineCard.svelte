@@ -8,6 +8,7 @@
     highlights: string[];
     technologies: string[];
     isCurrent?: boolean;
+    isConsulting?: boolean;
     logo?: string; // Path to logo image (relative to public folder, e.g., "/logos/company.png")
   }
 
@@ -58,7 +59,12 @@
           />
         {/if}
         <div class="timeline-company-info">
-          <h3 class="timeline-company">{experience.company}</h3>
+          <h3 class="timeline-company">
+            {experience.company}
+            {#if experience.isConsulting}
+              <span class="consulting-badge">Consulting</span>
+            {/if}
+          </h3>
           <h4 class="timeline-role">{experience.role}</h4>
         </div>
       </div>
@@ -235,6 +241,22 @@
     font-weight: 600;
     color: var(--color-text-primary);
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .consulting-badge {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-accent);
+    background: rgba(var(--color-accent-rgb), 0.15);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   
   .timeline-role {
