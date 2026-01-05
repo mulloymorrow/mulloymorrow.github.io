@@ -4,7 +4,8 @@ import TimelineCard from './TimelineCard.svelte';
 // Experience data - could be moved to content collections for easier editing
 const experiences = [
   {
-    company: "ConnectionCompanion.com",
+    company: "Connection Companion",
+    companyUrl: "https://connectioncompanion.com/vision",
     role: "Founder & AI Architect",
     period: "April 2025 - Present",
     location: "Remote",
@@ -36,21 +37,61 @@ const experiences = [
   },
   {
     company: "Spotify",
-    role: "Engineering Group Manager / ML Personalization Lead, Home Construction",
+    companyUrl: "https://spotify.com",
+    role: "IC → Engineering Manager → Group Lead",
     period: "2020 - 2024",
     location: "New York, NY",
-    summary: "Led Spotify's Home Construction organization (25+ engineers and data professionals) spanning ML engineering, backend, and data engineering, owning research, experimentation, and productionization of recommendation systems powering the homepage where 95% of consumption begins for 600M+ MAU globally.",
-    highlights: [
-      "$10M/month increase in user margins",
-      "26% boost in discovery of new content",
-      "$4M/year reduction in operating costs",
-      "Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström",
-      "Led applied ML research and experimentation focused on ranking, personalization, and long-term user value",
-      "Strategized and executed technical overhaul of main-feed recommendation system to personalize emerging formats (video, podcasts, audiobooks) leveraging two-tower models, wide-and-deep, and transformer architectures",
-      "Developed and scaled Spotify's User-LTV (lifetime value) metric, adopted company-wide to quantify cumulative causal impact. Featured at Investor Day 2022 by Head of ML Tony Jebara",
-      "Built experimentation frameworks to safely test high-impact ranking changes under strict reliability and business constraints",
-      "Partnered with Data Science, ML Research, Product, Design, and Engineering to coordinate shared research agendas and launch plans",
-      "Hired, mentored, and developed ML engineers and managers; collaborated with senior leadership on multi-quarter roadmaps"
+    summary: "Grew from founding engineer to group lead over 4 years, driving Spotify's personalization strategy from early-stage R&D through company-wide adoption. Led the Home Construction organization (25+ engineers) owning recommendation systems that power the homepage where 95% of consumption begins for 600M+ MAU.",
+    highlights: [],
+    phases: [
+      {
+        title: "Prototyping User-LTV & Securing Executive Buy-In",
+        role: "Senior ML Engineer",
+        period: "2020 - 2021",
+        description: "Identified a critical gap in how Spotify measured long-term user value. Developed and validated the foundational User-LTV (Lifetime Value) model as an individual contributor, demonstrating its potential to transform decision-making across the company.",
+        achievements: [
+          "Designed and prototyped the User-LTV framework to predict long-term user contribution under uncertainty",
+          "Built initial models balancing predictive accuracy, interpretability, and operational stability",
+          "Presented findings to senior leadership and secured executive sponsorship to scale the initiative",
+          "Validated methodology through early experiments proving causal impact measurement"
+        ]
+      },
+      {
+        title: "Scaling User-LTV Across Spotify",
+        role: "Engineering Manager, User-LTV Team",
+        period: "2021 - 2022",
+        description: "Transitioned to engineering management to scale User-LTV from prototype to Spotify's north star metric. Built and led a cross-disciplinary team spanning ML engineering, data science, and backend to productionize and drive company-wide adoption.",
+        achievements: [
+          "Grew and led cross-functional team of ML engineers, data scientists, and backend engineers",
+          "Scaled User-LTV to production-grade infrastructure serving company-wide decisioning",
+          "Drove adoption across Product, Finance, and Growth as the primary metric for long-term value",
+          "Featured at Investor Day 2022 by Head of ML Tony Jebara as a key company capability",
+          "Shifted organizational decision-making from short-term engagement to long-horizon value"
+        ],
+        link: {
+          label: "Watch: Tony Jebara at Investor Day 2022",
+          url: "https://youtu.be/NlSD0uFALbI?si=KFIE8Nm7xwwCmcOI&t=181"
+        }
+      },
+      {
+        title: "Reimagining the Home Feed Experience",
+        role: "Group Lead, Home Construction",
+        period: "2022 - 2024",
+        description: "Promoted to lead the Home Construction organization (25+ engineers), responsible for research, experimentation, and productionization of the main-feed recommendation system. Drove innovation to deliver new value to end users through personalized discovery of emerging content formats.",
+        achievements: [
+          "$10M/month increase in user margins through ranking optimization",
+          "26% boost in discovery of new content (podcasts, audiobooks, video)",
+          "$4M/year reduction in operating costs via infrastructure modernization",
+          "Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström",
+          "Architected technical overhaul using two-tower models, wide-and-deep, and transformer architectures",
+          "Built experimentation frameworks for safe, high-impact ranking changes at scale",
+          "Hired, mentored, and developed ML engineers and managers across 3 teams"
+        ],
+        link: {
+          label: "Watch: Daniel Ek at Stream On 2023",
+          url: "https://youtu.be/FCN-VP5z2vY?si=IOfxHALzjnR5rm2i&t=594"
+        }
+      }
     ],
     technologies: ["Python", "TensorFlow", "GCP", "Scala", "Transformers", "Two-Tower Models", "Wide-and-Deep", "Apache Beam", "BigQuery", "Kubernetes"],
     isCurrent: false,
@@ -58,6 +99,7 @@ const experiences = [
   },
   {
     company: "Compass Real Estate",
+    companyUrl: "https://compass.com",
     role: "Staff Machine Learning Engineer / Founding MLE",
     period: "January 2019 - January 2020",
     location: "New York, NY",
@@ -74,6 +116,7 @@ const experiences = [
   },
   {
     company: "OfferUp",
+    companyUrl: "https://offerup.com",
     role: "Founding MLE / Head of Machine Learning",
     period: "July 2015 - August 2018",
     location: "Seattle, WA",
@@ -104,11 +147,12 @@ const experiences = [
     ],
     technologies: ["Computer Vision", "Real-time ML", "Surgical Planning", "Medical Robotics", "Technical Due Diligence"],
     isCurrent: false,
-    isConsulting: true,
+    badgeText: "Side Quest",
     logo: "/logos/surgical-robotics.svg"
   },
   {
     company: "Porch Group",
+    companyUrl: "https://porch.com",
     role: "Senior Machine Learning Engineer",
     period: "2013 - 2015",
     location: "Seattle, WA",
@@ -124,6 +168,7 @@ const experiences = [
   },
   {
     company: "UC San Diego",
+    companyUrl: "https://jacobsschool.ucsd.edu/",
     role: "M.S. Intelligent Systems, Robotics & Control",
     period: "",
     location: "",
@@ -136,11 +181,15 @@ const experiences = [
       "McNair Scholar"
     ],
     technologies: ["MATLAB", "C++", "Computer Vision", "Machine Learning", "Statistical Modeling", "Generative AI"],
+    links: [
+      { label: "Read Thesis", url: "https://escholarship.org/uc/item/2kd829gf" }
+    ],
     isCurrent: false,
     logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
   },
   {
     company: "UC San Diego",
+    companyUrl: "https://jacobsschool.ucsd.edu/",
     role: "B.S. Engineering Physics & B.A. Visual Arts, Media",
     period: "",
     location: "",

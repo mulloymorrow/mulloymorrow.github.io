@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import { getTechWikiUrl } from '../utils/techLinks';
   
   interface Project {
     title: string;
@@ -164,7 +165,14 @@
     
     <div class="project-tech">
       {#each project.technologies.slice(0, 4) as tech}
-        <span class="tech-tag">{tech}</span>
+        <a 
+          href={getTechWikiUrl(tech)} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="tech-tag tech-tag--link"
+          on:click|stopPropagation
+          title="Learn more about {tech}"
+        >{tech}</a>
       {/each}
       {#if project.technologies.length > 4}
         <span class="tech-more">+{project.technologies.length - 4}</span>
@@ -189,7 +197,14 @@
             <span class="tech-label">All Technologies:</span>
             <div class="tech-list">
               {#each project.technologies as tech}
-                <span class="tech-tag">{tech}</span>
+                <a 
+                  href={getTechWikiUrl(tech)} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tech-tag tech-tag--link"
+                  on:click|stopPropagation
+                  title="Learn more about {tech}"
+                >{tech}</a>
               {/each}
             </div>
           </div>
@@ -486,6 +501,19 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
+  }
+
+  .tech-tag--link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .tech-tag--link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    transform: translateY(-1px);
   }
   
   .tech-more {

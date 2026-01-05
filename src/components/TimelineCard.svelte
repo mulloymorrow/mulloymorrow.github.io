@@ -1,6 +1,23 @@
 <script lang="ts">
+  import { getTechWikiUrl } from '../utils/techLinks';
+
+  interface PhaseLink {
+    label: string;
+    url: string;
+  }
+
+  interface Phase {
+    title: string;
+    role?: string;
+    period?: string;
+    description: string;
+    achievements: string[];
+    link?: PhaseLink;
+  }
+
   interface Experience {
     company: string;
+    companyUrl?: string; // URL to company website
     role: string;
     period: string;
     location?: string;
@@ -8,8 +25,10 @@
     highlights: string[];
     technologies: string[];
     isCurrent?: boolean;
-    isConsulting?: boolean;
-    logo?: string; // Path to logo image (relative to public folder, e.g., "/logos/company.png")
+    badgeText?: string; // Optional badge to display next to company name (e.g., "Side Quest", "Consulting")
+    logo?: string;
+    links?: { label: string; url: string }[]; // Optional links to display in expanded section // Path to logo image (relative to public folder, e.g., "/logos/company.png")
+    phases?: Phase[]; // Optional sub-sections within the experience
   }
 
   export let experience: Experience;
@@ -52,17 +71,33 @@
       
       <div class="timeline-company-row">
         {#if experience.logo}
-          <img 
-            src={experience.logo} 
-            alt="{experience.company} logo" 
-            class="timeline-logo"
-          />
+          {#if experience.companyUrl}
+            <a href={experience.companyUrl} target="_blank" rel="noopener noreferrer" class="timeline-logo-link" on:click|stopPropagation>
+              <img 
+                src={experience.logo} 
+                alt="{experience.company} logo" 
+                class="timeline-logo"
+              />
+            </a>
+          {:else}
+            <img 
+              src={experience.logo} 
+              alt="{experience.company} logo" 
+              class="timeline-logo"
+            />
+          {/if}
         {/if}
         <div class="timeline-company-info">
           <h3 class="timeline-company">
-            {experience.company}
-            {#if experience.isConsulting}
-              <span class="consulting-badge">Consulting</span>
+            {#if experience.companyUrl}
+              <a href={experience.companyUrl} target="_blank" rel="noopener noreferrer" class="timeline-company-link" on:click|stopPropagation>
+                {experience.company}
+              </a>
+            {:else}
+              {experience.company}
+            {/if}
+            {#if experience.badgeText}
+              <span class="consulting-badge">{experience.badgeText}</span>
             {/if}
           </h3>
           <h4 class="timeline-role">{experience.role}</h4>
@@ -91,21 +126,78 @@
     
     {#if isExpanded}
       <div class="timeline-details">
-        <div class="timeline-highlights">
-          <h5>Key Achievements</h5>
-          <ul>
-            {#each experience.highlights as highlight}
-              <li>{highlight}</li>
+        {#if experience.phases && experience.phases.length > 0}
+          <div class="timeline-phases">
+            {#each experience.phases as phase, index}
+              <div class="phase-card">
+                <div class="phase-header">
+                  <div class="phase-number">{index + 1}</div>
+                  <div class="phase-title-block">
+                    <h5 class="phase-title">{phase.title}</h5>
+                    {#if phase.role}
+                      <span class="phase-role">{phase.role}</span>
+                    {/if}
+                    {#if phase.period}
+                      <span class="phase-period">{phase.period}</span>
+                    {/if}
+                  </div>
+                </div>
+                <p class="phase-description">{phase.description}</p>
+                <ul class="phase-achievements">
+                  {#each phase.achievements as achievement}
+                    <li>{achievement}</li>
+                  {/each}
+                </ul>
+                {#if phase.link}
+                  <a href={phase.link.url} target="_blank" rel="noopener noreferrer" class="phase-link" on:click|stopPropagation>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    {phase.link.label}
+                  </a>
+                {/if}
+              </div>
             {/each}
-          </ul>
-        </div>
+          </div>
+        {:else}
+          <div class="timeline-highlights">
+            <h5>Key Achievements</h5>
+            <ul>
+              {#each experience.highlights as highlight}
+                <li>{highlight}</li>
+              {/each}
+            </ul>
+          </div>
+        {/if}
+
+        {#if experience.links && experience.links.length > 0}
+          <div class="timeline-links">
+            {#each experience.links as link}
+              <a href={link.url} target="_blank" rel="noopener noreferrer" class="timeline-link-btn" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                {link.label}
+              </a>
+            {/each}
+          </div>
+        {/if}
         
         {#if experience.technologies.length > 0}
           <div class="timeline-tech">
             <h5>Technologies</h5>
             <div class="timeline-tech-list">
               {#each experience.technologies as tech}
-                <span class="tech-tag">{tech}</span>
+                <a 
+                  href={getTechWikiUrl(tech)} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tech-tag tech-tag--link"
+                  on:click|stopPropagation
+                  title="Learn more about {tech}"
+                >{tech}</a>
               {/each}
             </div>
           </div>
@@ -246,6 +338,31 @@
     gap: 0.5rem;
     flex-wrap: wrap;
   }
+
+  .timeline-company-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .timeline-company-link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  .timeline-logo-link {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .timeline-logo-link:hover {
+    transform: scale(1.1);
+  }
+
+  .timeline-logo-link:hover .timeline-logo {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent-glow);
+  }
   
   .consulting-badge {
     font-size: var(--text-xs);
@@ -342,6 +459,162 @@
     color: var(--color-accent);
   }
   
+  /* Phase styles */
+  .timeline-phases {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .phase-card {
+    background: var(--color-bg-hover);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+  }
+
+  .phase-card:hover {
+    border-color: var(--color-accent);
+    background: var(--color-bg-elevated);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .phase-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    flex-shrink: 0;
+  }
+
+  .phase-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .phase-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .phase-role {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .phase-period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+
+  .phase-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+    padding-left: 2.75rem;
+  }
+
+  .phase-achievements {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 2.75rem;
+  }
+
+  .phase-achievements li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.35rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .phase-achievements li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .phase-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    margin-left: 2.75rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .phase-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-accent-glow);
+  }
+
+  .phase-link svg {
+    flex-shrink: 0;
+  }
+
+  .timeline-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .timeline-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-bg-hover);
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-link-btn:hover {
+    background: var(--color-accent);
+    color: var(--color-bg-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-accent-glow);
+  }
+
+  .timeline-link-btn svg {
+    flex-shrink: 0;
+  }
+
   .timeline-tech {
     margin-top: 1.25rem;
   }
@@ -360,6 +633,19 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
+  }
+
+  .tech-tag--link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .tech-tag--link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    transform: translateY(-1px);
   }
   
   @media (max-width: 640px) {
