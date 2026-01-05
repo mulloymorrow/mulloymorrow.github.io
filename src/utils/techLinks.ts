@@ -18,8 +18,8 @@ const techToWiki: Record<string, string> = {
   // AI/ML Concepts
   "LLMs": "Large_language_model",
   "RAG": "Retrieval-augmented_generation",
-  "Agentic AI": "Agentic_AI",
-  "Agentic-AI": "Agentic_AI",
+  "Agentic AI": "AI_agent",
+  "Agentic-AI": "AI_agent",
   "NLP": "Natural_language_processing",
   "Computer Vision": "Computer_vision",
   "Machine Learning": "Machine_learning",
@@ -99,4 +99,3 @@ export function getTechWikiUrl(tech: string): string {
   
   return `https://en.wikipedia.org/wiki/${wikiName}`;
 }
-
