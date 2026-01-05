@@ -53,8 +53,10 @@
     <div class="timeline-line"></div>
   </div>
   
-  <button 
+  <div 
     class="timeline-content"
+    role="button"
+    tabindex="0"
     on:click={toggle}
     on:keydown={handleKeydown}
     aria-expanded={isExpanded}
@@ -204,7 +206,7 @@
         {/if}
       </div>
     {/if}
-  </button>
+  </div>
 </div>
 
 <style>

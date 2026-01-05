@@ -105,8 +105,10 @@
 {/if}
 
 <div class="project-card" class:expanded={isExpanded} class:featured={project.featured}>
-  <button 
+  <div 
     class="project-content"
+    role="button"
+    tabindex="0"
     on:click={toggle}
     on:keydown={handleCardKeydown}
     aria-expanded={isExpanded}
@@ -271,7 +273,7 @@
         <path d="M6 9l6 6 6-6"/>
       </svg>
     </div>
-  </button>
+  </div>
 </div>
 
 {#if showGallery && project.gallery}
