@@ -261,19 +261,23 @@ const sectionIds = headings
     font-weight: 600;
     font-size: var(--text-base);
     transition: all var(--transition-base);
-    text-decoration: none;
+    text-decoration: none !important;
   }
 
-  .btn--primary {
+  /* Primary button - ensure white text is always visible */
+  .btn.btn--primary,
+  a.btn.btn--primary,
+  a.btn.btn--primary:hover,
+  a.btn.btn--primary:visited {
     background: var(--color-accent);
-    color: white;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
   }
 
-  .btn--primary:hover {
+  .btn.btn--primary:hover {
     background: var(--color-accent-dim);
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-    color: white;
   }
 
   .btn--secondary {

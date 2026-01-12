@@ -236,6 +236,14 @@
     color: #5a6169;
   }
 
+  /* Ensure primary button text is always white in both themes */
+  :global(.philosophy-page .btn--primary),
+  :global(.philosophy-page.theme-light .btn--primary),
+  :global(.philosophy-page.theme-dark .btn--primary) {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
   @media (max-width: 768px) {
     .theme-toggle-wrapper {
       top: 16px;

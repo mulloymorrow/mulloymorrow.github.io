@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
@@ -7,6 +7,9 @@ import BlogPostCard from '../../components/BlogPostCard.astro';
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
 const canonicalUrl = "https://code.mulloymorrow.com/blog";
+
+// Get the philosophy page as a featured item
+const philosophyPage = await getEntry('pages', 'philosophy');
 
 // Get all non-draft posts, sorted by date (newest first)
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -74,6 +77,31 @@ const blogSchema = {
     </header>
 
     <main class="blog__content container">
+      {/* Featured: Philosophy Page */}
+      {philosophyPage && (
+        <section class="blog__featured animate-on-scroll">
+          <span class="blog__featured-label">Featured</span>
+          <article class="featured-card">
+            <a href="/philosophy" class="featured-card__link">
+              <div class="featured-card__content">
+                <h2 class="featured-card__title">{philosophyPage.data.title}</h2>
+                <p class="featured-card__description">{philosophyPage.data.description}</p>
+                <time class="featured-card__date" datetime={philosophyPage.data.publishedAt.toISOString()}>
+                  {philosophyPage.data.publishedAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+              </div>
+              <div class="featured-card__arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </div>
+            </a>
+          </article>
+        </section>
+      )}
+
+      {/* Blog Posts by Year */}
       {sortedPosts.length === 0 ? (
         <div class="blog__empty animate-on-scroll">
           <p>No posts yet. Check back soon!</p>
@@ -202,9 +230,106 @@ const blogSchema = {
     color: var(--color-text-muted);
   }
 
+  /* Featured Section */
+  .blog__featured {
+    margin-bottom: var(--space-12);
+  }
+
+  .blog__featured-label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
+  }
+
+  .featured-card {
+    background: linear-gradient(135deg, var(--color-bg-surface) 0%, var(--color-bg-elevated) 100%);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--color-accent-glow);
+  }
+
+  .featured-card__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-8);
+    text-decoration: none;
+    color: inherit;
+    gap: var(--space-6);
+  }
+
+  .featured-card__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .featured-card__title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .featured-card__description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+  }
+
+  .featured-card__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .featured-card__arrow {
+    flex-shrink: 0;
+    color: var(--color-accent);
+    transition: transform 0.3s ease;
+  }
+
+  .featured-card:hover .featured-card__arrow {
+    transform: translateX(8px);
+  }
+
   @media (max-width: 768px) {
     .blog__header {
       padding: var(--space-12) 0 var(--space-8);
+    }
+
+    .featured-card__link {
+      padding: var(--space-6);
+    }
+
+    .featured-card__title {
+      font-size: var(--text-xl);
+    }
+
+    .featured-card__description {
+      font-size: var(--text-base);
+    }
+
+    .featured-card__arrow {
+      display: none;
     }
   }
 </style>

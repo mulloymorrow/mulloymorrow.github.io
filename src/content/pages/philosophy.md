@@ -10,7 +10,7 @@ updatedAt: 2026-01-12
 
 For 15 years, I've built AI and machine learning systems that touch hundreds of millions of people. Here's what gets me excited: **we're living through the most transformative technological revolution in human history, and we're just getting started.**
 
-I've built ML systems that democratize access to culture, helping people discover music they'd never find on their own. I've designed recommendation engines that created economic opportunity for millions of sellers in local marketplaces. I've applied AI to accelerate environmental remediation and improve access to clean water. And I'm now building systems that strengthen real-world human connection in an increasingly fragmented world.
+I've built ML systems that democratize access to culture, helping people discover music they'd never find on their own. I've designed and built recommendation engines that created economic opportunity for millions of sellers in local marketplaces. I've applied AI to accelerate environmental remediation and improve access to clean water. And I'm now building systems that strengthen real-world human connection in an increasingly fragmented world.
 
 **The technology works. The potential is limitless. What drives me is building AI systems that unlock human potential rather than constrain it.**
 
@@ -18,7 +18,7 @@ I've built ML systems that democratize access to culture, helping people discove
 
 My journey in AI started with fascination: *How can intelligent systems augment human capabilities in ways previously unimaginable?*
 
-At OfferUp, I built ML systems that unlocked economic opportunity, helping people in underserved communities turn unused items into meaningful income—democratizing commerce in ways that would be impossible without AI. At Spotify, I designed personalization engines that connected artists with their perfect audience and helped listeners discover music that genuinely enriched their lives. In environmental work, I'm applying AI to solve one of the hardest public health challenges—accelerating clean drinking water access for communities affected by PFAS contamination.
+At OfferUp, I built user-trust with reliability and scalability of ML systems that unlocked economic opportunity, helping people in underserved communities turn unused items into meaningful income—democratizing commerce in ways that would be impossible without AI. At Spotify, I designed personalization engines that connected artists with their perfect audience and helped listeners discover music that genuinely enriched their lives; baristas could immediately connect with the value creation of my work. In environmental work, I applied AI to solve one of the hardest public health challenges—accelerating clean drinking water access for communities affected by PFAS contamination.
 
 **The pattern is clear: AI's greatest potential lies in multiplying human capability and extending opportunity to more people.**
 
@@ -38,7 +38,7 @@ Human-centered AI means:
 
 This isn't about slowing down innovation—it's about accelerating it in directions that matter. It's about being intentional with our incredible capabilities.
 
-This philosophy guided my decision to leave a successful role at Spotify to build [Connection Companion](https://connectioncompanion.com/vision)—a platform that uses cutting-edge AI not to increase screen time, but to strengthen real-world relationships. It's technically harder to build AI that respects human autonomy. It's also more valuable.
+This philosophy guided my decision to leave a successful role at Spotify to build <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a>—a platform that uses cutting-edge AI not to increase screen time, but to strengthen real-world relationships. It's technically harder to build AI that respects human autonomy. It's also more valuable.
 
 ## The Leadership Philosophy
 
@@ -71,11 +71,11 @@ I've chosen to focus my current work on human connection because it's both techn
 
 **Technology is never neutral—it amplifies the intentions and values of those who build it.** I choose to build technology that expands human potential.
 
-## Why Now? Why [Connection Companion](https://connectioncompanion.com/vision)?
+## Why Now? Why <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a>?
 
 After years of building recommendation systems and personalization engines, I've mastered both the power and the nuances of AI at scale. **I've built systems that can keep people scrolling for hours—and now I'm using that same technology to solve the opposite problem.**
 
-Here's what excites me: I can use cutting-edge AI to help people build richer offline lives. [Connection Companion](https://connectioncompanion.com/vision) is my bet that AI's greatest application isn't maximizing screen time—it's helping people strengthen real-world relationships.
+Here's what excites me: I can use cutting-edge AI to help people build richer offline lives. <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a> is my bet that AI's greatest application isn't maximizing screen time—it's helping people strengthen real-world relationships.
 
 I'm building a platform that uses agentic AI, LLMs, and ML systems to:
 
