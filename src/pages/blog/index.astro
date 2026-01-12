@@ -1,0 +1,210 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+
+const title = "Blog | Mulloy Morrow";
+const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
+const canonicalUrl = "https://code.mulloymorrow.com/blog";
+
+// Get all non-draft posts, sorted by date (newest first)
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => 
+  b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+
+// Group posts by year
+const postsByYear = sortedPosts.reduce((acc, post) => {
+  const year = post.data.publishedAt.getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {} as Record<number, typeof sortedPosts>);
+
+// Sort years descending
+const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+
+// JSON-LD Blog Schema
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Mulloy Morrow's Blog",
+  "description": description,
+  "url": canonicalUrl,
+  "author": {
+    "@type": "Person",
+    "name": "Mulloy Morrow",
+    "url": "https://code.mulloymorrow.com"
+  },
+  "blogPost": sortedPosts.slice(0, 10).map(post => ({
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "datePublished": post.data.publishedAt.toISOString(),
+    "url": `https://code.mulloymorrow.com/blog/${post.slug}/`
+  }))
+};
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl}>
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
+  
+  <div class="blog-page">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb container" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="breadcrumb__separator" aria-hidden="true">/</span>
+      <span class="breadcrumb__current">Blog</span>
+    </nav>
+
+    <header class="blog__header container">
+      <h1 class="blog__title animate-on-scroll">Blog</h1>
+      <p class="blog__subtitle animate-on-scroll delay-1">
+        Thoughts on AI, machine learning, human-centered technology, and building the future.
+      </p>
+      <a href="/blog/rss.xml" class="blog__rss animate-on-scroll delay-2" aria-label="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/>
+        </svg>
+        <span>Subscribe via RSS</span>
+      </a>
+    </header>
+
+    <main class="blog__content container">
+      {sortedPosts.length === 0 ? (
+        <div class="blog__empty animate-on-scroll">
+          <p>No posts yet. Check back soon!</p>
+        </div>
+      ) : (
+        years.map(year => (
+          <section class="blog__year-group animate-on-scroll">
+            <h2 class="blog__year-heading">{year}</h2>
+            <div class="blog__posts">
+              {postsByYear[year].map(post => (
+                <BlogPostCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  slug={post.slug}
+                  publishedAt={post.data.publishedAt}
+                  tags={post.data.tags}
+                />
+              ))}
+            </div>
+          </section>
+        ))
+      )}
+    </main>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  .blog-page {
+    min-height: 100vh;
+    padding-top: var(--space-8);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-accent);
+  }
+
+  .breadcrumb__separator {
+    margin: 0 var(--space-2);
+    color: var(--color-border);
+  }
+
+  .breadcrumb__current {
+    color: var(--color-text-primary);
+  }
+
+  .blog__header {
+    text-align: center;
+    padding: var(--space-16) 0 var(--space-12);
+  }
+
+  .blog__title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .blog__subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto var(--space-6);
+  }
+
+  .blog__rss {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+  }
+
+  .blog__rss:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: var(--color-accent-glow);
+  }
+
+  .blog__content {
+    max-width: var(--content-width);
+    padding-bottom: var(--space-24);
+  }
+
+  .blog__year-group {
+    margin-bottom: var(--space-12);
+  }
+
+  .blog__year-heading {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-accent);
+    display: inline-block;
+  }
+
+  .blog__posts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .blog__empty {
+    text-align: center;
+    padding: var(--space-16) 0;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .blog__header {
+      padding: var(--space-12) 0 var(--space-8);
+    }
+  }
+</style>

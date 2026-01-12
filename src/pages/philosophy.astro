@@ -1,0 +1,367 @@
+---
+import { getEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import PhilosophyThemeToggle from '../components/PhilosophyThemeToggle.svelte';
+
+// Get the philosophy content from the collection
+const page = await getEntry('pages', 'philosophy');
+if (!page) {
+  throw new Error('Philosophy page content not found');
+}
+const { Content, headings } = await page.render();
+
+const title = `${page.data.title} | Mulloy Morrow`;
+const description = page.data.description;
+const canonicalUrl = "https://code.mulloymorrow.com/philosophy";
+
+// Format dates for display
+const lastUpdated = (page.data.updatedAt || page.data.publishedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// JSON-LD Article Schema
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": page.data.title,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": "Mulloy Morrow",
+    "url": "https://code.mulloymorrow.com",
+    "jobTitle": "Director / Head of AI & Machine Learning",
+    "sameAs": [
+      "https://linkedin.com/in/mulloymorrow",
+      "https://twitter.com/thismulloy",
+      "https://github.com/mulloymorrow"
+    ]
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mulloy Morrow"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  },
+  "datePublished": page.data.publishedAt.toISOString(),
+  "dateModified": (page.data.updatedAt || page.data.publishedAt).toISOString()
+};
+
+// Generate section IDs from headings for scroll tracking
+const sectionIds = headings
+  .filter(h => h.depth === 2)
+  .map(h => h.slug);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} ogType="article">
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+  
+  <PhilosophyThemeToggle client:load />
+  
+  <article class="philosophy-page theme-light">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb container" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="breadcrumb__separator" aria-hidden="true">/</span>
+      <span class="breadcrumb__current">Philosophy</span>
+    </nav>
+
+    <header class="philosophy__header container">
+      <h1 class="philosophy__title animate-on-scroll">{page.data.title}</h1>
+      {page.data.subtitle && (
+        <p class="philosophy__subtitle animate-on-scroll delay-1">{page.data.subtitle}</p>
+      )}
+      <p class="philosophy__updated animate-on-scroll delay-2">
+        Last updated: <time datetime={(page.data.updatedAt || page.data.publishedAt).toISOString()}>{lastUpdated}</time>
+      </p>
+    </header>
+
+    <div class="philosophy__content container">
+      <Content />
+      
+      <div class="philosophy__closing">
+        <div class="philosophy__cta">
+          <a href="/#contact" class="btn btn--primary">Get in Touch</a>
+          <a href="/blog" class="btn btn--secondary">Read My Work</a>
+        </div>
+      </div>
+    </div>
+  </article>
+  <Footer />
+</Layout>
+
+<style>
+  .philosophy-page {
+    min-height: 100vh;
+    padding-top: var(--space-8);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-accent);
+  }
+
+  .breadcrumb__separator {
+    margin: 0 var(--space-2);
+    color: var(--color-border);
+  }
+
+  .breadcrumb__current {
+    color: var(--color-text-primary);
+  }
+
+  .philosophy__header {
+    text-align: center;
+    padding: var(--space-16) 0 var(--space-12);
+  }
+
+  .philosophy__title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .philosophy__subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .philosophy__updated {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+
+  .philosophy__updated time {
+    color: var(--color-text-secondary);
+  }
+
+  .philosophy__content {
+    max-width: var(--content-width);
+    padding-bottom: var(--space-12);
+  }
+
+  /* Prose styles for markdown content */
+  .philosophy__content :global(h2) {
+    font-size: var(--text-3xl);
+    margin-top: var(--space-16);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+    scroll-margin-top: var(--space-8);
+  }
+
+  .philosophy__content :global(h2:first-of-type) {
+    margin-top: 0;
+  }
+
+  .philosophy__content :global(p) {
+    font-size: var(--text-lg);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  .philosophy__content :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .philosophy__content :global(em) {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .philosophy__content :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+  }
+
+  .philosophy__content :global(a:hover) {
+    color: var(--color-text-primary);
+  }
+
+  .philosophy__content :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0;
+  }
+
+  .philosophy__content :global(li) {
+    position: relative;
+    padding-left: var(--space-8);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .philosophy__content :global(li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .philosophy__content :global(li strong) {
+    color: var(--color-text-primary);
+  }
+
+  .philosophy__content :global(hr) {
+    border: none;
+    height: 1px;
+    background: var(--color-border);
+    margin: var(--space-12) 0;
+  }
+
+  .philosophy__closing {
+    text-align: center;
+    padding-top: var(--space-8);
+  }
+
+  .philosophy__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: center;
+    margin-top: var(--space-8);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: var(--text-base);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  .btn--primary:hover {
+    background: var(--color-accent-dim);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+  }
+
+  .btn--secondary {
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .philosophy__header {
+      padding: var(--space-12) 0 var(--space-8);
+    }
+
+    .philosophy__content :global(h2) {
+      font-size: var(--text-2xl);
+    }
+
+    .philosophy__content :global(p),
+    .philosophy__content :global(li) {
+      font-size: var(--text-base);
+    }
+
+    .philosophy__cta {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Set initial body theme class for footer theming
+  const savedTheme = localStorage.getItem('philosophy-theme') || 'light';
+  document.body.classList.add(`philosophy-theme-${savedTheme}`);
+  
+  // Scroll state persistence for philosophy page
+  
+  // Debounced scroll save to sessionStorage
+  let scrollTimeout: ReturnType<typeof setTimeout>;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      sessionStorage.setItem('philosophy-scroll', String(window.scrollY));
+    }, 100);
+  });
+
+  // Restore scroll position or navigate to hash on load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash) {
+      // Hash takes priority - smooth scroll to section
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      // No hash - restore from sessionStorage
+      const saved = sessionStorage.getItem('philosophy-scroll');
+      if (saved) {
+        window.scrollTo(0, parseInt(saved));
+      }
+    }
+  });
+
+  // Update URL hash as user scrolls past sections
+  const sections = document.querySelectorAll('.philosophy__content h2[id]');
+  const hashObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        if (id) {
+          history.replaceState(null, '', `#${id}`);
+        }
+      }
+    });
+  }, { 
+    threshold: 0.3,
+    rootMargin: '-20% 0px -60% 0px'
+  });
+  
+  sections.forEach(section => hashObserver.observe(section));
+</script>

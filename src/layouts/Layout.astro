@@ -1,12 +1,18 @@
 ---
+import NavFloating from '../components/NavFloating.svelte';
+
 interface Props {
   title?: string;
   description?: string;
+  canonicalUrl?: string;
+  ogType?: string;
 }
 
 const { 
   title = "Mulloy Morrow | Director / Head of AI & Machine Learning",
-  description = "AI & Machine Learning leader with 15+ years of experience spanning consumer tech, healthcare, legal tech, and environmental applications. Former Spotify ML leader building research-driven systems for hundreds of millions of users. Now founding human-centered AI products."
+  description = "AI & Machine Learning leader with 15+ years of experience spanning consumer tech, healthcare, legal tech, and environmental applications. Former Spotify ML leader building research-driven systems for hundreds of millions of users. Now founding human-centered AI products.",
+  canonicalUrl = "https://code.mulloymorrow.com",
+  ogType = "website"
 } = Astro.props;
 ---
 
@@ -24,12 +30,13 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Mulloy Morrow" />
+    <link rel="canonical" href={canonicalUrl} />
     
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://code.mulloymorrow.com" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
@@ -42,13 +49,23 @@ const {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Mulloy Morrow - Blog" href="/blog/rss.xml" />
+    
     <title>{title}</title>
+    
+    <!-- Slot for additional head content (JSON-LD, etc.) -->
+    <slot name="head" />
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K6MZZ5RD"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Floating Navigation -->
+    <NavFloating client:load />
+    
     <slot />
     
     <script>

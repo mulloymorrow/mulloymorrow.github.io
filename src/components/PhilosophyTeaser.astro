@@ -1,0 +1,202 @@
+---
+// Philosophy teaser section for homepage
+---
+
+<section class="philosophy-teaser section" id="philosophy">
+  <div class="container">
+    <div class="teaser__card animate-on-scroll">
+      <div class="teaser__content">
+        <div class="teaser__header">
+          <span class="teaser__label">Philosophy</span>
+          <h2 class="teaser__title">What Drives Me</h2>
+        </div>
+        
+        <blockquote class="teaser__quote">
+          <p>"We're living through the most transformative technological revolution in human history, and we're just getting started."</p>
+        </blockquote>
+        
+        <p class="teaser__description">
+          I believe AI's greatest potential lies in <strong>multiplying human capability</strong> and <strong>extending opportunity</strong> to more people. I build technology that unlocks human potential rather than constrains it.
+        </p>
+        
+        <a href="/philosophy" class="teaser__cta">
+          <span>Read My Philosophy</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="teaser__decoration" aria-hidden="true">
+        <div class="teaser__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .philosophy-teaser {
+    padding: var(--space-16) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .teaser__card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-8);
+    align-items: center;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .teaser__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-warm));
+  }
+  
+  .teaser__content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .teaser__header {
+    margin-bottom: var(--space-6);
+  }
+  
+  .teaser__label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+  
+  .teaser__title {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .teaser__quote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-6);
+    margin: var(--space-6) 0;
+  }
+  
+  .teaser__quote p {
+    font-size: var(--text-xl);
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  
+  .teaser__description {
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+    max-width: 600px;
+  }
+  
+  .teaser__description strong {
+    color: var(--color-text-primary);
+  }
+  
+  .teaser__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-accent);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+  }
+  
+  .teaser__cta:hover {
+    background: var(--color-accent-dim);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+  }
+  
+  .teaser__cta svg {
+    transition: transform var(--transition-base);
+  }
+  
+  .teaser__cta:hover svg {
+    transform: translateX(4px);
+  }
+  
+  .teaser__decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .teaser__icon {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-glow);
+    border-radius: 50%;
+    color: var(--color-accent);
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @media (max-width: 768px) {
+    .teaser__card {
+      grid-template-columns: 1fr;
+      padding: var(--space-6);
+    }
+    
+    .teaser__decoration {
+      display: none;
+    }
+    
+    .teaser__title {
+      font-size: var(--text-2xl);
+    }
+    
+    .teaser__quote p {
+      font-size: var(--text-lg);
+    }
+    
+    .teaser__description {
+      font-size: var(--text-base);
+    }
+  }
+</style>
