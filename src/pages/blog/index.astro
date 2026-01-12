@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import ScrollVideo from '../../components/ScrollVideo.svelte';
+import PingPongVideo from '../../components/PingPongVideo.svelte';
 
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
@@ -132,7 +133,11 @@ const blogSchema = {
       )}
     </main>
   </div>
-  <Footer />
+  <Footer>
+    <a href="https://pika.art/" target="_blank" rel="noopener noreferrer" class="portrait-video-link" slot="social-extra" title="Made with Pika">
+      <PingPongVideo client:load src="/video/portrait_drawing.mp4" className="portrait-video" />
+    </a>
+  </Footer>
 </Layout>
 
 <style>
@@ -342,5 +347,17 @@ const blogSchema = {
     .featured-card__arrow {
       display: none;
     }
+  }
+
+  /* Portrait video in footer - same size as social icons */
+  .portrait-video-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-fast);
+  }
+
+  .portrait-video-link:hover {
+    transform: translateY(-2px);
   }
 </style>

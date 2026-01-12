@@ -12,7 +12,9 @@ const currentYear = new Date().getFullYear();
         <span class="footer__tagline">Building AI systems that matter</span>
       </div>
       
-      <SocialLinks size="md" />
+      <SocialLinks size="md">
+        <slot name="social-extra" />
+      </SocialLinks>
     </div>
     
     <div class="footer__bottom">
