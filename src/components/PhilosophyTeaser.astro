@@ -30,10 +30,37 @@
       
       <div class="teaser__decoration" aria-hidden="true">
         <div class="teaser__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
+          <!-- Dopamine molecule - pencil sketch style -->
+          <!-- Structure: catechol (benzene + 2 adjacent OH) + ethyl chain + NH2 -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 120 100" fill="none" stroke="currentColor" class="dopamine-molecule">
+            <!-- Benzene ring (hexagon) -->
+            <path d="M30 30 L45 22 L60 30 L60 46 L45 54 L30 46 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Alternating double bonds (inside the ring) -->
+            <path d="M34 32 L34 44" stroke-width="1" opacity="0.6"/>
+            <path d="M46 25 L56 30" stroke-width="1" opacity="0.6"/>
+            <path d="M56 46 L46 51" stroke-width="1" opacity="0.6"/>
+            
+            <!-- First HO group (top-left of ring, position 3) -->
+            <path d="M30 30 L20 25" stroke-width="1.5" stroke-linecap="round"/>
+            <text x="4" y="28" font-size="9" font-family="monospace" fill="currentColor" stroke="none" class="molecule-label">HO</text>
+            
+            <!-- Second HO group (bottom-left of ring, position 4, adjacent to first) -->
+            <path d="M30 46 L20 51" stroke-width="1.5" stroke-linecap="round"/>
+            <text x="4" y="55" font-size="9" font-family="monospace" fill="currentColor" stroke="none" class="molecule-label">HO</text>
+            
+            <!-- Ethyl chain: ring -> CH2 -> CH2 -> NH2 -->
+            <!-- First CH2 (from ring position 1) -->
+            <path d="M60 38 L75 38" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Second CH2 -->
+            <path d="M75 38 L90 48" stroke-width="1.5" stroke-linecap="round"/>
+            
+            <!-- NH2 amine group at end -->
+            <text x="92" y="56" font-size="9" font-family="monospace" fill="currentColor" stroke="none" class="molecule-label">NH</text>
+            <text x="105" y="59" font-size="6" font-family="monospace" fill="currentColor" stroke="none" class="molecule-label">2</text>
+            
+            <!-- Small vertex dots for sketch feel -->
+            <circle cx="75" cy="38" r="1.5" fill="currentColor" opacity="0.3"/>
+            <circle cx="90" cy="48" r="1.5" fill="currentColor" opacity="0.3"/>
           </svg>
         </div>
       </div>
@@ -51,14 +78,16 @@
   .teaser__card {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: var(--space-8);
+    gap: var(--space-6);
     align-items: center;
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
-    padding: var(--space-10);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
     position: relative;
     overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
   }
   
   .teaser__card::before {
@@ -77,22 +106,22 @@
   }
   
   .teaser__header {
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
   }
   
   .teaser__label {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: 500;
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
   }
   
   .teaser__title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
     font-weight: 700;
     color: var(--color-text-primary);
     background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
@@ -102,13 +131,13 @@
   }
   
   .teaser__quote {
-    border-left: 3px solid var(--color-accent);
-    padding-left: var(--space-6);
-    margin: var(--space-6) 0;
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--space-4);
+    margin: var(--space-4) 0;
   }
   
   .teaser__quote p {
-    font-size: var(--text-xl);
+    font-size: var(--text-base);
     font-style: italic;
     line-height: 1.6;
     color: var(--color-text-secondary);
@@ -116,11 +145,11 @@
   }
   
   .teaser__description {
-    font-size: var(--text-lg);
-    line-height: 1.7;
+    font-size: var(--text-base);
+    line-height: 1.6;
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-8);
-    max-width: 600px;
+    margin-bottom: var(--space-6);
+    max-width: 500px;
   }
   
   .teaser__description strong {
@@ -131,11 +160,12 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-4) var(--space-6);
+    padding: var(--space-3) var(--space-5);
     background: var(--color-accent);
     color: white;
     font-weight: 600;
-    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    border-radius: var(--radius-md);
     transition: all var(--transition-base);
   }
   
@@ -161,15 +191,40 @@
   }
   
   .teaser__icon {
-    width: 120px;
+    width: 130px;
     height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-accent-glow);
-    border-radius: 50%;
+    border-radius: 40%;
     color: var(--color-accent);
     animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Pencil sketch style for dopamine molecule */
+  .dopamine-molecule {
+    filter: url(#pencil-texture);
+  }
+  
+  .dopamine-molecule path,
+  .dopamine-molecule circle {
+    stroke-dasharray: 0.5 0.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  /* Keep text labels clean (no dashed stroke) */
+  .dopamine-molecule text,
+  .dopamine-molecule .molecule-label {
+    stroke: none;
+    stroke-dasharray: none;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+  
+  .teaser__icon:hover .dopamine-molecule {
+    filter: none;
   }
   
   @keyframes float {
@@ -180,7 +235,7 @@
   @media (max-width: 768px) {
     .teaser__card {
       grid-template-columns: 1fr;
-      padding: var(--space-6);
+      padding: var(--space-5);
     }
     
     .teaser__decoration {
@@ -188,15 +243,15 @@
     }
     
     .teaser__title {
-      font-size: var(--text-2xl);
+      font-size: var(--text-xl);
     }
     
     .teaser__quote p {
-      font-size: var(--text-lg);
+      font-size: var(--text-sm);
     }
     
     .teaser__description {
-      font-size: var(--text-base);
+      font-size: var(--text-sm);
     }
   }
 </style>

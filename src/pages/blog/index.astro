@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
+import ScrollVideo from '../../components/ScrollVideo.svelte';
 
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
@@ -75,6 +76,11 @@ const blogSchema = {
         <span>Subscribe via RSS</span>
       </a>
     </header>
+
+    <!-- Scroll-controlled video -->
+    <section class="blog__video container animate-on-scroll delay-3">
+      <ScrollVideo client:load src="/video/pika-video.mp4" />
+    </section>
 
     <main class="blog__content container">
       {/* Featured: Philosophy Page */}
@@ -197,6 +203,11 @@ const blogSchema = {
     color: var(--color-accent);
     border-color: var(--color-accent);
     background: var(--color-accent-glow);
+  }
+
+  .blog__video {
+    max-width: var(--content-width);
+    padding-bottom: var(--space-12);
   }
 
   .blog__content {
