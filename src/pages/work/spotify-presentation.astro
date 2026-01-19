@@ -1,0 +1,423 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Layout 
+  title="Reinventing Spotify's Discovery | Mulloy Morrow"
+  description="AI Leadership Case Study: How I led the transformation of Spotify's music discovery systems using machine learning."
+>
+  <main class="article">
+    <div class="article__background">
+      <div class="article__blob article__blob--1"></div>
+      <div class="article__blob article__blob--2"></div>
+      <div class="article__pattern"></div>
+    </div>
+    
+    <article class="container">
+      <header class="article__header">
+        <nav class="article__nav">
+          <a href="/" class="article__back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Home</span>
+          </a>
+          <span class="article__nav-divider">/</span>
+          <span class="article__breadcrumb">Work</span>
+        </nav>
+        
+        <div class="article__meta">
+          <span class="article__tag">Case Study</span>
+          <time class="article__date" datetime="2026-01-19">Published January 19, 2026</time>
+        </div>
+        
+        <h1 class="article__title">Reinventing Spotify's Discovery</h1>
+        <p class="article__subtitle">AI Leadership Case Study: How I led the transformation of Spotify's music discovery systems using machine learning.</p>
+      </header>
+      
+      <div class="article__content">
+        <div class="presentation-embed">
+          <div class="presentation-embed__wrapper">
+            <iframe 
+              src="https://docs.google.com/presentation/d/e/2PACX-1vRf5UF5ApidJDxr5lJ_UcujCdrGtepZiztevMbdCuH4p5OI-Qav9u_t9TtuUSh6S8jmH24STG5lGOFn/pubembed?start=false&loop=false&delayms=3000" 
+              frameborder="0" 
+              allowfullscreen="true" 
+              mozallowfullscreen="true" 
+              webkitallowfullscreen="true"
+              loading="lazy"
+              title="AI Presentation"
+            ></iframe>
+          </div>
+          <p class="presentation-embed__hint">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+            </svg>
+            Use arrow keys to navigate slides. Click fullscreen for the best experience.
+          </p>
+        </div>
+        
+        <div class="questions-cta">
+          <h2 class="questions-cta__title">Questions?</h2>
+          <p class="questions-cta__text">I'd love to hear from you. Let's connect and discuss AI, machine learning, or potential collaborations.</p>
+          <a href="/#contact" class="questions-cta__link">
+            <span>Get in Touch</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <footer class="article__footer">
+        <a href="/#projects" class="article__footer-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span>Back to projects</span>
+        </a>
+      </footer>
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .article {
+    min-height: 100vh;
+    position: relative;
+    padding: var(--space-16) 0 var(--space-24);
+  }
+  
+  .article__background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .article__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+  }
+  
+  .article__blob--1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, var(--color-accent-glow) 0%, rgba(96, 165, 250, 0.2) 100%);
+    top: -20%;
+    right: -15%;
+    animation: float-slow 25s ease-in-out infinite;
+  }
+  
+  .article__blob--2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, rgba(69, 123, 157, 0.2) 0%, var(--color-accent-glow) 100%);
+    bottom: 10%;
+    left: -15%;
+    animation: float-slow 30s ease-in-out infinite reverse;
+  }
+  
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+  
+  .article__pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0);
+    background-size: 50px 50px;
+    opacity: 0.25;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+  }
+  
+  .article__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+  
+  .article__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+  
+  .article__back,
+  .article__breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    transition: color var(--transition-base);
+  }
+  
+  .article__back:hover,
+  .article__breadcrumb:hover {
+    color: var(--color-accent);
+  }
+  
+  .article__nav-divider {
+    color: var(--color-border);
+    font-family: var(--font-mono);
+  }
+  
+  .article__meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  
+  .article__tag {
+    background: var(--color-accent-glow);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .article__date {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  
+  .article__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 50%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .article__subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .article__content {
+    margin-bottom: var(--space-16);
+  }
+  
+  /* Presentation Embed Styles */
+  .presentation-embed {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .presentation-embed__wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 58.26%; /* 1440:839 aspect ratio */
+    background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-surface) 100%);
+  }
+  
+  .presentation-embed__wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .presentation-embed__hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+  }
+  
+  .presentation-embed__hint svg {
+    opacity: 0.7;
+  }
+  
+  /* Article Footer */
+  .article__footer {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .article__footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+  }
+  
+  .article__footer-link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: var(--color-accent-glow);
+  }
+  
+  .article__footer-link svg {
+    transition: transform var(--transition-base);
+  }
+  
+  .article__footer-link:hover svg {
+    transform: translateX(-4px);
+  }
+  
+  /* Questions CTA */
+  .questions-cta {
+    text-align: center;
+    padding: var(--space-16) var(--space-8);
+    margin-top: var(--space-12);
+    background: linear-gradient(135deg, var(--color-bg-surface) 0%, var(--color-bg-elevated) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .questions-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: var(--color-accent-glow);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  .questions-cta__title {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    position: relative;
+  }
+  
+  .questions-cta__text {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 500px;
+    margin: 0 auto var(--space-8);
+    line-height: 1.6;
+    position: relative;
+  }
+  
+  .questions-cta__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-8);
+    background: var(--color-accent);
+    color: var(--color-bg-primary);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    position: relative;
+  }
+  
+  .questions-cta__link:hover {
+    background: var(--color-accent-dim);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    color: var(--color-bg-primary);
+  }
+  
+  .questions-cta__link svg {
+    transition: transform var(--transition-base);
+  }
+  
+  .questions-cta__link:hover svg {
+    transform: translateX(4px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .article {
+      padding: var(--space-8) 0 var(--space-16);
+    }
+    
+    .article__header {
+      margin-bottom: var(--space-8);
+    }
+    
+    .article__subtitle {
+      font-size: var(--text-lg);
+    }
+    
+    .presentation-embed {
+      border-radius: var(--radius-xl);
+      margin: 0 calc(-1 * var(--space-4));
+    }
+    
+    .presentation-embed__hint {
+      font-size: var(--text-xs);
+      padding: var(--space-3);
+    }
+    
+    .questions-cta {
+      padding: var(--space-10) var(--space-6);
+      margin-top: var(--space-8);
+    }
+    
+    .questions-cta__title {
+      font-size: var(--text-2xl);
+    }
+    
+    .questions-cta__text {
+      font-size: var(--text-base);
+    }
+    
+    .questions-cta__link {
+      font-size: var(--text-base);
+      padding: var(--space-3) var(--space-6);
+    }
+  }
+</style>

@@ -19,9 +19,9 @@ const sortedPosts = allPosts.sort((a, b) =>
   b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
 
-// Create a combined list with philosophy page included
+// Create a combined list with philosophy page and case studies included
 type ContentItem = {
-  type: 'blog' | 'page';
+  type: 'blog' | 'page' | 'case-study';
   title: string;
   description: string;
   slug: string;
@@ -30,6 +30,15 @@ type ContentItem = {
 };
 
 const allContent: ContentItem[] = [
+  // Add Spotify case study presentation
+  {
+    type: 'case-study' as const,
+    title: "Reinventing Spotify's Discovery",
+    description: "AI Leadership Case Study: How I led the transformation of Spotify's music discovery systems using machine learning.",
+    slug: '/work/spotify-presentation',
+    publishedAt: new Date('2026-01-19'),
+    tags: ['Case Study', 'AI/ML', 'Personalization'],
+  },
   // Add philosophy page
   ...(philosophyPage ? [{
     type: 'page' as const,
@@ -37,6 +46,7 @@ const allContent: ContentItem[] = [
     description: philosophyPage.data.description,
     slug: 'philosophy',
     publishedAt: philosophyPage.data.publishedAt,
+    tags: ['Philosophy', 'Human-Centered AI', 'Leadership'],
   }] : []),
   // Add blog posts
   ...sortedPosts.map(post => ({
@@ -84,9 +94,11 @@ const blogSchema = {
     "headline": item.title,
     "description": item.description,
     "datePublished": item.publishedAt.toISOString(),
-    "url": item.type === 'page' 
-      ? `https://code.mulloymorrow.com/${item.slug}/`
-      : `https://code.mulloymorrow.com/blog/${item.slug}/`
+    "url": item.type === 'blog' 
+      ? `https://code.mulloymorrow.com/blog/${item.slug}/`
+      : item.type === 'page'
+        ? `https://code.mulloymorrow.com/${item.slug}/`
+        : `https://code.mulloymorrow.com${item.slug}/`
   }))
 };
 ---
@@ -135,10 +147,10 @@ const blogSchema = {
                 <BlogPostCard
                   title={item.title}
                   description={item.description}
-                  slug={item.type === 'page' ? `/${item.slug}` : item.slug}
+                  slug={item.type === 'blog' ? item.slug : (item.type === 'page' ? `/${item.slug}` : item.slug)}
                   publishedAt={item.publishedAt}
                   tags={item.tags}
-                  isExternal={item.type === 'page'}
+                  isExternal={item.type === 'page' || item.type === 'case-study'}
                 />
               ))}
             </div>

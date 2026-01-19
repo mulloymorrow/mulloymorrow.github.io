@@ -12,6 +12,7 @@
       demo?: string;
       github?: string;
       article?: string;
+      caseStudy?: string;
     };
     featured?: boolean;
     logo?: string;
@@ -251,6 +252,16 @@
                   <polyline points="10 9 9 9 8 9"/>
                 </svg>
                 Article
+              </a>
+            {/if}
+            {#if project.links.caseStudy}
+              <a href={project.links.caseStudy} class="project-link project-link--case-study" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                Case Study
               </a>
             {/if}
           </div>
@@ -608,6 +619,16 @@
   }
   
   .project-link:hover {
+    background: var(--color-accent);
+    color: var(--color-bg-primary);
+  }
+  
+  .project-link--case-study {
+    background: var(--color-accent-glow);
+    border-color: var(--color-accent);
+  }
+  
+  .project-link--case-study:hover {
     background: var(--color-accent);
     color: var(--color-bg-primary);
   }
