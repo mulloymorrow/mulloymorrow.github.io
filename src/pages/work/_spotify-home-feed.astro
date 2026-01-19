@@ -1,0 +1,886 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.svelte';
+import OrgDiagram from '../../components/OrgDiagram.svelte';
+import Footer from '../../components/Footer.astro';
+
+const title = "Spotify Home Feed Recommender | Mulloy Morrow";
+const description = "How I led the reinvention of Spotify's Home Feed, driving $120M/year impact and 26% discovery boost for 700M+ users.";
+---
+
+<Layout title={title} description={description}>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-header">
+        <svg class="spotify-logo" width="40" height="40" viewBox="0 0 168 168" fill="#1ed760">
+          <path d="M84 0C37.6 0 0 37.6 0 84s37.6 84 84 84 84-37.6 84-84S130.4 0 84 0zm38.5 121.3c-1.5 2.5-4.7 3.3-7.2 1.8-19.8-12.1-44.6-14.8-73.9-8.1-2.8.6-5.6-1.1-6.3-3.9-.6-2.8 1.1-5.6 3.9-6.3 32-7.2 59.5-4.1 82.1 9.4 2.5 1.5 3.3 4.7 1.4 7.1zm10.3-22.9c-1.9 3.1-5.9 4.1-9 2.2-22.6-13.9-57.1-17.9-83.8-9.8-3.5 1.1-7.2-.9-8.2-4.4-1.1-3.5.9-7.2 4.4-8.2 30.5-9.3 68.4-4.8 94.1 11.2 3.1 1.8 4.1 5.9 2.5 9zm.9-23.8c-27.1-16.1-71.9-17.6-97.8-9.7-4.2 1.3-8.6-1.1-9.8-5.2-1.3-4.2 1.1-8.6 5.2-9.8 29.7-9 79.1-7.3 110.3 11.2 3.8 2.2 5 7.1 2.8 10.8-2.2 3.7-7.1 4.9-10.7 2.7z"/>
+        </svg>
+        <span class="case-study-label">Case Study</span>
+      </div>
+      
+      <h1>Reinventing Spotify's Home Feed</h1>
+      <p class="subtitle">How we transformed music discovery for 700M+ users</p>
+      
+      <div class="metrics-grid">
+        <div class="metric">
+          <span class="metric-value">$10M</span>
+          <span class="metric-label">Monthly Margin Increase</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value">+26%</span>
+          <span class="metric-label">Discovery Boost</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value">700M+</span>
+          <span class="metric-label">Users Served</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Role & Context -->
+  <section class="section bg-surface">
+    <div class="container">
+      <div class="role-layout">
+        <!-- Left: Animated GIF demo -->
+        <div class="home-demo">
+          <p class="section-label">The New Home Feed</p>
+          <div class="phone-mockup">
+            <img src="https://cdn.mos.cms.futurecdn.net/LhvbnKshJSMguCHBosBq9N.gif" alt="Spotify Home Feed Demo" />
+          </div>
+          <p class="demo-caption">Scrollable feed with Shortcuts, Recommendations, and personalized content rows</p>
+          <a href="https://newsroom.spotify.com/2023-03-08/new-home-page-scroll-clips-previews/" target="_blank" rel="noopener noreferrer" class="demo-link">Read the announcement &rarr;</a>
+        </div>
+        
+        <!-- Right: Role details -->
+        <div class="role-details">
+          <div class="role-block">
+            <span class="section-label">My Role</span>
+            <h2>Group Lead, Home Construction</h2>
+            <ul class="role-list">
+              <li>25+ direct reports across 3 teams</li>
+              <li>100+ technical leadership span</li>
+              <li>Owned Shortcuts, Ranking, and Assembly teams</li>
+            </ul>
+          </div>
+          <div class="role-block">
+            <span class="section-label">Timeline</span>
+            <h2>2022-2024</h2>
+            <p>Discovery elevated to P1 Company Bet in 2023 after the "Heart on My Sleeve" incident revealed Spotify was 14 days behind TikTok in trend detection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Challenge -->
+  <section class="section">
+    <div class="container">
+      <h2>The Challenge</h2>
+      
+      <!-- Catalog Scale -->
+      <div class="catalog-scale">
+        <h3>The Scale of the Problem</h3>
+        <p>Personalizing recommendations across a massive, heterogeneous catalog:</p>
+        <div class="catalog-grid">
+          <div class="catalog-item">
+            <span class="catalog-value">100M+</span>
+            <span class="catalog-label">Songs</span>
+          </div>
+          <div class="catalog-item">
+            <span class="catalog-value">7M+</span>
+            <span class="catalog-label">Podcast Titles</span>
+          </div>
+          <div class="catalog-item">
+            <span class="catalog-value">500K+</span>
+            <span class="catalog-label">Audiobooks</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="callout callout-danger">
+        <h3>The Wake-Up Call: "Heart on My Sleeve"</h3>
+        <p>In April 2023, an AI-generated Drake/Weeknd song went viral on TikTok with 15M+ views — 2 weeks before it appeared on Spotify. Users were discovering new music elsewhere first. Spotify was becoming a "backend player."</p>
+      </div>
+
+      <div class="challenge-grid">
+        <div class="challenge-card">
+          <h4>Cold Start Problem</h4>
+          <p>Days to generate quality rankings for new content/users. Viral trends were missed.</p>
+        </div>
+        <div class="challenge-card">
+          <h4>Past-Performance Bias</h4>
+          <p>Over-reliance on historical data created filter bubbles and echo chambers.</p>
+        </div>
+        <div class="challenge-card">
+          <h4>Multi-Format Complexity</h4>
+          <p>Music, podcasts, audiobooks, video — different engagement patterns, consumption times, value metrics.</p>
+        </div>
+        <div class="challenge-card">
+          <h4>Scale & Cost</h4>
+          <p>Infrastructure costs scaling linearly with 700M users. Needed 50% compute reduction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Section with Interactive SVG -->
+  <section class="section bg-surface">
+    <div class="container">
+      <h2>Two-Stage Recommender Architecture</h2>
+      <p class="section-intro">Based on <a href="https://research.google/pubs/deep-neural-networks-for-youtube-recommendations/" target="_blank" rel="noopener noreferrer" class="inline-link">YouTube's DNN paper (Covington et al., 2016)</a>, adapted for Spotify's multi-format content ecosystem.</p>
+      
+      <ArchitectureDiagram client:visible />
+    </div>
+  </section>
+
+  <!-- Org Structure with Interactive SVG -->
+  <section class="section">
+    <div class="container">
+      <h2>Org Follows Product</h2>
+      <p class="section-intro">Each team owned a distinct layer of the Home page architecture.</p>
+      
+      <OrgDiagram client:visible />
+    </div>
+  </section>
+
+  <!-- User-LTV & Counterfactual -->
+  <section class="section bg-surface">
+    <div class="container">
+      <h2>User-LTV & Counterfactual Analysis</h2>
+      
+      <div class="two-col">
+        <div>
+          <h3>User Lifetime Value Model</h3>
+          <p>Extended from subscription-duration prediction to all user types. Revenue = LTV × Historical Gross Margin.</p>
+          <div class="callout callout-warning">
+            <strong>Recognition:</strong> User-LTV featured at Spotify Investor Day 2022 by Tony Jebara (Head of ML) — adopted company-wide as north star metric.
+          </div>
+        </div>
+        <div>
+          <h3>Double/Debiased ML</h3>
+          <p>Used for <em>offline counterfactual analysis</em> — understanding treatment effects like content stickiness on retention. Not in live ranking.</p>
+          <p class="muted">Example: "What's the effect of Joe Rogan Experience on user retention?" — Neyman-orthogonal estimators to debias treatment effects.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools & De-Politicization -->
+  <section class="section">
+    <div class="container">
+      <h2>Tools & De-Politicization</h2>
+      
+      <div class="tools-grid">
+        <div class="tool-card tool-card-cyan">
+          <h3>Home Content Impression Simulator</h3>
+          <p>Jupyter notebook allowing content teams to understand what drives impressions and distribution without needing ML expertise.</p>
+        </div>
+        <div class="tool-card tool-card-purple">
+          <h3>Interactive Retention Dashboard</h3>
+          <p>Simulate effects on user retention given changes to user and content feature values.</p>
+        </div>
+      </div>
+      
+      <div class="callout callout-warning">
+        <h4>Why This Mattered</h4>
+        <p>Legacy system had accumulated politicized business logic — artificial boosts to content distribution. These tools helped move to merit-based personalization by giving stakeholders data instead of opinions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section bg-gradient">
+    <div class="container">
+      <h2>Results</h2>
+      
+      <div class="results-grid">
+        <div class="result-card result-card-primary">
+          <span class="result-value">$10M</span>
+          <span class="result-label">Monthly Margin Increase</span>
+          <span class="result-sublabel">$120M/year impact</span>
+        </div>
+        <div class="result-card result-card-primary">
+          <span class="result-value">+26%</span>
+          <span class="result-label">Discovery Boost</span>
+          <span class="result-sublabel">Closing TikTok gap</span>
+        </div>
+        <div class="result-card result-card-primary">
+          <span class="result-value">$4M</span>
+          <span class="result-label">Annual Cost Savings</span>
+          <span class="result-sublabel">50% compute reduction</span>
+        </div>
+      </div>
+      
+      <div class="secondary-results">
+        <div class="secondary-result">
+          <span class="icon">&#9889;</span>
+          <div>
+            <span class="secondary-value">&lt;200ms</span>
+            <span class="secondary-label">P99 Latency (from 450ms)</span>
+          </div>
+        </div>
+        <div class="secondary-result">
+          <span class="icon">&#128640;</span>
+          <div>
+            <span class="secondary-value">Days &rarr; Minutes</span>
+            <span class="secondary-label">Cold start reduction</span>
+          </div>
+        </div>
+        <div class="secondary-result">
+          <span class="icon">&#127919;</span>
+          <div>
+            <span class="secondary-value">4 Formats</span>
+            <span class="secondary-label">Unified ranking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section class="section">
+    <div class="container">
+      <h2>Key Takeaways</h2>
+      
+      <div class="takeaways">
+        <div class="takeaway takeaway-green">
+          <h3>Competitive threats drive technical strategy</h3>
+          <p>TikTok's 14-day gap required fundamental architecture changes, not just product tweaks.</p>
+        </div>
+        <div class="takeaway takeaway-amber">
+          <h3>Org structure should follow product</h3>
+          <p>Shortcuts, Ranking, Assembly teams mirrored the Home page layers — clear ownership, minimal coordination overhead.</p>
+        </div>
+        <div class="takeaway takeaway-purple">
+          <h3>Tools reduce politics</h3>
+          <p>Simulators and dashboards gave stakeholders data instead of opinions. Merit over lobbying.</p>
+        </div>
+        <div class="takeaway takeaway-cyan">
+          <h3>Scale changes everything</h3>
+          <p>Solutions at 1M users break at 700M. Cost, latency, cold start become existential concerns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="section bg-surface">
+    <div class="container">
+      <h2>Go Deeper</h2>
+      
+      <!-- Academic Papers -->
+      <h3 class="resources-subhead">Academic Foundations</h3>
+      <div class="resources-grid">
+        <a href="https://arxiv.org/abs/1606.07792" target="_blank" rel="noopener noreferrer" class="resource-link resource-link-paper">
+          <span class="resource-title">Wide & Deep Learning for Recommender Systems</span>
+          <span class="resource-url">Cheng et al., Google (2016) &bull; arxiv.org</span>
+        </a>
+        <a href="https://research.google/pubs/deep-neural-networks-for-youtube-recommendations/" target="_blank" rel="noopener noreferrer" class="resource-link resource-link-paper">
+          <span class="resource-title">Deep Neural Networks for YouTube Recommendations</span>
+          <span class="resource-url">Covington et al., Google (2016) &bull; research.google</span>
+        </a>
+      </div>
+      
+      <!-- Spotify Resources -->
+      <h3 class="resources-subhead">Spotify Resources</h3>
+      <div class="resources-grid">
+        <a href="https://newsroom.spotify.com/2023-03-08/new-home-page-scroll-clips-previews/" target="_blank" rel="noopener noreferrer" class="resource-link">
+          <span class="resource-title">New Home Feed Announcement</span>
+          <span class="resource-url">The upgraded Home experience &bull; newsroom.spotify.com</span>
+        </a>
+        <a href="https://investors.spotify.com/investor-day-2022" target="_blank" rel="noopener noreferrer" class="resource-link">
+          <span class="resource-title">Investor Day 2022</span>
+          <span class="resource-url">investors.spotify.com</span>
+        </a>
+        <a href="https://newsroom.spotify.com/stream-on-2023" target="_blank" rel="noopener noreferrer" class="resource-link">
+          <span class="resource-title">Stream On 2023</span>
+          <span class="resource-url">newsroom.spotify.com</span>
+        </a>
+        <a href="https://youtube.com/watch?v=S2qxvg9NNPM" target="_blank" rel="noopener noreferrer" class="resource-link">
+          <span class="resource-title">Heart on My Sleeve</span>
+          <span class="resource-url">The AI song that started it all</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <Footer />
+</Layout>
+
+<style>
+  /* ===== CSS Variables for Spotify theme ===== */
+  :root {
+    --spotify-green: #1ed760;
+    --spotify-green-dark: #169c46;
+    --spotify-bg: #0d1117;
+    --spotify-surface: #161b22;
+    --spotify-border: #30363d;
+    --spotify-muted: #21262d;
+    --sp-text-primary: #e6edf3;
+    --sp-text-secondary: #8b949e;
+    --color-cyan: #06b6d4;
+    --color-purple: #8b5cf6;
+    --color-amber: #f59e0b;
+    --color-red: #ff6b6b;
+  }
+
+  /* ===== Layout ===== */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+
+  .bg-surface {
+    background: var(--spotify-surface);
+  }
+
+  .bg-gradient {
+    background: linear-gradient(180deg, var(--spotify-surface) 0%, var(--spotify-bg) 100%);
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    padding: 5rem 0 4rem;
+    background: linear-gradient(180deg, var(--spotify-bg) 0%, var(--spotify-surface) 100%);
+    border-top: 4px solid var(--spotify-green);
+  }
+
+  .hero-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .case-study-label {
+    color: var(--spotify-green);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--sp-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--sp-text-secondary);
+    margin: 0 0 2rem;
+  }
+
+  /* ===== Metrics ===== */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--spotify-border);
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--spotify-green);
+  }
+
+  .metric-label {
+    font-size: 0.875rem;
+    color: var(--sp-text-secondary);
+  }
+
+  /* ===== Role Layout with Demo ===== */
+  .role-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  
+  .home-demo {
+    text-align: center;
+  }
+  
+  .phone-mockup {
+    background: #000;
+    border-radius: 24px;
+    padding: 8px;
+    border: 3px solid var(--spotify-border);
+    max-width: 200px;
+    margin: 0.75rem auto;
+  }
+  
+  .phone-mockup img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+  
+  .demo-caption {
+    font-size: 0.75rem;
+    color: var(--sp-text-secondary);
+    margin: 0.75rem 0 0.5rem;
+  }
+  
+  .demo-link {
+    font-size: 0.75rem;
+    color: var(--spotify-green);
+    text-decoration: none;
+  }
+  
+  .demo-link:hover {
+    text-decoration: underline;
+  }
+  
+  .role-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .role-block h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    color: var(--sp-text-primary);
+  }
+  
+  @media (max-width: 768px) {
+    .role-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .home-demo {
+      order: -1;
+    }
+    
+    .phone-mockup {
+      max-width: 180px;
+    }
+  }
+
+  /* ===== Two Column Layout ===== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  /* ===== Section Labels ===== */
+  .section-label {
+    display: block;
+    color: var(--spotify-green);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-intro {
+    color: var(--sp-text-secondary);
+    margin-bottom: 2rem;
+  }
+  
+  .inline-link {
+    color: var(--color-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  
+  .inline-link:hover {
+    border-bottom-color: var(--color-cyan);
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--sp-text-primary);
+    margin: 0 0 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--sp-text-primary);
+    margin: 0 0 0.75rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sp-text-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: var(--sp-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+
+  .muted {
+    color: var(--sp-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  /* ===== Lists ===== */
+  .role-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .role-list li {
+    color: var(--sp-text-secondary);
+    padding: 0.25rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .role-list li::before {
+    content: "•";
+    color: var(--spotify-green);
+    position: absolute;
+    left: 0;
+  }
+
+  /* ===== Catalog Scale ===== */
+  .catalog-scale {
+    background: var(--spotify-surface);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--spotify-border);
+  }
+  
+  .catalog-scale h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .catalog-scale > p {
+    margin-bottom: 1rem;
+  }
+  
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .catalog-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--spotify-muted);
+    border-radius: 0.5rem;
+  }
+  
+  .catalog-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--spotify-green);
+  }
+  
+  .catalog-label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--sp-text-secondary);
+    margin-top: 0.25rem;
+  }
+  
+  @media (max-width: 600px) {
+    .catalog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Callouts ===== */
+  .callout {
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .callout h3, .callout h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  .callout-danger {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+
+  .callout-danger h3 {
+    color: var(--color-red);
+  }
+
+  .callout-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .callout-warning strong {
+    color: var(--color-amber);
+  }
+
+  /* ===== Challenge Grid ===== */
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .challenge-card {
+    background: var(--spotify-surface);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .challenge-card p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .challenge-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Tools Grid ===== */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tool-card {
+    background: var(--spotify-surface);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    border-left: 3px solid;
+  }
+
+  .tool-card-cyan {
+    border-color: var(--color-cyan);
+  }
+
+  .tool-card-cyan h3 {
+    color: var(--color-cyan);
+  }
+
+  .tool-card-purple {
+    border-color: var(--color-purple);
+  }
+
+  .tool-card-purple h3 {
+    color: var(--color-purple);
+  }
+
+  .tool-card p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Results ===== */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .result-card {
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .result-card-primary {
+    background: linear-gradient(135deg, var(--spotify-green) 0%, var(--spotify-green-dark) 100%);
+  }
+
+  .result-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--spotify-bg);
+  }
+
+  .result-label {
+    color: var(--spotify-bg);
+    opacity: 0.9;
+  }
+
+  .result-sublabel {
+    font-size: 0.75rem;
+    color: var(--spotify-bg);
+    opacity: 0.7;
+  }
+
+  .secondary-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .secondary-result {
+    background: var(--spotify-surface);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .secondary-value {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--spotify-green);
+  }
+
+  .secondary-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--sp-text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .results-grid,
+    .secondary-results {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Takeaways ===== */
+  .takeaways {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .takeaway {
+    background: var(--spotify-surface);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    border-left: 4px solid;
+  }
+
+  .takeaway h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .takeaway p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .takeaway-green { border-color: var(--spotify-green); }
+  .takeaway-amber { border-color: var(--color-amber); }
+  .takeaway-purple { border-color: var(--color-purple); }
+  .takeaway-cyan { border-color: var(--color-cyan); }
+
+  /* ===== Resources ===== */
+  .resources-subhead {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sp-text-secondary);
+    margin: 1.5rem 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .resources-subhead:first-of-type {
+    margin-top: 0;
+  }
+
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .resource-link {
+    display: block;
+    background: var(--spotify-muted);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .resource-link:hover {
+    background: var(--spotify-border);
+  }
+  
+  .resource-link-paper {
+    border-left: 3px solid var(--color-cyan);
+  }
+
+  .resource-title {
+    display: block;
+    font-weight: 600;
+    color: var(--sp-text-primary);
+  }
+
+  .resource-url {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--sp-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
