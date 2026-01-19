@@ -6,62 +6,70 @@
   export let size: number = 22;
   
   let videoElement: HTMLVideoElement;
-  let isReversing = false;
-  let lastTime = 0;
-  let animationId: number;
   
   onMount(() => {
     if (!videoElement) return;
     
-    let duration = 0;
+    let isReversing = false;
+    let intervalId: number;
+    const frameTime = 1000 / 30; // 30fps
     
-    const reversePlay = (timestamp: number) => {
-      if (!isReversing || !videoElement) return;
+    const startReverse = () => {
+      isReversing = true;
+      videoElement.pause();
       
-      // Calculate delta time for smooth 1x speed playback
-      const delta = (timestamp - lastTime) / 1000; // Convert to seconds
-      lastTime = timestamp;
+      intervalId = window.setInterval(() => {
+        if (!videoElement) return;
+        
+        // Step backward by frame time equivalent
+        const newTime = videoElement.currentTime - (frameTime / 1000);
+        
+        if (newTime <= 0) {
+          // Reached start, play forward again
+          clearInterval(intervalId);
+          videoElement.currentTime = 0;
+          isReversing = false;
+          videoElement.play().catch(() => {});
+        } else {
+          videoElement.currentTime = newTime;
+        }
+      }, frameTime);
+    };
+    
+    // Monitor video time to detect end
+    const handleTimeUpdate = () => {
+      if (!videoElement || isReversing) return;
       
-      // Decrement time (1x speed in reverse)
-      const newTime = videoElement.currentTime - delta;
-      
-      if (newTime <= 0) {
-        // Reached beginning, play forward
-        videoElement.currentTime = 0;
-        isReversing = false;
-        videoElement.play();
-      } else {
-        videoElement.currentTime = newTime;
-        animationId = requestAnimationFrame(reversePlay);
+      // Check if near end (within 100ms)
+      if (videoElement.duration && videoElement.currentTime >= videoElement.duration - 0.1) {
+        startReverse();
       }
     };
     
+    // Also handle the ended event as backup
     const handleEnded = () => {
-      // Video ended, start reverse playback
-      isReversing = true;
-      videoElement.pause();
-      lastTime = performance.now();
-      animationId = requestAnimationFrame(reversePlay);
+      if (!isReversing) {
+        startReverse();
+      }
     };
     
     const handleLoadedMetadata = () => {
-      duration = videoElement.duration;
-      // Start playing forward
       videoElement.play().catch(() => {});
     };
     
+    videoElement.addEventListener('timeupdate', handleTimeUpdate);
     videoElement.addEventListener('ended', handleEnded);
     videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
     
-    // If already loaded
     if (videoElement.readyState >= 1) {
       handleLoadedMetadata();
     }
     
     return () => {
+      if (intervalId) clearInterval(intervalId);
+      videoElement?.removeEventListener('timeupdate', handleTimeUpdate);
       videoElement?.removeEventListener('ended', handleEnded);
       videoElement?.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      if (animationId) cancelAnimationFrame(animationId);
     };
   });
 </script>
