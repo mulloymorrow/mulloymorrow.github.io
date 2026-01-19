@@ -5,19 +5,24 @@ interface Props {
   slug: string;
   publishedAt: Date;
   tags?: string[];
+  isExternal?: boolean;
 }
 
-const { title, description, slug, publishedAt, tags } = Astro.props;
+const { title, description, slug, publishedAt, tags, isExternal = false } = Astro.props;
 
 const formattedDate = publishedAt.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
+
+// If isExternal, use slug directly (it should already have leading slash)
+// Otherwise, construct blog path
+const href = isExternal ? slug : `/blog/${slug}/`;
 ---
 
 <article class="blog-card">
-  <a href={`/blog/${slug}/`} class="blog-card__link">
+  <a href={href} class="blog-card__link">
     <div class="blog-card__content">
       <time class="blog-card__date" datetime={publishedAt.toISOString()}>
         {formattedDate}
