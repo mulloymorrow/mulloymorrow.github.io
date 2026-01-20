@@ -150,7 +150,27 @@
                     <li>{achievement}</li>
                   {/each}
                 </ul>
-                {#if phase.link}
+                {#if phase.links && phase.links.length > 0}
+                  <div class="phase-links">
+                    {#each phase.links as link}
+                      <a href={link.url} target={link.external !== false ? "_blank" : "_self"} rel={link.external !== false ? "noopener noreferrer" : ""} class="phase-link" on:click|stopPropagation>
+                        {#if link.icon === "document"}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                          </svg>
+                        {:else}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                          </svg>
+                        {/if}
+                        {link.label}
+                      </a>
+                    {/each}
+                  </div>
+                {:else if phase.link}
                   <a href={phase.link.url} target="_blank" rel="noopener noreferrer" class="phase-link" on:click|stopPropagation>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -578,6 +598,18 @@
   .phase-link:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px var(--color-accent-glow);
+  }
+
+  .phase-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    margin-left: 2.75rem;
+  }
+
+  .phase-links .phase-link {
+    margin: 0;
   }
 
   .phase-link svg {
