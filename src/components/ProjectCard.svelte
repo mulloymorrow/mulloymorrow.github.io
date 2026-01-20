@@ -177,7 +177,7 @@
           title="Learn more about {tech}"
         >{tech}</a>
       {/each}
-      {#if project.technologies.length > 4}
+      {#if project.technologies.length > 4 && !isExpanded}
         <span class="tech-more">+{project.technologies.length - 4}</span>
       {/if}
     </div>
