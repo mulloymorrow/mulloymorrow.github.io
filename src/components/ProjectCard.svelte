@@ -13,9 +13,11 @@
       github?: string;
       article?: string;
       caseStudy?: string;
+      vision?: string;
     };
     featured?: boolean;
     logo?: string;
+    logoRounded?: boolean;
     gallery?: { src: string; caption: string }[];
   }
 
@@ -147,7 +149,7 @@
           <img 
             src={project.logo} 
             alt="{project.title} logo" 
-            class="project-logo"
+            class="project-logo {project.logoRounded ? 'project-logo--rounded' : ''}"
           />
         {/if}
       {:else}
@@ -446,6 +448,13 @@
     padding: 4px;
     border: 1px solid var(--color-border);
     transition: all 0.3s ease;
+  }
+  
+  .project-logo--rounded {
+    border-radius: 50%;
+    object-fit: cover;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 8px rgba(69, 183, 209, 0.2);
   }
   
   .project-emoji {

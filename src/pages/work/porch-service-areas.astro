@@ -1,0 +1,1015 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Layout 
+  title="Pro Service Area Modeling | Mulloy Morrow"
+  description="Technical deep-dive: Using unsupervised learning and collaborative filtering to model service professional coverage areas at Porch.com"
+>
+  <main class="article">
+    <div class="article__background">
+      <div class="article__blob article__blob--1"></div>
+      <div class="article__blob article__blob--2"></div>
+      <div class="article__pattern"></div>
+    </div>
+    
+    <article class="container">
+      <header class="article__header">
+        <nav class="article__nav">
+          <a href="/" class="article__back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Home</span>
+          </a>
+          <span class="article__nav-divider">/</span>
+          <span class="article__breadcrumb">Work</span>
+        </nav>
+        
+        <div class="article__hero-image">
+          <img src="/logos/porch-service-areas.png" alt="Service area visualization showing geographic coverage zones" class="hero-image" />
+        </div>
+        
+        <div class="article__meta">
+          <span class="article__tag">Technical Deep-Dive</span>
+          <time class="article__date" datetime="2015-06-01">Porch Group, 2013-2015</time>
+        </div>
+        
+        <h1 class="article__title">Pro Service Area Modeling</h1>
+        <p class="article__subtitle">Using unsupervised learning and collaborative filtering to infer where service professionals are willing to work—powering search and lead matching in a home services marketplace.</p>
+      </header>
+      
+      <div class="article__content">
+        <!-- Problem Statement -->
+        <section class="content-section">
+          <h2 class="section-title">The Problem</h2>
+          <div class="problem-context">
+            <p>Porch.com connects homeowners with local service professionals—electricians, plumbers, roofers, painters, and more. When a homeowner searches for help, the platform needs to rank professionals by relevance, availability, and <strong>proximity</strong>.</p>
+            
+            <p>But here's the challenge: <strong>professionals rarely define their service areas explicitly</strong>. Some will drive 50 miles for a big job; others stay within a few ZIP codes. The data is sparse, noisy, and constantly changing.</p>
+            
+            <div class="challenge-cards">
+              <div class="challenge-card">
+                <div class="challenge-card__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                  </svg>
+                </div>
+                <h3>Cold Start</h3>
+                <p>New professionals have no job history. How do we estimate where they'll work?</p>
+              </div>
+              <div class="challenge-card">
+                <div class="challenge-card__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <h3>Sparse Data</h3>
+                <p>Most professionals have only a few completed jobs. Not enough to infer boundaries.</p>
+              </div>
+              <div class="challenge-card">
+                <div class="challenge-card__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <h3>Implicit Behavior</h3>
+                <p>Service areas aren't stated—they're revealed through patterns of accepted and declined jobs.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Approach -->
+        <section class="content-section">
+          <h2 class="section-title">The Approach</h2>
+          <p class="section-intro">We combined multiple unsupervised learning techniques to build a service area scoring system that improves with each completed job.</p>
+          
+          <div class="approach-grid">
+            <!-- Signal 1: CBSA Priors -->
+            <div class="approach-card">
+              <div class="approach-card__number">1</div>
+              <div class="approach-card__content">
+                <h3>Geographic Priors from CBSAs</h3>
+                <p><strong>Core Based Statistical Areas (CBSAs)</strong> are Census-defined metropolitan and micropolitan regions. They provide natural boundaries for service area estimation.</p>
+                <ul>
+                  <li>Metropolitan areas cluster population centers</li>
+                  <li>Professionals typically serve within their CBSA</li>
+                  <li>CBSAs capture commuting patterns and economic regions</li>
+                </ul>
+                <p class="approach-insight">We used CBSA membership as a <strong>prior probability</strong>—professionals are more likely to serve locations within their home CBSA than outside it.</p>
+              </div>
+            </div>
+            
+            <!-- Signal 2: Job Location History -->
+            <div class="approach-card">
+              <div class="approach-card__number">2</div>
+              <div class="approach-card__content">
+                <h3>Learning from Job Locations</h3>
+                <p>Historical job locations reveal actual service patterns. We applied <strong>spatial clustering</strong> to discover natural service boundaries.</p>
+                <ul>
+                  <li><strong>Custom density-based clustering</strong> to identify dense regions of completed jobs</li>
+                  <li><strong>K-means</strong> for professionals with multiple service zones</li>
+                  <li>Kernel density estimation for smooth probability surfaces</li>
+                </ul>
+                <p class="approach-insight">Job locations are <strong>positive examples</strong>. We also inferred negative examples from declined leads and "out of area" responses.</p>
+              </div>
+            </div>
+            
+            <!-- Signal 3: Collaborative Filtering -->
+            <div class="approach-card">
+              <div class="approach-card__number">3</div>
+              <div class="approach-card__content">
+                <h3>Collaborative Filtering from Colleagues</h3>
+                <p>The key insight: <strong>professionals at the same company often share service area patterns</strong>. A new electrician at "ABC Electric" likely serves the same regions as their colleagues.</p>
+                <ul>
+                  <li>Matrix factorization to learn latent service area embeddings</li>
+                  <li>Propagate knowledge from data-rich to data-sparse professionals</li>
+                  <li>Company affiliation, specialty, and location as grouping features</li>
+                </ul>
+                <p class="approach-insight">This solved <strong>cold start</strong>: new professionals inherit service area estimates from similar colleagues.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Technical Methods -->
+        <section class="content-section">
+          <h2 class="section-title">Technical Methods</h2>
+          
+          <div class="method-section">
+            <h3 class="method-title">Unsupervised Clustering for Service Boundaries</h3>
+            <p>We experimented with multiple clustering approaches to discover natural service area boundaries from job location data:</p>
+            
+            <div class="method-comparison">
+              <div class="method-item">
+                <h4>K-Means Clustering</h4>
+                <p>Partitions locations into K clusters. Works well when professionals have distinct, non-overlapping service zones (e.g., "downtown" vs. "suburbs").</p>
+                <code class="method-formula">minimize Σ ||x - μ_k||²</code>
+                <p class="method-tradeoff"><strong>Tradeoff:</strong> Requires choosing K upfront; assumes spherical clusters.</p>
+              </div>
+              
+              <div class="method-item method-item--highlight">
+                <h4>Custom Density-Based Clustering</h4>
+                <p>I developed a density-based approach from first principles—later discovering it was conceptually similar to DBSCAN. It identified dense regions of job locations while naturally filtering noise.</p>
+                <code class="method-formula">neighborhood density ≥ threshold</code>
+                <p class="method-tradeoff"><strong>Lesson:</strong> Sometimes you reinvent the wheel—but you deeply understand the axle.</p>
+              </div>
+              
+              <div class="method-item">
+                <h4>Gaussian Mixture Models</h4>
+                <p>Probabilistic clustering that models service areas as overlapping Gaussian distributions. Provides soft membership scores.</p>
+                <code class="method-formula">P(x) = Σ π_k N(x|μ_k, Σ_k)</code>
+                <p class="method-tradeoff"><strong>Tradeoff:</strong> Smooth probabilities are useful for ranking; assumes Gaussian shape.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="method-section">
+            <h3 class="method-title">Collaborative Filtering for Cold Start</h3>
+            <p>We modeled the professional-location relationship as a sparse matrix and applied matrix factorization to learn latent representations:</p>
+            
+            <div class="cf-diagram">
+              <div class="cf-matrix">
+                <div class="cf-matrix__label">Service Area Matrix</div>
+                <div class="cf-matrix__grid">
+                  <div class="cf-matrix__header"></div>
+                  <div class="cf-matrix__header">ZIP 1</div>
+                  <div class="cf-matrix__header">ZIP 2</div>
+                  <div class="cf-matrix__header">ZIP 3</div>
+                  <div class="cf-matrix__header">...</div>
+                  
+                  <div class="cf-matrix__row-label">Pro A</div>
+                  <div class="cf-matrix__cell cf-matrix__cell--filled">✓</div>
+                  <div class="cf-matrix__cell cf-matrix__cell--filled">✓</div>
+                  <div class="cf-matrix__cell"></div>
+                  <div class="cf-matrix__cell">?</div>
+                  
+                  <div class="cf-matrix__row-label">Pro B</div>
+                  <div class="cf-matrix__cell cf-matrix__cell--filled">✓</div>
+                  <div class="cf-matrix__cell"></div>
+                  <div class="cf-matrix__cell cf-matrix__cell--filled">✓</div>
+                  <div class="cf-matrix__cell">?</div>
+                  
+                  <div class="cf-matrix__row-label">Pro C (new)</div>
+                  <div class="cf-matrix__cell">?</div>
+                  <div class="cf-matrix__cell">?</div>
+                  <div class="cf-matrix__cell">?</div>
+                  <div class="cf-matrix__cell">?</div>
+                </div>
+              </div>
+              
+              <div class="cf-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </div>
+              
+              <div class="cf-factorization">
+                <div class="cf-factor">
+                  <div class="cf-factor__label">Professional Embeddings</div>
+                  <div class="cf-factor__desc">Latent representation of each professional's service preferences</div>
+                </div>
+                <div class="cf-multiply">×</div>
+                <div class="cf-factor">
+                  <div class="cf-factor__label">Location Embeddings</div>
+                  <div class="cf-factor__desc">Latent representation of each geographic area</div>
+                </div>
+              </div>
+            </div>
+            
+            <p class="cf-explanation">By learning embeddings for both professionals and locations, we can predict service area scores for <strong>any professional-location pair</strong>—even for new professionals with no history. Professionals with similar colleagues, specialties, or home locations will have similar embeddings.</p>
+          </div>
+        </section>
+
+        <!-- Impact -->
+        <section class="content-section">
+          <h2 class="section-title">Impact</h2>
+          <div class="impact-grid">
+            <div class="impact-card">
+              <div class="impact-card__metric">↑ Search Relevance</div>
+              <p>Improved ranking of professionals by geographic fit, reducing out-of-area leads</p>
+            </div>
+            <div class="impact-card">
+              <div class="impact-card__metric">↓ Cold Start Gap</div>
+              <p>New professionals received relevant leads immediately via collaborative filtering</p>
+            </div>
+            <div class="impact-card">
+              <div class="impact-card__metric">↑ Lead Acceptance</div>
+              <p>Higher acceptance rates by matching homeowners with professionals who actually serve their area</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Further Reading -->
+        <section class="further-reading">
+          <h2 class="further-reading__title">Go Deeper</h2>
+          <p class="further-reading__intro">Explore the foundational techniques used in this project.</p>
+          
+          <div class="reading-cards">
+            <!-- Clustering -->
+            <a href="https://scikit-learn.org/stable/modules/clustering.html" target="_blank" rel="noopener noreferrer" class="reading-card">
+              <div class="reading-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <circle cx="19" cy="5" r="2"/>
+                  <circle cx="5" cy="19" r="2"/>
+                  <circle cx="5" cy="5" r="2"/>
+                  <circle cx="19" cy="19" r="2"/>
+                </svg>
+              </div>
+              <div class="reading-card__content">
+                <span class="reading-card__source">Scikit-learn</span>
+                <h3 class="reading-card__title">Clustering Algorithms</h3>
+                <p class="reading-card__description">Comprehensive guide to K-Means, DBSCAN, Gaussian Mixtures, and other clustering methods.</p>
+                <span class="reading-card__tag">Unsupervised Learning</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="reading-card__arrow">
+                <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              </svg>
+            </a>
+            
+            <!-- Matrix Factorization -->
+            <a href="https://developers.google.com/machine-learning/recommendation/collaborative/matrix" target="_blank" rel="noopener noreferrer" class="reading-card">
+              <div class="reading-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="3" y1="15" x2="21" y2="15"/>
+                  <line x1="9" y1="3" x2="9" y2="21"/>
+                  <line x1="15" y1="3" x2="15" y2="21"/>
+                </svg>
+              </div>
+              <div class="reading-card__content">
+                <span class="reading-card__source">Google ML Course</span>
+                <h3 class="reading-card__title">Matrix Factorization</h3>
+                <p class="reading-card__description">Learn how matrix factorization powers collaborative filtering in recommendation systems.</p>
+                <span class="reading-card__tag">Collaborative Filtering</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="reading-card__arrow">
+                <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              </svg>
+            </a>
+            
+            <!-- CBSA -->
+            <a href="https://www.census.gov/programs-surveys/metro-micro/about.html" target="_blank" rel="noopener noreferrer" class="reading-card">
+              <div class="reading-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div class="reading-card__content">
+                <span class="reading-card__source">U.S. Census Bureau</span>
+                <h3 class="reading-card__title">About CBSAs</h3>
+                <p class="reading-card__description">Understanding Core Based Statistical Areas and how they define metropolitan regions.</p>
+                <span class="reading-card__tag">Geographic Data</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="reading-card__arrow">
+                <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              </svg>
+            </a>
+            
+            <!-- Cold Start Problem -->
+            <a href="https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)" target="_blank" rel="noopener noreferrer" class="reading-card">
+              <div class="reading-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+              </div>
+              <div class="reading-card__content">
+                <span class="reading-card__source">Wikipedia</span>
+                <h3 class="reading-card__title">The Cold Start Problem</h3>
+                <p class="reading-card__description">Overview of cold start challenges in recommender systems and common solutions.</p>
+                <span class="reading-card__tag">Recommendations</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="reading-card__arrow">
+                <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              </svg>
+            </a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .article {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: var(--space-16);
+  }
+  
+  .article__background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .article__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+  }
+  
+  .article__blob--1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+    top: -10%;
+    right: -15%;
+    animation: float-slow 25s ease-in-out infinite;
+  }
+  
+  .article__blob--2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, rgba(69, 123, 157, 0.15) 0%, rgba(96, 165, 250, 0.1) 100%);
+    bottom: 10%;
+    left: -15%;
+    animation: float-slow 30s ease-in-out infinite reverse;
+  }
+  
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+  
+  .article__pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0);
+    background-size: 50px 50px;
+    opacity: 0.2;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-6);
+  }
+  
+  .article__header {
+    margin-bottom: var(--space-12);
+    text-align: center;
+  }
+  
+  .article__hero-image {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-8);
+  }
+  
+  .hero-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--color-accent);
+    box-shadow: 0 0 40px rgba(69, 183, 209, 0.3), var(--shadow-lg);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  
+  .hero-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(69, 183, 209, 0.4), var(--shadow-xl);
+  }
+  
+  .article__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+  }
+  
+  .article__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    transition: color var(--transition-base);
+  }
+  
+  .article__back:hover {
+    color: var(--color-accent);
+  }
+  
+  .article__nav-divider {
+    color: var(--color-border);
+  }
+  
+  .article__breadcrumb {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  
+  .article__tag {
+    display: inline-block;
+    background: var(--color-accent-glow);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .article__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .article__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 50%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .article__subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  
+  .article__content {
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+  
+  .article__content p {
+    margin-bottom: var(--space-6);
+  }
+  
+  .article__content strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  
+  /* Content Sections */
+  .content-section {
+    margin-bottom: var(--space-16);
+  }
+  
+  .section-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-accent);
+    display: inline-block;
+  }
+  
+  .section-intro {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+  }
+  
+  /* Challenge Cards */
+  .challenge-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+  
+  .challenge-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    text-align: center;
+  }
+  
+  .challenge-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-lg);
+    margin: 0 auto var(--space-4);
+    color: var(--color-accent);
+  }
+  
+  .challenge-card h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .challenge-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Approach Cards */
+  .approach-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  
+  .approach-card {
+    display: flex;
+    gap: var(--space-6);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    transition: border-color var(--transition-base);
+  }
+  
+  .approach-card:hover {
+    border-color: var(--color-accent);
+  }
+  
+  .approach-card__number {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--color-accent);
+    color: var(--color-bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+  }
+  
+  .approach-card__content h3 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+  
+  .approach-card__content p {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-base);
+  }
+  
+  .approach-card__content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--space-4);
+  }
+  
+  .approach-card__content li {
+    position: relative;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  
+  .approach-card__content li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+  
+  .approach-insight {
+    background: var(--color-accent-glow);
+    border-left: 3px solid var(--color-accent);
+    padding: var(--space-4);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: var(--text-sm) !important;
+    margin: 0 !important;
+  }
+  
+  /* Method Section */
+  .method-section {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+  
+  .method-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+  
+  .method-comparison {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  
+  .method-item {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+  
+  .method-item h4 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .method-item p {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+    line-height: 1.5;
+  }
+  
+  .method-formula {
+    display: block;
+    background: var(--color-bg-primary);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+  
+  .method-tradeoff {
+    font-size: var(--text-xs) !important;
+    color: var(--color-text-muted) !important;
+    margin: 0 !important;
+  }
+  
+  .method-item--highlight {
+    border-color: var(--color-accent);
+    background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-accent-glow) 100%);
+  }
+  
+  .method-item--highlight .method-tradeoff {
+    color: var(--color-accent) !important;
+    font-style: italic;
+  }
+  
+  /* CF Diagram */
+  .cf-diagram {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .cf-matrix {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    flex-shrink: 0;
+  }
+  
+  .cf-matrix__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+    text-align: center;
+  }
+  
+  .cf-matrix__grid {
+    display: grid;
+    grid-template-columns: auto repeat(4, 40px);
+    gap: 2px;
+    font-size: var(--text-xs);
+  }
+  
+  .cf-matrix__header {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-1);
+  }
+  
+  .cf-matrix__row-label {
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    padding-right: var(--space-2);
+    display: flex;
+    align-items: center;
+  }
+  
+  .cf-matrix__cell {
+    width: 40px;
+    height: 32px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+  
+  .cf-matrix__cell--filled {
+    background: var(--color-accent-glow);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  
+  .cf-arrow {
+    color: var(--color-accent);
+  }
+  
+  .cf-factorization {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  
+  .cf-factor {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    text-align: center;
+  }
+  
+  .cf-factor__label {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+    font-size: var(--text-sm);
+  }
+  
+  .cf-factor__desc {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    max-width: 150px;
+  }
+  
+  .cf-multiply {
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    font-weight: 300;
+  }
+  
+  .cf-explanation {
+    background: var(--color-bg-secondary);
+    border-left: 3px solid var(--color-accent);
+    padding: var(--space-4);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: var(--text-sm);
+    margin: 0;
+  }
+  
+  /* Impact Grid */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+  
+  .impact-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    text-align: center;
+  }
+  
+  .impact-card__metric {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+  
+  .impact-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Further Reading */
+  .further-reading {
+    margin-top: var(--space-16);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .further-reading__title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+  
+  .further-reading__intro {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    font-size: var(--text-base);
+  }
+  
+  .reading-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  
+  .reading-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+  
+  .reading-card:hover {
+    border-color: var(--color-accent);
+    background: var(--color-bg-elevated);
+    transform: translateY(-2px);
+  }
+  
+  .reading-card__icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--color-accent-glow);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+  }
+  
+  .reading-card__content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .reading-card__source {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .reading-card__title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: var(--space-1) 0 var(--space-2);
+    line-height: 1.3;
+  }
+  
+  .reading-card__description {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+    line-height: 1.5;
+  }
+  
+  .reading-card__tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+  }
+  
+  .reading-card__arrow {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: all var(--transition-base);
+  }
+  
+  .reading-card:hover .reading-card__arrow {
+    color: var(--color-accent);
+    transform: translate(2px, -2px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 900px) {
+    .challenge-cards,
+    .method-comparison,
+    .impact-grid,
+    .reading-cards {
+      grid-template-columns: 1fr;
+    }
+    
+    .approach-card {
+      flex-direction: column;
+    }
+    
+    .cf-diagram {
+      flex-direction: column;
+    }
+    
+    .cf-arrow {
+      transform: rotate(90deg);
+    }
+    
+    .cf-factorization {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      padding: var(--space-4);
+    }
+    
+    .method-section,
+    .approach-card {
+      padding: var(--space-5);
+    }
+  }
+</style>

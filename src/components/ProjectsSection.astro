@@ -45,6 +45,18 @@ const projects = [
     logo: "/logos/offerup.svg"
   },
   {
+    title: "Pro Service Area Modeling",
+    description: "Unsupervised learning system to model service areas of home service professionals on Porch.com, inferring coverage zones from sparse job location data, CBSAs, and collaborative filtering of colleague behavior.",
+    longDescription: "Built an unsupervised learning system to solve the critical problem of understanding where service professionals (electricians, plumbers, contractors) are willing to work—a key input for search ranking and lead matching in a home services marketplace. The challenge: professionals rarely explicitly define their service areas, and the data is sparse. The solution combined multiple signals: (1) CBSA (Core Based Statistical Areas) boundaries as geographic priors, (2) historical job locations to infer actual coverage patterns, (3) collaborative filtering using colleague behavior—professionals working for the same company or in similar specialties often share service area patterns. Used clustering algorithms (k-means, custom density-based clustering) to discover natural service area boundaries, and matrix factorization to propagate service area knowledge from data-rich professionals to cold-start ones. The resulting service area scores powered search ranking and lead routing, improving match quality between homeowners and nearby, relevant professionals.",
+    technologies: ["Python", "Scikit-learn", "Density-Based Clustering", "K-Means Clustering", "Matrix Factorization", "Collaborative Filtering", "Geospatial ML", "CBSA/Census Data", "PostgreSQL"],
+    impact: "Improved search relevance and lead-to-professional matching for millions of homeowner queries",
+    logo: "/logos/porch-service-areas.png",
+    logoRounded: true,
+    links: {
+      caseStudy: "/work/porch-service-areas"
+    }
+  },
+  {
     title: "User Lifetime Value Prediction",
     description: "Developed and scaled Spotify's north star metric: User-LTV (lifetime value), adopted company-wide to quantify cumulative causal impact and perform financial scenario analysis on long-term retention. Featured at Investor Day 2022 by Head of ML Tony Jebara.",
     longDescription: "Led the development of an end-to-end user Lifetime Value (LTV) modeling system to predict long-term user contribution under uncertainty and sparse early-life signals. The project involved defining a rigorous LTV framework, engineering behavioral and temporal features across the user lifecycle, and training scalable ML models that balanced predictive accuracy, interpretability, and operational stability. The outputs were integrated into downstream decision systems—informing personalization strategies, experimentation prioritization, and resource allocation—while accounting for delayed outcomes and changing user behavior over time. This work shifted decision-making from short-term engagement metrics to long-horizon value, aligning product and business strategy around sustainable growth. Featured at Investor Day 2022 by Head of ML Tony Jebara.",
@@ -75,10 +87,10 @@ const projects = [
   },
   {
     title: "Healthcare Fraud Detection Platform",
-    description: "One of the first projects in my career: designed and built a production ML platform using Java and Python for healthcare fraud detection that secured a major contract to build the fraud detection component of a statewide Healthcare Information Exchange (HIE).",
-    longDescription: "Built custom ML libraries from scratch in the pre-TensorFlow/PyTorch era when even Scikit-learn was in early stages. The platform analyzed claims data, provider patterns, and beneficiary behavior to identify fraudulent billing and improper payments across a multi-state healthcare network. Designed and implemented custom ML algorithms and libraries before modern frameworks existed, built scalable data pipelines to process millions of healthcare claims, developed anomaly detection models for provider billing patterns, and created interpretable models to support fraud investigation workflows.",
-    technologies: ["Java", "Python", "Custom ML Libraries", "Healthcare Fraud Detection", "Claims Analysis", "Healthcare Information Exchange (HIE)", "Feature Engineering"],
-    impact: "Secured major statewide HIE contract",
+    description: "One of the first projects in my career: designed and built a production ML platform using Java and Python for healthcare fraud detection that secured a major contract to build the fraud detection component of a national Federal Healthcare Information Exchange.",
+    longDescription: "Built custom ML libraries from scratch in the pre-TensorFlow/PyTorch era when even Scikit-learn was in early stages. The platform analyzed claims data, provider patterns, and beneficiary behavior to identify fraudulent billing and improper payments across the federal healthcare network. Designed and implemented custom ML algorithms and libraries before modern frameworks existed, built scalable data pipelines to process millions of healthcare claims, developed anomaly detection models for provider billing patterns, and created interpretable models to support fraud investigation workflows.",
+    technologies: ["Java", "Python", "Custom ML Libraries", "Healthcare Fraud Detection", "Claims Analysis", "Federal Healthcare Exchange", "Feature Engineering"],
+    impact: "Secured major federal healthcare exchange contract",
     logo: "/logos/healthcare-fraud.svg"
   },
   {
