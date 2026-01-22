@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://code.mulloymorrow.com',
+  site: 'https://mulloymorrow.com',
   outDir: './docs',
   integrations: [svelte(), sitemap()],
   build: {
