@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getTechWikiUrl } from '../utils/techLinks';
+  import PingPongVideo from './PingPongVideo.svelte';
 
   interface PhaseLink {
     label: string;
@@ -13,6 +14,7 @@
     description: string;
     achievements: string[];
     link?: PhaseLink;
+    links?: (PhaseLink & { icon?: string; external?: boolean })[];
   }
 
   interface Experience {
@@ -27,7 +29,7 @@
     isCurrent?: boolean;
     badgeText?: string; // Optional badge to display next to company name (e.g., "Side Quest", "Consulting")
     logo?: string;
-    links?: { label: string; url: string }[]; // Optional links to display in expanded section // Path to logo image (relative to public folder, e.g., "/logos/company.png")
+    links?: { label: string; url: string; icon?: string }[]; // Optional links to display in expanded section // Path to logo image (relative to public folder, e.g., "/logos/company.png")
     phases?: Phase[]; // Optional sub-sections within the experience
   }
 
@@ -195,12 +197,18 @@
         {#if experience.links && experience.links.length > 0}
           <div class="timeline-links">
             {#each experience.links as link}
-              <a href={link.url} target="_blank" rel="noopener noreferrer" class="timeline-link-btn" on:click|stopPropagation>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
+              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''}" on:click|stopPropagation>
+                {#if link.icon === 'ai'}
+                  <span class="timeline-link-btn__video">
+                    <PingPongVideo src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
+                  </span>
+                {:else}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                {/if}
                 {link.label}
               </a>
             {/each}
@@ -647,6 +655,35 @@
 
   .timeline-link-btn svg {
     flex-shrink: 0;
+  }
+  
+  .timeline-link-btn--ai {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .timeline-link-btn--ai:hover {
+    background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
+    box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+  
+  .timeline-link-btn__video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .timeline-link-btn__video :global(.ai-mulloy-video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.5);
   }
 
   .timeline-tech {

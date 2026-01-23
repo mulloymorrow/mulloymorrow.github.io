@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { getTechWikiUrl } from '../utils/techLinks';
+  import PingPongVideo from './PingPongVideo.svelte';
   
   interface Project {
     title: string;
@@ -14,6 +15,7 @@
       article?: string;
       caseStudy?: string;
       vision?: string;
+      aiMulloy?: string;
     };
     featured?: boolean;
     logo?: string;
@@ -264,6 +266,14 @@
                   <line x1="12" y1="17" x2="12" y2="21"/>
                 </svg>
                 Case Study
+              </a>
+            {/if}
+            {#if project.links.aiMulloy}
+              <a href={project.links.aiMulloy} class="project-link project-link--ai-mulloy" on:click|stopPropagation>
+                <span class="project-link__video">
+                  <PingPongVideo src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
+                </span>
+                ai-Mulloy
               </a>
             {/if}
           </div>
@@ -640,6 +650,36 @@
   .project-link--case-study:hover {
     background: var(--color-accent);
     color: var(--color-bg-primary);
+  }
+  
+  .project-link--ai-mulloy {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .project-link--ai-mulloy:hover {
+    background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
+    color: var(--color-bg-primary);
+    box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+  
+  .project-link__video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .project-link__video :global(.ai-mulloy-video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.5);
   }
   
   .project-expand {

@@ -1,6 +1,7 @@
 ---
 import SocialLinks from './SocialLinks.astro';
 import CursorReveal from './CursorReveal.svelte';
+import PingPongVideo from './PingPongVideo.svelte';
 ---
 
 <section class="hero" id="top">
@@ -31,7 +32,11 @@ import CursorReveal from './CursorReveal.svelte';
     </p>
     
     <div class="hero__cta animate-on-scroll delay-4">
-      <SocialLinks size="lg" exclude={['Telegram']} />
+      <SocialLinks size="lg" exclude={['Telegram']}>
+        <a href="/ai-mulloy/" class="ai-mulloy-link" title="Chat with AI-Mulloy">
+          <PingPongVideo client:load src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
+        </a>
+      </SocialLinks>
     </div>
     
     <a href="#experience" class="hero__scroll-indicator animate-on-scroll delay-5" aria-label="Scroll to experience">
@@ -242,6 +247,31 @@ import CursorReveal from './CursorReveal.svelte';
     .hero__scroll-indicator {
       display: none;
     }
+  }
+  
+  /* AI-Mulloy video link in social links */
+  .ai-mulloy-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 0 0 1.5px var(--color-border);
+  }
+  
+  .ai-mulloy-link:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 0 12px var(--color-accent-glow), 0 0 0 1.5px var(--color-accent);
+  }
+  
+  .ai-mulloy-link :global(.ai-mulloy-video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.5);
   }
   
   /* Secret 'w' button - looks like normal text */

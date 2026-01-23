@@ -56,8 +56,8 @@
       <a href="/" class="nav-link" role="menuitem" onclick={close}>
         <span>Home</span>
       </a>
-      <a href="/philosophy" class="nav-link" role="menuitem" onclick={close}>
-        <span>Philosophy</span>
+      <a href="/ai-mulloy/" class="nav-link" role="menuitem" onclick={close}>
+        <span>ai-Mulloy</span>
       </a>
       <a href="/blog" class="nav-link" role="menuitem" onclick={close}>
         <span>Blog</span>
