@@ -107,6 +107,25 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
           </button>
         </div>
       </section>
+      
+      <section class="ai-mulloy__cta">
+        <div class="ai-mulloy__cta-content">
+          <h2>Create Your Own AI Surrogate</h2>
+          <p>
+            Want your own ai-You? Connection Companion lets you create a personalized AI surrogate 
+            that represents you—trained on your background, expertise, and perspectives.
+          </p>
+          <a href="https://connectioncompanion.com/beta" target="_blank" rel="noopener noreferrer" class="ai-mulloy__cta-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            Join the Private Beta
+          </a>
+        </div>
+      </section>
     </div>
   </main>
   <Footer />
@@ -331,6 +350,68 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     transition: color var(--transition-base);
   }
   
+  /* CTA Section */
+  .ai-mulloy__cta {
+    margin-top: var(--space-16);
+    text-align: center;
+  }
+  
+  .ai-mulloy__cta-content {
+    background: linear-gradient(135deg, var(--color-bg-surface) 0%, var(--color-bg-elevated) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10) var(--space-8);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .ai-mulloy__cta-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  }
+  
+  .ai-mulloy__cta h2 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .ai-mulloy__cta p {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 500px;
+    margin: 0 auto var(--space-6);
+    line-height: 1.6;
+  }
+  
+  .ai-mulloy__cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    font-weight: 600;
+    font-size: var(--text-base);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+  
+  .ai-mulloy__cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--color-accent-glow);
+  }
+  
   @media (max-width: 768px) {
     .ai-mulloy-page {
       padding: var(--space-4) 0 var(--space-12);
@@ -342,6 +423,10 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     
     .ai-mulloy__topics {
       grid-template-columns: 1fr;
+    }
+    
+    .ai-mulloy__cta-content {
+      padding: var(--space-8) var(--space-6);
     }
   }
 </style>
