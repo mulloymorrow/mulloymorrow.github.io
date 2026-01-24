@@ -436,19 +436,30 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     const iframe = document.getElementById('ai-mulloy-iframe') as HTMLIFrameElement;
     const topicButtons = document.querySelectorAll('.ai-mulloy__topic[data-prompt]');
     
+    function sendPromptToChat(prompt: string) {
+      if (!iframe?.contentWindow) return;
+      
+      // Send postMessage to the Connection Companion embed
+      // The embed listens for 'set-input' to pre-fill the input field
+      // Use 'send-message' instead if you want to auto-submit the message
+      iframe.contentWindow.postMessage({
+        type: 'set-input',
+        text: prompt
+      }, 'https://connectioncompanion.com');
+    }
+    
     topicButtons.forEach(button => {
       button.addEventListener('click', () => {
         const prompt = button.getAttribute('data-prompt');
-        if (prompt && iframe && iframe.contentWindow) {
-          // Send message to iframe to populate and submit the prompt
-          iframe.contentWindow.postMessage({
-            type: 'setPrompt',
-            prompt: prompt
-          }, 'https://connectioncompanion.com');
-          
-          // Scroll to the iframe
-          iframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        if (!prompt || !iframe) return;
+        
+        // Scroll to the iframe
+        iframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Send the prompt - with a small delay to ensure scroll has started
+        setTimeout(() => {
+          sendPromptToChat(prompt);
+        }, 300);
       });
     });
   });
