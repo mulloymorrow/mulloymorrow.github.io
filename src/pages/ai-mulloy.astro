@@ -34,30 +34,15 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
       </header>
       
       <div class="ai-mulloy__embed-container">
-        <div class="ai-mulloy__embed-wrapper" id="ai-mulloy-embed-wrapper">
-          <script is:inline>
-            (function() {
-              var getTheme = function() {
-                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-              };
-              
-              var iframe = document.createElement('iframe');
-              iframe.id = 'ai-mulloy-iframe';
-              iframe.src = 'https://connectioncompanion.com/embed/661ce076-81c5-416d-916a-de486c2ca6a4?theme=' + getTheme() + '&token=dfefb5f0cf9d8f02dbebc49bff79c5db50640b4e5ace94f9c34c92e3c6637805&inputStyle=integrated';
-              iframe.className = 'ai-mulloy__iframe';
-              iframe.allow = 'clipboard-read; clipboard-write';
-              iframe.title = 'Chat with AI-Mulloy';
-              
-              var container = document.currentScript.parentElement;
-              container.insertBefore(iframe, document.currentScript);
-              
-              // Listen for system theme changes and notify the embed
-              window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-                var newTheme = e.matches ? 'dark' : 'light';
-                iframe.contentWindow.postMessage({ type: 'theme-change', theme: newTheme }, 'https://connectioncompanion.com');
-              });
-            })();
-          </script>
+        <div class="ai-mulloy__embed-wrapper">
+          <iframe 
+            id="ai-mulloy-iframe"
+            src="https://connectioncompanion.com/embed/661ce076-81c5-416d-916a-de486c2ca6a4?theme=system&token=dfefb5f0cf9d8f02dbebc49bff79c5db50640b4e5ace94f9c34c92e3c6637805&inputStyle=integrated"
+            class="ai-mulloy__iframe"
+            allow="clipboard-read; clipboard-write"
+            title="Chat with AI-Mulloy"
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
       
@@ -273,7 +258,6 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     width: 100%;
     max-width: 600px;
     aspect-ratio: 4/3;
-    min-height: 450px;
     margin: 0 auto;
   }
   
@@ -283,15 +267,6 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     border: none;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-  
-  /* Taller on mobile for better chat experience */
-  @media (max-width: 600px) {
-    .ai-mulloy__embed-wrapper {
-      aspect-ratio: 3/4;
-      min-height: 500px;
-      max-height: 70vh;
-    }
   }
   
   /* Fullscreen mode */
