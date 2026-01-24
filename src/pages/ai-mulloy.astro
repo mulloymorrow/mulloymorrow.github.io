@@ -269,6 +269,31 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
   
+  /* Fullscreen mode */
+  .ai-mulloy__embed-container--fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    margin: 0;
+    padding: var(--space-4);
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ai-mulloy__embed-container--fullscreen .ai-mulloy__embed-wrapper {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: unset;
+  }
+  
+  .ai-mulloy__embed-container--fullscreen .ai-mulloy__iframe {
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  
   .ai-mulloy__info {
     text-align: center;
   }
@@ -424,6 +449,7 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const iframe = document.getElementById('ai-mulloy-iframe') as HTMLIFrameElement;
+    const embedContainer = document.querySelector('.ai-mulloy__embed-container') as HTMLElement;
     const topicButtons = document.querySelectorAll('.ai-mulloy__topic[data-prompt]');
     
     function sendPromptToChat(prompt: string) {
@@ -437,6 +463,34 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
         text: prompt
       }, 'https://connectioncompanion.com');
     }
+    
+    // Listen for fullscreen toggle from the embed
+    window.addEventListener('message', (event) => {
+      // Only accept messages from Connection Companion
+      if (!event.origin.includes('connectioncompanion.com')) return;
+      
+      if (event.data?.type === 'fullscreen-change') {
+        if (event.data.isFullscreen) {
+          embedContainer?.classList.add('ai-mulloy__embed-container--fullscreen');
+          document.body.style.overflow = 'hidden';
+        } else {
+          embedContainer?.classList.remove('ai-mulloy__embed-container--fullscreen');
+          document.body.style.overflow = '';
+        }
+      }
+    });
+    
+    // Handle escape key to exit fullscreen
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && embedContainer?.classList.contains('ai-mulloy__embed-container--fullscreen')) {
+        embedContainer.classList.remove('ai-mulloy__embed-container--fullscreen');
+        document.body.style.overflow = '';
+        // Notify embed that fullscreen was exited
+        iframe?.contentWindow?.postMessage({
+          type: 'exit-fullscreen'
+        }, 'https://connectioncompanion.com');
+      }
+    });
     
     topicButtons.forEach(button => {
       button.addEventListener('click', () => {
