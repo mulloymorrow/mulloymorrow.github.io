@@ -65,7 +65,7 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
         <h2>What is ai-Mulloy?</h2>
         <p class="ai-mulloy__info-intro">
           ai-Mulloy is an AI surrogate—a conversational representation of Mulloy trained on his background, 
-          expertise, and perspectives. Click any topic below to start a conversation.
+          expertise, and perspectives. <strong class="ai-mulloy__cta-highlight">Click any topic below</strong> to start a conversation.
         </p>
         <div class="ai-mulloy__topics">
           <button class="ai-mulloy__topic" data-prompt="Tell me about Mulloy's background. How did he get into AI and machine learning?">
@@ -292,9 +292,9 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
   /* Taller on mobile for better chat experience */
   @media (max-width: 600px) {
     .ai-mulloy__embed-wrapper {
-      height: 70vh;
-      min-height: 450px;
-      max-height: 600px;
+      height: 85vh;
+      min-height: 500px;
+      max-height: 750px;
     }
   }
   
@@ -340,6 +340,11 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     max-width: 600px;
     margin: 0 auto var(--space-8);
     line-height: 1.6;
+  }
+  
+  .ai-mulloy__cta-highlight {
+    color: var(--color-text-primary);
+    font-weight: 600;
   }
   
   .ai-mulloy__topics {
