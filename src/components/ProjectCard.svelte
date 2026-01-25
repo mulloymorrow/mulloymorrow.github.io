@@ -230,7 +230,7 @@
               </a>
             {/if}
             {#if project.links.vision}
-              <a href={project.links.vision} target="_blank" rel="noopener noreferrer" class="project-link" on:click|stopPropagation>
+              <a href={project.links.vision} target="_blank" rel="noopener noreferrer" class="project-link project-link--vision" on:click|stopPropagation>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                   <circle cx="12" cy="12" r="3"/>
@@ -650,6 +650,18 @@
   .project-link--case-study:hover {
     background: var(--color-accent);
     color: var(--color-bg-primary);
+  }
+  
+  .project-link--vision {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .project-link--vision:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: var(--color-bg-primary);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
   }
   
   .project-link--ai-mulloy {

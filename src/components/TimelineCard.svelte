@@ -197,11 +197,16 @@
         {#if experience.links && experience.links.length > 0}
           <div class="timeline-links">
             {#each experience.links as link}
-              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''}" on:click|stopPropagation>
+              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''} {link.icon === 'vision' ? 'timeline-link-btn--vision' : ''}" on:click|stopPropagation>
                 {#if link.icon === 'ai'}
                   <span class="timeline-link-btn__video">
                     <PingPongVideo src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
                   </span>
+                {:else if link.icon === 'vision'}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
                 {:else}
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -666,6 +671,17 @@
   .timeline-link-btn--ai:hover {
     background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
     box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+  
+  .timeline-link-btn--vision {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .timeline-link-btn--vision:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
   }
   
   .timeline-link-btn__video {
