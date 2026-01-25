@@ -28,7 +28,7 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
         <div class="ai-mulloy__badge">AI Surrogate</div>
         <h1 class="ai-mulloy__title">Chat with AI-Mulloy</h1>
         <p class="ai-mulloy__subtitle">
-          Have a conversation with my AI surrogate. Ask about my experience building ML systems, 
+          Have a conversation with my AI surrogate and <a href="https://connectioncompanion.com/beta" target="_blank" rel="noopener noreferrer" class="ai-mulloy__beta-link">join my private beta</a> to create your own! Ask about my experience building ML systems, 
           my philosophy on human-centered AI, or explore potential collaborations.
         </p>
       </header>
@@ -263,6 +263,17 @@ const description = "Have a conversation with my AI surrogate. Ask about my expe
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
+  }
+  
+  .ai-mulloy__beta-link {
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity var(--transition-base);
+  }
+  
+  .ai-mulloy__beta-link:hover {
+    opacity: 0.8;
   }
   
   .ai-mulloy__embed-container {
