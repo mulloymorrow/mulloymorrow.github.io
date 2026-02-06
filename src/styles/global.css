@@ -160,9 +160,16 @@ body {
   background-image: var(--gradient-bg);
   background-attachment: fixed;
   min-height: 100vh;
-  transition: 
+  transition:
     background-color var(--theme-transition),
     color var(--theme-transition);
+}
+
+/* Safari iOS: fixed background can cause performance/rendering issues on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 /* Theme transition for all color-dependent elements */
