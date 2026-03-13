@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
+  import SquadFormationDiagram from './SquadFormationDiagram.svelte';
 
   interface PhaseLink {
     label: string;
@@ -29,8 +30,9 @@
     isCurrent?: boolean;
     badgeText?: string; // Optional badge to display next to company name (e.g., "Side Quest", "Consulting")
     logo?: string;
-    links?: { label: string; url: string; icon?: string }[]; // Optional links to display in expanded section // Path to logo image (relative to public folder, e.g., "/logos/company.png")
-    phases?: Phase[]; // Optional sub-sections within the experience
+    links?: { label: string; url: string; icon?: string }[];
+    phases?: Phase[];
+    showSquadDiagram?: boolean;
   }
 
   export let experience: Experience;
@@ -108,7 +110,17 @@
         </div>
       </div>
       
-      <p class="timeline-summary">{experience.summary}</p>
+      {#if experience.showSquadDiagram}
+        <div class="timeline-summary-with-diagram">
+          <p class="timeline-summary">{experience.summary}</p>
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+            <SquadFormationDiagram />
+          </div>
+        </div>
+      {:else}
+        <p class="timeline-summary">{experience.summary}</p>
+      {/if}
       
       <div class="timeline-expand-hint">
         <span>{isExpanded ? 'Click to collapse' : 'Click to expand'}</span>
@@ -418,6 +430,30 @@
     margin: 0;
   }
   
+  .timeline-summary-with-diagram {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-top: 0.75rem;
+  }
+
+  .timeline-summary-with-diagram .timeline-summary {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  .timeline-diagram {
+    flex: 1.2;
+    min-width: 0;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-summary-with-diagram {
+      flex-direction: column;
+    }
+  }
+
   .timeline-summary {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
