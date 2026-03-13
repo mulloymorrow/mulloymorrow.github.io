@@ -12,7 +12,7 @@ interface Props {
 const { 
   title = "Mulloy Morrow | Director / Head of AI & Machine Learning",
   description = "AI & Machine Learning leader with 15+ years of experience spanning consumer tech, healthcare, legal tech, and environmental applications. Former Spotify ML leader building research-driven systems for hundreds of millions of users. Now founding human-centered AI products.",
-  canonicalUrl = "https://code.mulloymorrow.com",
+  canonicalUrl = Astro.url.href,
   ogType = "website",
   ogImage = "https://mulloymorrow.com/android-chrome-512x512.png"
 } = Astro.props;

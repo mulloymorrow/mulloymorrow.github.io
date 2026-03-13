@@ -20,7 +20,7 @@ const { Content } = await post.render();
 
 const title = `${post.data.title} | Mulloy Morrow`;
 const description = post.data.description;
-const canonicalUrl = `https://code.mulloymorrow.com/blog/${post.slug}/`;
+const canonicalUrl = new URL(`/blog/${post.slug}/`, Astro.site).toString();
 
 const formattedDate = post.data.publishedAt.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -45,7 +45,7 @@ const articleSchema = {
   "author": {
     "@type": "Person",
     "name": "Mulloy Morrow",
-    "url": "https://code.mulloymorrow.com",
+    "url": Astro.site?.toString() ?? "https://mulloymorrow.com",
     "jobTitle": "Director / Head of AI & Machine Learning",
     "sameAs": [
       "https://linkedin.com/in/mulloymorrow",
