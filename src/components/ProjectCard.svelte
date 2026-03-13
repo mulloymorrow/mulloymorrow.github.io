@@ -121,54 +121,64 @@
     on:keydown={handleCardKeydown}
     aria-expanded={isExpanded}
   >
-    <div class="project-header">
-      {#if project.logo}
-        {@const isEmoji = !project.logo.startsWith('/') && !project.logo.startsWith('http')}
-        {#if isEmoji}
-          <span class="project-emoji" aria-label="{project.title} icon">{project.logo}</span>
-        {:else if project.gallery && project.gallery.length > 0}
-          <!-- svelte-ignore a11y_no_static_element_interactions -->
-          <span 
-            class="project-logo-button"
-            role="button"
-            tabindex="0"
-            on:click={openGallery}
-            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openGallery(e as unknown as MouseEvent); } }}
-            title="Click to view gallery"
-          >
+    {#if project.showSquadDiagram}
+      <!-- Diagram is the hero visual — shown before title -->
+      <div class="project-diagram" on:click|stopPropagation on:keydown|stopPropagation role="presentation">
+        <SquadFormationDiagram />
+      </div>
+      <div class="project-header project-header--diagram">
+        {#if project.featured}<span class="project-badge">Featured</span>{/if}
+      </div>
+    {:else}
+      <div class="project-header">
+        {#if project.logo}
+          {@const isEmoji = !project.logo.startsWith('/') && !project.logo.startsWith('http')}
+          {#if isEmoji}
+            <span class="project-emoji" aria-label="{project.title} icon">{project.logo}</span>
+          {:else if project.gallery && project.gallery.length > 0}
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <span 
+              class="project-logo-button"
+              role="button"
+              tabindex="0"
+              on:click={openGallery}
+              on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openGallery(e as unknown as MouseEvent); } }}
+              title="Click to view gallery"
+            >
+              <img 
+                src={project.logo} 
+                alt="{project.title} logo" 
+                class="project-logo project-logo--clickable"
+              />
+              <span class="gallery-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                {project.gallery.length}
+              </span>
+            </span>
+          {:else}
             <img 
               src={project.logo} 
               alt="{project.title} logo" 
-              class="project-logo project-logo--clickable"
+              class="project-logo {project.logoRounded ? 'project-logo--rounded' : ''}"
             />
-            <span class="gallery-indicator">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              {project.gallery.length}
-            </span>
-          </span>
+          {/if}
         {:else}
-          <img 
-            src={project.logo} 
-            alt="{project.title} logo" 
-            class="project-logo {project.logoRounded ? 'project-logo--rounded' : ''}"
-          />
+          <div class="project-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
         {/if}
-      {:else}
-        <div class="project-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-          </svg>
-        </div>
-      {/if}
-      
-      {#if project.featured}
-        <span class="project-badge">Featured</span>
-      {/if}
-    </div>
+        
+        {#if project.featured}
+          <span class="project-badge">Featured</span>
+        {/if}
+      </div>
+    {/if}
     
     <h3 class="project-title">{project.title}</h3>
     <p class="project-description">{project.description}</p>
@@ -291,9 +301,6 @@
           </div>
         {/if}
 
-        {#if project.showSquadDiagram}
-          <SquadFormationDiagram />
-        {/if}
       </div>
     {/if}
     
@@ -454,11 +461,29 @@
     border-left: 3px solid var(--color-accent);
   }
   
+  .project-diagram {
+    margin: -1.5rem -1.5rem 1rem -1.5rem;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    overflow: hidden;
+  }
+
+  .project-diagram :global(.padel-flow) {
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    background: var(--color-bg-hover);
+  }
+
   .project-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1rem;
+  }
+
+  .project-header--diagram {
+    margin-bottom: 0.5rem;
+    min-height: 0;
   }
   
   .project-icon {
