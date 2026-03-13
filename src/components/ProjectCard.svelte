@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
+  import SquadFormationDiagram from './SquadFormationDiagram.svelte';
   
   interface Project {
     title: string;
@@ -16,11 +17,13 @@
       caseStudy?: string;
       vision?: string;
       aiMulloy?: string;
+      blog?: string;
     };
     featured?: boolean;
     logo?: string;
     logoRounded?: boolean;
     gallery?: { src: string; caption: string }[];
+    showSquadDiagram?: boolean;
   }
 
   export let project: Project;
@@ -276,7 +279,20 @@
                 ai-Mulloy
               </a>
             {/if}
+            {#if project.links.blog}
+              <a href={project.links.blog} target="_blank" rel="noopener noreferrer" class="project-link project-link--blog" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                Blog Post
+              </a>
+            {/if}
           </div>
+        {/if}
+
+        {#if project.showSquadDiagram}
+          <SquadFormationDiagram />
         {/if}
       </div>
     {/if}
@@ -674,6 +690,17 @@
     background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
     color: var(--color-bg-primary);
     box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+
+  .project-link--blog {
+    border-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+  }
+
+  .project-link--blog:hover {
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+    background: var(--color-bg-hover);
   }
   
   .project-link__video {
