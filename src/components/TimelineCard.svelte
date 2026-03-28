@@ -2,6 +2,7 @@
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
   import SquadFormationDiagram from './SquadFormationDiagram.svelte';
+  import LumiMessagingDemo from './LumiMessagingDemo.svelte';
 
   interface PhaseLink {
     label: string;
@@ -31,8 +32,10 @@
     badgeText?: string; // Optional badge to display next to company name (e.g., "Side Quest", "Consulting")
     logo?: string;
     links?: { label: string; url: string; icon?: string }[];
+    pinnedLink?: { label: string; url: string; icon?: string; external?: boolean };
     phases?: Phase[];
     showSquadDiagram?: boolean;
+    showLumiDemo?: boolean;
   }
 
   export let experience: Experience;
@@ -110,7 +113,15 @@
         </div>
       </div>
       
-      {#if experience.showSquadDiagram}
+      {#if experience.showLumiDemo}
+        <div class="timeline-summary-with-diagram">
+          <p class="timeline-summary">{experience.summary}</p>
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+            <LumiMessagingDemo />
+          </div>
+        </div>
+      {:else if experience.showSquadDiagram}
         <div class="timeline-summary-with-diagram">
           <p class="timeline-summary">{experience.summary}</p>
           <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -122,6 +133,34 @@
         <p class="timeline-summary">{experience.summary}</p>
       {/if}
       
+      {#if experience.pinnedLink}
+        <div class="timeline-pinned-link">
+          <a
+            href={experience.pinnedLink.url}
+            target={experience.pinnedLink.external === false ? '_self' : '_blank'}
+            rel={experience.pinnedLink.external === false ? '' : 'noopener noreferrer'}
+            class="pinned-link-btn"
+            on:click|stopPropagation
+          >
+            {#if experience.pinnedLink.icon === 'document'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            {:else}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            {/if}
+            {experience.pinnedLink.label}
+          </a>
+        </div>
+      {/if}
+
       <div class="timeline-expand-hint">
         <span>{isExpanded ? 'Click to collapse' : 'Click to expand'}</span>
         <svg 
@@ -446,11 +485,21 @@
   .timeline-diagram {
     flex: 1.2;
     min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* For the phone-frame Lumi demo, center it and don't force-stretch */
+  .timeline-diagram :global(.lumi-phone) {
+    flex-shrink: 0;
   }
 
   @media (max-width: 640px) {
     .timeline-summary-with-diagram {
       flex-direction: column;
+    }
+    .timeline-diagram {
+      width: 100%;
     }
   }
 
@@ -461,6 +510,38 @@
     line-height: 1.6;
   }
   
+  .timeline-pinned-link {
+    margin-top: 0.75rem;
+  }
+
+  .pinned-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.875rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: var(--color-bg-hover);
+    border: 1px solid var(--color-border-hover);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .pinned-link-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px var(--color-accent-glow);
+  }
+
+  .pinned-link-btn svg {
+    flex-shrink: 0;
+  }
+
   .timeline-expand-hint {
     display: flex;
     align-items: center;

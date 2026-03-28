@@ -3,6 +3,7 @@
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
   import SquadFormationDiagram from './SquadFormationDiagram.svelte';
+  import LumiMessagingDemo from './LumiMessagingDemo.svelte';
   
   interface Project {
     title: string;
@@ -24,6 +25,7 @@
     logoRounded?: boolean;
     gallery?: { src: string; caption: string }[];
     showSquadDiagram?: boolean;
+    showLumiDemo?: boolean;
   }
 
   export let project: Project;
@@ -172,7 +174,12 @@
     
     <h3 class="project-title">{project.title}</h3>
 
-    {#if project.showSquadDiagram}
+    {#if project.showLumiDemo}
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div class="project-inline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+        <LumiMessagingDemo />
+      </div>
+    {:else if project.showSquadDiagram}
       <!-- Diagram sits inline in the card body, replacing the short description -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div class="project-inline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
@@ -182,7 +189,7 @@
       <p class="project-description">{project.description}</p>
     {/if}
     
-    {#if !project.showSquadDiagram}
+    {#if !project.showSquadDiagram && !project.showLumiDemo}
       <div class="project-tech">
         {#each project.technologies.slice(0, 4) as tech}
           <a 
@@ -465,6 +472,8 @@
   .project-inline-diagram {
     margin-bottom: 1rem;
     flex-shrink: 0;
+    display: flex;
+    justify-content: center;
   }
 
   .project-header {

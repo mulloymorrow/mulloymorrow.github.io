@@ -10,15 +10,56 @@ const experiences = [
     period: "April 2025 - Present",
     location: "Remote",
     summary: "Founder and AI architect for a human-centered agentic-AI consumer platform focused on augmenting real-world human connection.",
-    highlights: [
-      "Leading end-to-end system design including model architecture, data pipelines, evaluation strategy, and deployment",
-      "Building privacy-aware, human-in-the-loop ML systems",
-      "Operating in private beta with early users"
+    highlights: [],
+    phases: [
+      {
+        title: "Vibe-Based Recommendation Engine",
+        description: "Built a dual-signal compatibility model for 1:1 and group activity matching. Inner Compass measures interpretive convergence — how similarly two people construct meaning from ambiguous situations — and Seeker Type captures motivational alignment, producing 42 unique Vibe combinations. Squad formation extends this to groups, blending pairwise compatibility, skill calibration, and availability overlap.",
+        achievements: [
+          "Compatibility model grounded in shared-reality research (Rossignac-Milon 2023) — interpretive convergence predicts attraction more reliably than any trait-based questionnaire",
+          "Scenario-driven profiling (Quick Reads) measures how users interpret ambiguous situations rather than self-reported traits, producing implicit signals that diverge meaningfully from stated preferences",
+          "Squad formation engine scores chemistry, level fit, pairwise embedding similarity via Vertex AI Vector Search, and Google Calendar overlap to auto-book 4-player padel groups",
+          "Vibe Garden discovery surface ranked by values alignment and interpretive convergence — not follower count or engagement, optimizing for actual mutual fit"
+        ],
+        links: [
+          { label: "How You See the World", url: "https://connectioncompanion.com/blog/how-you-see-the-world", external: true },
+          { label: "Find Your People", url: "https://connectioncompanion.com/blog/find-your-people", external: true }
+        ]
+      },
+      {
+        title: "Real-Time Environmental Suitability Engine",
+        description: "Weather and environmental conditions are first-class scheduling inputs. For weather-dependent activities, the engine folds live weather, UV index, wind speed, precipitation probability, and surface conditions into every scheduling decision — proposing sessions only in suitable windows and surfacing indoor alternatives automatically when conditions fall outside acceptable thresholds.",
+        achievements: [
+          "Real-time weather and environmental data integration gates outdoor activity proposals on suitability, not just availability",
+          "Automatic indoor venue fallback triggered when outdoor conditions breach comfort or safety thresholds",
+          "Context-aware notifications explain why a session moved or surface upcoming ideal windows — reducing cancellation friction",
+          "Longevity-informed activity recommendations: socially embedded, interval-format activities (racket sports, running) prioritized based on cardiovascular health research"
+        ],
+        links: [
+          { label: "Play Padel, Live Longer", url: "https://connectioncompanion.com/blog/padel-social-happenings", external: true },
+          { label: "Beyond Chronological Age", url: "https://connectioncompanion.com/blog/beyond-chronological-age", external: true }
+        ]
+      },
+      {
+        title: "Reflection Rewards — Unlocking Premium AI Through Engagement",
+        description: "Engagement depth progressively unlocks richer AI capabilities, creating a virtuous cycle: reflection and activity participation produce a richer self-knowledge profile, which powers higher-quality matches and deeper connections, which motivates more reflection. The default is privacy-first — the AI surrogate requires an explicit Memory Review gate before going public, giving users full control over what it can say.",
+        achievements: [
+          "Progressive UX unlocks tied to reflection depth — scenario completions, values assessments, and activity participation gate premium AI features including the AI surrogate and Mutual Must-Meets",
+          "AI surrogate powered by accumulated self-knowledge with a privacy-first Memory Review gate: a daily Privacy AI red-teams memories for sensitivity, surfacing flags for user review before the surrogate becomes publicly shareable",
+          "Decision journal pattern recognition surfaces recurring relationship cycles the user can't see from inside them — behavioral change through awareness, not willpower",
+          "Oura Ring cardiovascular age integration connects health investment to social profile, making longevity a shared, opt-in social signal rather than a private metric"
+        ],
+        links: [
+          { label: "Your AI, Your Rules", url: "https://connectioncompanion.com/blog/ai-memory-review", external: true },
+          { label: "Real-World Value", url: "https://connectioncompanion.com/blog/real-world-value", external: true },
+          { label: "Habit Formation", url: "https://connectioncompanion.com/blog/recurring-padel-habits", external: true }
+        ]
+      }
     ],
-    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Cloud Infrastructure"],
+    technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Embeddings", "Weather APIs", "Oura API", "Cloud Run", "Firestore", "Pub/Sub", "Cloud Infrastructure"],
     isCurrent: true,
     logo: "/logos/stealth-ai.png",
-    showSquadDiagram: true,
+    showLumiDemo: true,
     links: [
       { label: "Vision", url: "https://connectioncompanion.com/vision", icon: "vision" },
       { label: "Blog", url: "https://connectioncompanion.com/blog", icon: "blog" },
@@ -109,7 +150,8 @@ const experiences = [
     ],
     technologies: ["Python", "TensorFlow", "GCP", "Scala", "Transformers", "Two-Tower Models", "Wide-and-Deep", "Apache Beam", "BigQuery", "Kubernetes"],
     isCurrent: false,
-    logo: "/logos/spotify.png"
+    logo: "/logos/spotify.png",
+    pinnedLink: { label: "Case Study", url: "/work/spotify-presentation/", icon: "document", external: false }
   },
   {
     company: "Compass Real Estate",
