@@ -2,6 +2,8 @@
   import { onMount, onDestroy } from 'svelte';
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
+  import SquadFormationDiagram from './SquadFormationDiagram.svelte';
+  import LumiMessagingDemo from './LumiMessagingDemo.svelte';
   
   interface Project {
     title: string;
@@ -16,11 +18,14 @@
       caseStudy?: string;
       vision?: string;
       aiMulloy?: string;
+      blog?: string;
     };
     featured?: boolean;
     logo?: string;
     logoRounded?: boolean;
     gallery?: { src: string; caption: string }[];
+    showSquadDiagram?: boolean;
+    showLumiDemo?: boolean;
   }
 
   export let project: Project;
@@ -168,23 +173,39 @@
     </div>
     
     <h3 class="project-title">{project.title}</h3>
-    <p class="project-description">{project.description}</p>
+
+    {#if project.showLumiDemo}
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div class="project-inline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+        <LumiMessagingDemo />
+      </div>
+    {:else if project.showSquadDiagram}
+      <!-- Diagram sits inline in the card body, replacing the short description -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div class="project-inline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+        <SquadFormationDiagram />
+      </div>
+    {:else}
+      <p class="project-description">{project.description}</p>
+    {/if}
     
-    <div class="project-tech">
-      {#each project.technologies.slice(0, 4) as tech}
-        <a 
-          href={getTechWikiUrl(tech)} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="tech-tag tech-tag--link"
-          on:click|stopPropagation
-          title="Learn more about {tech}"
-        >{tech}</a>
-      {/each}
-      {#if project.technologies.length > 4 && !isExpanded}
-        <span class="tech-more">+{project.technologies.length - 4}</span>
-      {/if}
-    </div>
+    {#if !project.showSquadDiagram && !project.showLumiDemo}
+      <div class="project-tech">
+        {#each project.technologies.slice(0, 4) as tech}
+          <a 
+            href={getTechWikiUrl(tech)} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="tech-tag tech-tag--link"
+            on:click|stopPropagation
+            title="Learn more about {tech}"
+          >{tech}</a>
+        {/each}
+        {#if project.technologies.length > 4 && !isExpanded}
+          <span class="tech-more">+{project.technologies.length - 4}</span>
+        {/if}
+      </div>
+    {/if}
     
     {#if isExpanded}
       <div class="project-details">
@@ -276,8 +297,18 @@
                 ai-Mulloy
               </a>
             {/if}
+            {#if project.links.blog}
+              <a href={project.links.blog} target="_blank" rel="noopener noreferrer" class="project-link project-link--blog" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                Blog Post
+              </a>
+            {/if}
           </div>
         {/if}
+
       </div>
     {/if}
     
@@ -438,6 +469,13 @@
     border-left: 3px solid var(--color-accent);
   }
   
+  .project-inline-diagram {
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+  }
+
   .project-header {
     display: flex;
     justify-content: space-between;
@@ -674,6 +712,17 @@
     background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
     color: var(--color-bg-primary);
     box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+
+  .project-link--blog {
+    border-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+  }
+
+  .project-link--blog:hover {
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+    background: var(--color-bg-hover);
   }
   
   .project-link__video {
