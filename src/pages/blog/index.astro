@@ -7,7 +7,7 @@ import ScrollVideo from '../../components/ScrollVideo.svelte';
 
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
-const canonicalUrl = "https://code.mulloymorrow.com/blog";
+const canonicalUrl = new URL("/blog", Astro.site).toString();
 
 // Get the philosophy page
 const philosophyPage = await getEntry('pages', 'philosophy');
@@ -86,7 +86,7 @@ const blogSchema = {
   "author": {
     "@type": "Person",
     "name": "Mulloy Morrow",
-    "url": "https://code.mulloymorrow.com"
+    "url": Astro.site?.toString() ?? "https://mulloymorrow.com"
   },
   "blogPost": sortedContent.slice(0, 10).map(item => ({
     "@type": "BlogPosting",
@@ -94,10 +94,10 @@ const blogSchema = {
     "description": item.description,
     "datePublished": item.publishedAt.toISOString(),
     "url": item.type === 'blog' 
-      ? `https://code.mulloymorrow.com/blog/${item.slug}/`
+      ? new URL(`/blog/${item.slug}/`, Astro.site).toString()
       : item.type === 'page'
-        ? `https://code.mulloymorrow.com/${item.slug}/`
-        : `https://code.mulloymorrow.com${item.slug}/`
+        ? new URL(`/${item.slug}/`, Astro.site).toString()
+        : new URL(`${item.slug}/`, Astro.site).toString()
   }))
 };
 ---

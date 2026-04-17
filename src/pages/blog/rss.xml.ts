@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: 'Mulloy Morrow - Blog',
     description: 'Thoughts on AI, machine learning, human-centered technology, and building the future.',
-    site: context.site || 'https://code.mulloymorrow.com',
+    site: context.site || 'https://mulloymorrow.com',
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.publishedAt,
