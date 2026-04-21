@@ -508,6 +508,7 @@
     color: var(--color-text-muted);
     margin: 0.75rem 0 0 0;
     line-height: 1.6;
+    white-space: pre-line;
   }
   
   .timeline-pinned-link {

@@ -57,7 +57,7 @@ const sectionIds = headings
   .map(h => h.slug);
 ---
 
-<Layout title={title} description={description} canonicalUrl={canonicalUrl} ogType="article">
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} ogType="article" showThemeToggle={false}>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
   
   <PhilosophyThemeToggle client:load />

@@ -1,5 +1,6 @@
 ---
 import NavFloating from '../components/NavFloating.svelte';
+import ThemeToggle from '../components/ThemeToggle.svelte';
 
 interface Props {
   title?: string;
@@ -7,6 +8,7 @@ interface Props {
   canonicalUrl?: string;
   ogType?: string;
   ogImage?: string;
+  showThemeToggle?: boolean;
 }
 
 const { 
@@ -14,7 +16,8 @@ const {
   description = "AI & Machine Learning leader with 15+ years of experience spanning consumer tech, healthcare, legal tech, and environmental applications. Former Spotify ML leader building research-driven systems for hundreds of millions of users. Now founding human-centered AI products.",
   canonicalUrl = Astro.url.href,
   ogType = "website",
-  ogImage = "https://mulloymorrow.com/android-chrome-512x512.png"
+  ogImage = "https://mulloymorrow.com/android-chrome-512x512.png",
+  showThemeToggle = true
 } = Astro.props;
 ---
 
@@ -61,6 +64,22 @@ const {
     
     <!-- Slot for additional head content (JSON-LD, etc.) -->
     <slot name="head" />
+
+    <!-- Apply saved theme before paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('site-theme');
+          if (saved === 'light') {
+            document.documentElement.classList.add('theme-warm');
+            window.__themeLocked = true;
+          } else if (saved === 'dark') {
+            document.documentElement.classList.remove('theme-warm');
+            window.__themeLocked = true;
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -68,6 +87,9 @@ const {
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
+    <!-- Theme Toggle -->
+    {showThemeToggle && <ThemeToggle client:load />}
+
     <!-- Floating Navigation -->
     <NavFloating client:load />
     
@@ -99,6 +121,7 @@ const {
       // Helper function to check if we should be in warm theme
       function checkTheme() {
         if (!personalSection) return;
+        if ((window as any).__themeLocked) return;
         const rect = personalSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const threshold = viewportHeight * 0.2;
@@ -122,12 +145,13 @@ const {
       
       // Also check for direct navigation to warm sections
       const warmSections = ['#personal', '#contact'];
-      if (warmSections.includes(window.location.hash)) {
+      if (!(window as any).__themeLocked && warmSections.includes(window.location.hash)) {
         document.documentElement.classList.add('theme-warm');
       }
       
       if (personalSection) {
         const themeObserver = new IntersectionObserver((entries) => {
+          if ((window as any).__themeLocked) return;
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               // Entering warm section - switch to warm theme
