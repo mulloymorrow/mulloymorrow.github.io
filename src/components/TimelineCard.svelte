@@ -131,7 +131,7 @@
                   {experience.signatureAttribution}
                 {/if}
                 {#if experience.signatureLink}
-                  <br />
+                  {#if experience.signatureAttribution}<br />{/if}
                   <a
                     href={experience.signatureLink.url}
                     target="_blank"
@@ -163,7 +163,7 @@
                   {experience.signatureAttribution}
                 {/if}
                 {#if experience.signatureLink}
-                  <br />
+                  {#if experience.signatureAttribution}<br />{/if}
                   <a
                     href={experience.signatureLink.url}
                     target="_blank"
@@ -193,7 +193,7 @@
               {experience.signatureAttribution}
             {/if}
             {#if experience.signatureLink}
-              <br />
+              {#if experience.signatureAttribution}<br />{/if}
               <a
                 href={experience.signatureLink.url}
                 target="_blank"
@@ -205,7 +205,7 @@
           </div>
         {/if}
       {/if}
-      
+
       {#if experience.pinnedLink}
         <div class="timeline-pinned-link">
           <a
