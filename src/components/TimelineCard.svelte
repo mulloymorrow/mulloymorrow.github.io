@@ -36,6 +36,9 @@
     phases?: Phase[];
     showSquadDiagram?: boolean;
     showLumiDemo?: boolean;
+    /** Optional lines after main summary (e.g. attribution + link) */
+    signatureAttribution?: string;
+    signatureLink?: { text: string; url: string };
   }
 
   export let experience: Experience;
@@ -115,7 +118,31 @@
       
       {#if experience.showLumiDemo}
         <div class="timeline-summary-with-diagram">
-          <p class="timeline-summary">{experience.summary}</p>
+          <div class="timeline-summary-column">
+            <p class="timeline-summary">{experience.summary}</p>
+            {#if experience.signatureAttribution || experience.signatureLink}
+              <!-- svelte-ignore a11y_no_static_element_interactions -->
+              <div
+                class="timeline-summary timeline-summary--signature"
+                on:click|stopPropagation
+                on:keydown|stopPropagation
+              >
+                {#if experience.signatureAttribution}
+                  {experience.signatureAttribution}
+                {/if}
+                {#if experience.signatureLink}
+                  <br />
+                  <a
+                    href={experience.signatureLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="timeline-signature-link"
+                    on:click|stopPropagation
+                  >{experience.signatureLink.text}</a>
+                {/if}
+              </div>
+            {/if}
+          </div>
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
             <LumiMessagingDemo />
@@ -123,7 +150,31 @@
         </div>
       {:else if experience.showSquadDiagram}
         <div class="timeline-summary-with-diagram">
-          <p class="timeline-summary">{experience.summary}</p>
+          <div class="timeline-summary-column">
+            <p class="timeline-summary">{experience.summary}</p>
+            {#if experience.signatureAttribution || experience.signatureLink}
+              <!-- svelte-ignore a11y_no_static_element_interactions -->
+              <div
+                class="timeline-summary timeline-summary--signature"
+                on:click|stopPropagation
+                on:keydown|stopPropagation
+              >
+                {#if experience.signatureAttribution}
+                  {experience.signatureAttribution}
+                {/if}
+                {#if experience.signatureLink}
+                  <br />
+                  <a
+                    href={experience.signatureLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="timeline-signature-link"
+                    on:click|stopPropagation
+                  >{experience.signatureLink.text}</a>
+                {/if}
+              </div>
+            {/if}
+          </div>
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
             <SquadFormationDiagram />
@@ -131,6 +182,28 @@
         </div>
       {:else}
         <p class="timeline-summary">{experience.summary}</p>
+        {#if experience.signatureAttribution || experience.signatureLink}
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div
+            class="timeline-summary timeline-summary--signature"
+            on:click|stopPropagation
+            on:keydown|stopPropagation
+          >
+            {#if experience.signatureAttribution}
+              {experience.signatureAttribution}
+            {/if}
+            {#if experience.signatureLink}
+              <br />
+              <a
+                href={experience.signatureLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="timeline-signature-link"
+                on:click|stopPropagation
+              >{experience.signatureLink.text}</a>
+            {/if}
+          </div>
+        {/if}
       {/if}
       
       {#if experience.pinnedLink}
@@ -476,10 +549,29 @@
     margin-top: 0.75rem;
   }
 
-  .timeline-summary-with-diagram .timeline-summary {
+  .timeline-summary-column {
     flex: 1;
     min-width: 0;
+  }
+
+  .timeline-summary-with-diagram .timeline-summary-column > .timeline-summary:first-child {
     margin-top: 0;
+  }
+
+  .timeline-summary--signature {
+    margin-top: 0.5rem;
+  }
+
+  .timeline-signature-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+  }
+
+  .timeline-signature-link:hover {
+    text-decoration: underline;
+    color: var(--color-text-primary);
   }
 
   .timeline-diagram {
