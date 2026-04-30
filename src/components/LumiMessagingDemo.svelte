@@ -92,6 +92,7 @@
   onDestroy(() => { clearTimers(); observer?.disconnect(); });
 </script>
 
+<div class="lumi-demo">
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={containerEl}
@@ -198,8 +199,16 @@
     Message Lumi
   </a>
 {/if}
+</div>
 
 <style>
+  /* ── Demo wrapper (stacks phone + CTA) ───────── */
+  .lumi-demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   /* ── Phone shell ─────────────────────────────── */
   .lumi-phone {
     width: 260px;
