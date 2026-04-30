@@ -180,11 +180,18 @@
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
             {#if experience.lumiIntro}
-              <p class="lumi-intro">
-                {#each lumiIntroSegments as part}
-                  {#if part.highlight}<span class="timeline-keyword">{part.text}</span>{:else}{part.text}{/if}
-                {/each}
-              </p>
+              <div class="lumi-intro-card">
+                <div class="lumi-intro-card__header">
+                  <div class="lumi-intro-card__avatar">L</div>
+                  <span class="lumi-intro-card__name">Lumi</span>
+                  <span class="lumi-intro-card__badge">AI Agent</span>
+                </div>
+                <p class="lumi-intro-card__text">
+                  {#each lumiIntroSegments as part}
+                    {#if part.highlight}<span class="timeline-keyword">{part.text}</span>{:else}{part.text}{/if}
+                  {/each}
+                </p>
+              </div>
             {/if}
             <LumiMessagingDemo />
           </div>
@@ -639,7 +646,8 @@
     flex: 1.2;
     min-width: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   /* For the phone-frame Lumi demo, center it and don't force-stretch */
@@ -647,13 +655,73 @@
     flex-shrink: 0;
   }
 
-  .lumi-intro {
-    font-size: var(--text-xs);
+  /* ── Lumi intro card ─────────────────────────── */
+  .lumi-intro-card {
+    width: 260px;
+    border-radius: 14px;
+    border: 1px solid rgba(106, 186, 182, 0.28);
+    background: linear-gradient(135deg, rgba(106, 186, 182, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 16px rgba(106, 186, 182, 0.18);
+  }
+
+  .lumi-intro-card__header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .lumi-intro-card__avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6ABAB6 0%, #8B5CF6 100%);
+    color: #fff;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(106, 186, 182, 0.45);
+  }
+
+  .lumi-intro-card__name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1;
+  }
+
+  .lumi-intro-card__badge {
+    margin-left: auto;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6ABAB6;
+    background: rgba(106, 186, 182, 0.1);
+    border: 1px solid rgba(106, 186, 182, 0.3);
+    border-radius: 4px;
+    padding: 2px 5px;
+    flex-shrink: 0;
+  }
+
+  .lumi-intro-card__text {
+    font-size: 10.5px;
     color: var(--color-text-muted);
-    line-height: 1.5;
-    text-align: center;
-    margin: 0 0 8px;
-    max-width: 260px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  :global(html.theme-warm) .lumi-intro-card {
+    border-color: rgba(106, 186, 182, 0.35);
+    background: linear-gradient(135deg, rgba(106, 186, 182, 0.09) 0%, rgba(139, 92, 246, 0.06) 100%);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
   }
 
   @media (max-width: 640px) {
