@@ -530,4 +530,51 @@
   .lumi-cta:active {
     transform: translateY(0);
   }
+
+  /* ── Light (theme-warm) overrides ───────────── */
+  :global(html.theme-warm) .lumi-phone {
+    border-color: rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  :global(html.theme-warm) .phone-header {
+    border-bottom-color: rgba(0,0,0,0.08);
+    background: rgba(0,0,0,0.02);
+  }
+
+  :global(html.theme-warm) .phone-footer {
+    border-top-color: rgba(0,0,0,0.08);
+    background: rgba(0,0,0,0.02);
+  }
+
+  :global(html.theme-warm) .phone-thread::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+  }
+
+  :global(html.theme-warm) .bubble--lumi {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.09);
+  }
+
+  :global(html.theme-warm) .booking-card {
+    background: rgba(255,255,255,0.92);
+    border-color: rgba(106,186,182,0.35);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  :global(html.theme-warm) .booking-card__header {
+    background: rgba(106,186,182,0.14);
+  }
+
+  :global(html.theme-warm) .booking-card__footer {
+    border-top-color: rgba(0,0,0,0.08);
+  }
+
+  :global(html.theme-warm) .booking-row {
+    color: #666;
+  }
+
+  :global(html.theme-warm) .booking-strong {
+    color: #222;
+  }
 </style>
