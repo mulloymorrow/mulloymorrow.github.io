@@ -184,6 +184,21 @@
   </div>
 </div>
 
+{#if isDone}
+  <a
+    href="https://nalya.ai/for/padel?lumi=from-mulloy-morrow"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="lumi-cta"
+    on:click|stopPropagation
+  >
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    Message Lumi
+  </a>
+{/if}
+
 <style>
   /* ── Phone shell ─────────────────────────────── */
   .lumi-phone {
@@ -478,5 +493,32 @@
   .replay-btn:hover {
     color: #6ABAB6;
     background: rgba(106,186,182,0.1);
+  }
+
+  /* ── CTA below phone ─────────────────────────── */
+  .lumi-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #6ABAB6;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.15s;
+    animation: msgIn 0.3s ease both;
+  }
+
+  .lumi-cta:hover {
+    background: #5aa9a5;
+    transform: translateY(-1px);
+  }
+
+  .lumi-cta:active {
+    transform: translateY(0);
   }
 </style>

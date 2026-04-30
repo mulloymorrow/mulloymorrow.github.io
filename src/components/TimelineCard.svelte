@@ -42,6 +42,30 @@
   }
 
   export let experience: Experience;
+
+  /** Split summary on **highlight** markers for optional accent styling */
+  function parseSummaryHighlights(text: string): { highlight: boolean; text: string }[] {
+    const segments: { highlight: boolean; text: string }[] = [];
+    const re = /\*\*([^*]+)\*\*/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) {
+        segments.push({ highlight: false, text: text.slice(last, m.index) });
+      }
+      segments.push({ highlight: true, text: m[1] });
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) {
+      segments.push({ highlight: false, text: text.slice(last) });
+    }
+    if (segments.length === 0) {
+      segments.push({ highlight: false, text });
+    }
+    return segments;
+  }
+
+  $: summarySegments = parseSummaryHighlights(experience.summary);
   
   let isExpanded = false;
   
@@ -119,7 +143,15 @@
       {#if experience.showLumiDemo}
         <div class="timeline-summary-with-diagram">
           <div class="timeline-summary-column">
-            <p class="timeline-summary">{experience.summary}</p>
+            <p class="timeline-summary">
+              {#each summarySegments as part}
+                {#if part.highlight}
+                  <span class="timeline-keyword">{part.text}</span>
+                {:else}
+                  {part.text}
+                {/if}
+              {/each}
+            </p>
             {#if experience.signatureAttribution || experience.signatureLink}
               <!-- svelte-ignore a11y_no_static_element_interactions -->
               <div
@@ -151,7 +183,15 @@
       {:else if experience.showSquadDiagram}
         <div class="timeline-summary-with-diagram">
           <div class="timeline-summary-column">
-            <p class="timeline-summary">{experience.summary}</p>
+            <p class="timeline-summary">
+              {#each summarySegments as part}
+                {#if part.highlight}
+                  <span class="timeline-keyword">{part.text}</span>
+                {:else}
+                  {part.text}
+                {/if}
+              {/each}
+            </p>
             {#if experience.signatureAttribution || experience.signatureLink}
               <!-- svelte-ignore a11y_no_static_element_interactions -->
               <div
@@ -181,7 +221,15 @@
           </div>
         </div>
       {:else}
-        <p class="timeline-summary">{experience.summary}</p>
+        <p class="timeline-summary">
+          {#each summarySegments as part}
+            {#if part.highlight}
+              <span class="timeline-keyword">{part.text}</span>
+            {:else}
+              {part.text}
+            {/if}
+          {/each}
+        </p>
         {#if experience.signatureAttribution || experience.signatureLink}
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
@@ -321,7 +369,7 @@
         {#if experience.links && experience.links.length > 0}
           <div class="timeline-links">
             {#each experience.links as link}
-              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''} {link.icon === 'vision' ? 'timeline-link-btn--vision' : ''}" on:click|stopPropagation>
+              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''} {link.icon === 'vision' ? 'timeline-link-btn--vision' : ''} {link.icon === 'lumi' ? 'timeline-link-btn--lumi' : ''}" on:click|stopPropagation>
                 {#if link.icon === 'ai'}
                   <span class="timeline-link-btn__video">
                     <PingPongVideo src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
@@ -330,6 +378,10 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                     <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                {:else if link.icon === 'lumi'}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
                 {:else}
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -601,6 +653,20 @@
     margin: 0.75rem 0 0 0;
     line-height: 1.6;
     white-space: pre-line;
+  }
+
+  .timeline-keyword {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+
+  :global(html.theme-warm) .timeline-keyword {
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
   }
   
   .timeline-pinned-link {
@@ -892,6 +958,17 @@
   .timeline-link-btn--vision:hover {
     background: linear-gradient(135deg, #f59e0b, #d97706);
     box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+  }
+
+  .timeline-link-btn--lumi {
+    background: linear-gradient(135deg, #6ABAB6, #5aa9a5);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .timeline-link-btn--lumi:hover {
+    background: linear-gradient(135deg, #5aa9a5, #4a9895);
+    box-shadow: 0 4px 16px rgba(106, 186, 182, 0.35);
   }
   
   .timeline-link-btn__video {

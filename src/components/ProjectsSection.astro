@@ -27,33 +27,34 @@ const projects = [
   {
     title: "Squad Recommendations Engine",
     description: "AI-powered padel squad formation engine that blends embedding-based compatibility, chemistry signals, skill calibration, and availability overlap to auto-book courts and eliminate coordination friction.",
-    longDescription: "Built the end-to-end recommendation system powering Connection Companion's social sports feature. The engine combines four signals to score candidate squads for a 4-player padel match: (1) Chemistry — vibe ratings and wouldPlayAgain ratios from Playtomic match history weighted at 30%; (2) Level fit — group average level vs. user goal (level up vs. social vibe) at 25%; (3) Pairwise AI compatibility — cc-recsys /score-pairs endpoint using 512-dim social embeddings from Vertex AI Vector Search at 20%; (4) Recency variety bonus and Google Calendar availability overlap at 15%+10pts. The ranking service runs on Cloud Run backed by Firestore, with a Pub/Sub consumer updating padel feedback in real time. Users set their squad goal once and the system proposes and auto-books courts.",
+    longDescription: "Built the end-to-end recommendation system powering Nalya's social sports feature. The engine combines four signals to score candidate squads for a 4-player padel match: (1) Chemistry — vibe ratings and wouldPlayAgain ratios from Playtomic match history weighted at 30%; (2) Level fit — group average level vs. user goal (level up vs. social vibe) at 25%; (3) Pairwise AI compatibility — cc-recsys /score-pairs endpoint using 512-dim social embeddings from Vertex AI Vector Search at 20%; (4) Recency variety bonus and Google Calendar availability overlap at 15%+10pts. The ranking service runs on Cloud Run backed by Firestore, with a Pub/Sub consumer updating padel feedback in real time. Users set their squad goal once and the system proposes and auto-books courts.",
     technologies: ["Python", "GCP", "Vertex AI Vector Search", "TypeScript", "Firestore", "Cloud Run", "Pub/Sub", "Agentic AI", "Embeddings"],
     impact: "Zero-friction squad booking — set preferences once, AI proposes and books, you just show up.",
     featured: true,
     logo: "/logos/stealth-ai.png",
     showSquadDiagram: true,
     links: {
-      vision: "https://connectioncompanion.com/vision",
-      blog: "https://connectioncompanion.com/blog/padel-social-happenings"
+      vision: "https://nalya.ai/vision",
+      blog: "https://nalya.ai/blog/padel-social-happenings"
     }
   },
   {
     title: "Lumi — AI Activity Agent",
     description: "AI agent that books real-world activities via text. Tell Lumi what you want, it assembles your squad, finds a court, and sends the calendar invite. No app required.",
-    longDescription: "Lumi is the conversational layer of Connection Companion — an AI agent reachable over SMS that handles the full coordination loop for social sports and IRL activities. You describe what you want in plain language: a casual padel game, a competitive match, a Thursday morning run. Lumi finds available courts, assembles a compatible squad from your network using the recommendations engine, and confirms the booking — all through your regular messages thread. The behavioral design is grounded in habit-formation research: by collapsing the activation energy required to initiate social activities, Lumi moves the default state from 'need to organize' to 'already happening'. No group chats, no scheduling back-and-forth, no app to open. The coordination just finds you.",
+    longDescription: "Lumi is the conversational layer of Nalya — an AI agent reachable over SMS that handles the full coordination loop for social sports and IRL activities. You describe what you want in plain language: a casual padel game, a competitive match, a Thursday morning run. Lumi finds available courts, assembles a compatible squad from your network using the recommendations engine, and confirms the booking — all through your regular messages thread. The behavioral design is grounded in habit-formation research: by collapsing the activation energy required to initiate social activities, Lumi moves the default state from 'need to organize' to 'already happening'. No group chats, no scheduling back-and-forth, no app to open. The coordination just finds you.",
     technologies: ["LLMs", "Agentic AI", "SMS / Twilio", "TypeScript", "Cloud Run", "Firestore", "Pub/Sub", "Python"],
     impact: "Zero-friction IRL booking — text once, show up. No app required.",
     featured: true,
     logo: "/logos/stealth-ai.png",
     showLumiDemo: true,
     links: {
-      demo: "https://connectioncompanion.com/padel/demo",
-      blog: "https://dev.connectioncompanion.com/blog/padel-smart-scheduling"
+      demo: "https://nalya.ai/padel/demo",
+      blog: "https://dev.nalya.ai/blog/padel-smart-scheduling",
+      messageLumi: "https://nalya.ai/for/padel?lumi=from-mulloy-morrow"
     }
   },
   {
-    title: "ConnectionCompanion.com",
+    title: "Nalya.ai",
     description: "A human-centered agentic-AI consumer platform focused on augmenting real-world human connection through privacy-aware, human-in-the-loop ML systems.",
     longDescription: "The vision is to build a human-centered, agentic-AI platform that helps people form deeper, more intentional connections in the real world. Instead of optimizing for endless swiping or shallow engagement, the system is designed to support reflection, alignment, and momentum—using AI agents to help users understand themselves, evaluate compatibility, and navigate social decisions with greater clarity. At its core is an agentic-AI–supported social network that prioritizes depth over volume: fewer matches, richer context, and guided interaction rather than passive consumption. The platform augments human judgment rather than replacing it, combining privacy-aware design with human-in-the-loop intelligence to help people \"vibe\" with the right people, in the right moments, for the right reasons.",
     technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Privacy-Preserving ML", "Cloud Infrastructure"],
@@ -61,7 +62,7 @@ const projects = [
     featured: true,
     logo: "/logos/stealth-ai.png",
     links: {
-      vision: "https://connectioncompanion.com/vision",
+      vision: "https://nalya.ai/vision",
       aiMulloy: "/ai-mulloy/"
     }
   },

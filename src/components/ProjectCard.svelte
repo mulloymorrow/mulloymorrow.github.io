@@ -19,6 +19,7 @@
       vision?: string;
       aiMulloy?: string;
       blog?: string;
+      messageLumi?: string;
     };
     featured?: boolean;
     logo?: string;
@@ -304,6 +305,14 @@
                   <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                 </svg>
                 Blog Post
+              </a>
+            {/if}
+            {#if project.links.messageLumi}
+              <a href={project.links.messageLumi} target="_blank" rel="noopener noreferrer" class="project-link project-link--lumi" on:click|stopPropagation>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Message Lumi
               </a>
             {/if}
           </div>
@@ -723,6 +732,17 @@
     border-color: var(--color-text-secondary);
     color: var(--color-text-primary);
     background: var(--color-bg-hover);
+  }
+
+  .project-link--lumi {
+    background: linear-gradient(135deg, #6ABAB6, #5aa9a5);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .project-link--lumi:hover {
+    background: linear-gradient(135deg, #5aa9a5, #4a9895);
+    box-shadow: 0 4px 16px rgba(106, 186, 182, 0.35);
   }
   
   .project-link__video {
