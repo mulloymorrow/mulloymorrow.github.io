@@ -36,6 +36,7 @@
     phases?: Phase[];
     showSquadDiagram?: boolean;
     showLumiDemo?: boolean;
+    lumiIntro?: string;
     /** Optional lines after main summary (e.g. attribution + link) */
     signatureAttribution?: string;
     signatureLink?: { text: string; url: string };
@@ -66,6 +67,7 @@
   }
 
   $: summarySegments = parseSummaryHighlights(experience.summary);
+  $: lumiIntroSegments = experience.lumiIntro ? parseSummaryHighlights(experience.lumiIntro) : [];
   
   let isExpanded = false;
   
@@ -177,6 +179,13 @@
           </div>
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+            {#if experience.lumiIntro}
+              <p class="lumi-intro">
+                {#each lumiIntroSegments as part}
+                  {#if part.highlight}<span class="timeline-keyword">{part.text}</span>{:else}{part.text}{/if}
+                {/each}
+              </p>
+            {/if}
             <LumiMessagingDemo />
           </div>
         </div>
@@ -636,6 +645,15 @@
   /* For the phone-frame Lumi demo, center it and don't force-stretch */
   .timeline-diagram :global(.lumi-phone) {
     flex-shrink: 0;
+  }
+
+  .lumi-intro {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    text-align: center;
+    margin: 0 0 8px;
+    max-width: 260px;
   }
 
   @media (max-width: 640px) {
