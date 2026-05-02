@@ -102,7 +102,7 @@
 >
   <!-- Phone header -->
   <div class="phone-header">
-    <div class="lumi-avatar">L</div>
+    <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-avatar" />
     <div class="lumi-info">
       <span class="lumi-name">Lumi</span>
       <span class="lumi-sub">AI Activity Agent · via SMS</span>
@@ -123,7 +123,7 @@
       {#if msg.card}
         <!-- Booking confirmation card -->
         <div class="msg-row msg-row--lumi">
-          <div class="lumi-dot">L</div>
+          <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-dot" />
           <div class="booking-card">
             <div class="booking-card__header">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -152,7 +152,7 @@
       {:else}
         <div class="msg-row msg-row--{msg.from}">
           {#if msg.from === 'lumi'}
-            <div class="lumi-dot">L</div>
+            <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-dot" />
           {/if}
           <div class="bubble bubble--{msg.from}">{msg.text}</div>
         </div>
@@ -161,7 +161,7 @@
 
     {#if showTyping}
       <div class="msg-row msg-row--lumi">
-        <div class="lumi-dot">L</div>
+        <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-dot" />
         <div class="bubble bubble--lumi bubble--typing">
           <span class="dot"></span>
           <span class="dot"></span>
@@ -238,13 +238,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #6ABAB6;
-    color: #fff;
-    font-weight: 900;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
     flex-shrink: 0;
   }
 
@@ -343,13 +337,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: rgba(106,186,182,0.2);
-    color: #6ABAB6;
-    font-weight: 900;
-    font-size: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
     flex-shrink: 0;
   }
 

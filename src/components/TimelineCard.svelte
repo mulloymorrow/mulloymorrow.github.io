@@ -182,7 +182,7 @@
             {#if experience.lumiIntro}
               <div class="lumi-intro-card">
                 <div class="lumi-intro-card__header">
-                  <div class="lumi-intro-card__avatar">L</div>
+                  <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-intro-card__avatar" />
                   <span class="lumi-intro-card__name">Lumi</span>
                   <span class="lumi-intro-card__badge">AI Agent</span>
                 </div>
@@ -679,13 +679,7 @@
     width: 26px;
     height: 26px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #6ABAB6 0%, #8B5CF6 100%);
-    color: #fff;
-    font-weight: 900;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
     flex-shrink: 0;
     box-shadow: 0 2px 8px rgba(106, 186, 182, 0.45);
   }
