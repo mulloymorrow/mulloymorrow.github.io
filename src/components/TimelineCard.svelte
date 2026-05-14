@@ -2,7 +2,7 @@
   import { getTechWikiUrl } from '../utils/techLinks';
   import PingPongVideo from './PingPongVideo.svelte';
   import SquadFormationDiagram from './SquadFormationDiagram.svelte';
-  import LumiMessagingDemo from './LumiMessagingDemo.svelte';
+  import LumiDemoTabs from './LumiDemoTabs.svelte';
 
   interface PhaseLink {
     label: string;
@@ -26,6 +26,9 @@
     period: string;
     location?: string;
     summary: string;
+    /** When set, the first N paragraphs of `summary` (split on blank lines)
+     *  show in the collapsed card; the remainder is revealed on expand. */
+    summaryCollapsedParagraphs?: number;
     highlights: string[];
     technologies: string[];
     isCurrent?: boolean;
@@ -66,8 +69,22 @@
     return segments;
   }
 
-  $: summarySegments = parseSummaryHighlights(experience.summary);
-  $: lumiIntroSegments = experience.lumiIntro ? parseSummaryHighlights(experience.lumiIntro) : [];
+  /** Split summary into paragraphs (on blank lines) and parse each for highlights. */
+  function splitSummaryParagraphs(text: string, collapsedCount: number | undefined) {
+    const paragraphs = text.split(/\n\n+/);
+    const limit = collapsedCount ?? paragraphs.length;
+    const visibleText = paragraphs.slice(0, limit).join('\n\n');
+    const extraText   = paragraphs.slice(limit).join('\n\n');
+    return {
+      visible: parseSummaryHighlights(visibleText),
+      extra:   extraText ? parseSummaryHighlights(extraText) : [],
+    };
+  }
+
+  $: summaryParts      = splitSummaryParagraphs(experience.summary, experience.summaryCollapsedParagraphs);
+  $: summarySegments   = summaryParts.visible;
+  $: extraSegments     = summaryParts.extra;
+  $: hasExtraSummary   = extraSegments.length > 0;
   
   let isExpanded = false;
   
@@ -154,6 +171,17 @@
                 {/if}
               {/each}
             </p>
+            {#if hasExtraSummary && isExpanded}
+              <p class="timeline-summary timeline-summary--extra">
+                {#each extraSegments as part}
+                  {#if part.highlight}
+                    <span class="timeline-keyword">{part.text}</span>
+                  {:else}
+                    {part.text}
+                  {/if}
+                {/each}
+              </p>
+            {/if}
             {#if experience.signatureAttribution || experience.signatureLink}
               <!-- svelte-ignore a11y_no_static_element_interactions -->
               <div
@@ -179,21 +207,7 @@
           </div>
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
-            {#if experience.lumiIntro}
-              <div class="lumi-intro-card">
-                <div class="lumi-intro-card__header">
-                  <img src="/logos/lumi-logo.svg" alt="Lumi" class="lumi-intro-card__avatar" />
-                  <span class="lumi-intro-card__name">Lumi</span>
-                  <span class="lumi-intro-card__badge">AI Agent</span>
-                </div>
-                <p class="lumi-intro-card__text">
-                  {#each lumiIntroSegments as part}
-                    {#if part.highlight}<span class="timeline-keyword">{part.text}</span>{:else}{part.text}{/if}
-                  {/each}
-                </p>
-              </div>
-            {/if}
-            <LumiMessagingDemo />
+            <LumiDemoTabs intro={experience.lumiIntro ?? null} />
           </div>
         </div>
       {:else if experience.showSquadDiagram}
@@ -208,6 +222,17 @@
                 {/if}
               {/each}
             </p>
+            {#if hasExtraSummary && isExpanded}
+              <p class="timeline-summary timeline-summary--extra">
+                {#each extraSegments as part}
+                  {#if part.highlight}
+                    <span class="timeline-keyword">{part.text}</span>
+                  {:else}
+                    {part.text}
+                  {/if}
+                {/each}
+              </p>
+            {/if}
             {#if experience.signatureAttribution || experience.signatureLink}
               <!-- svelte-ignore a11y_no_static_element_interactions -->
               <div
@@ -246,6 +271,17 @@
             {/if}
           {/each}
         </p>
+        {#if hasExtraSummary && isExpanded}
+          <p class="timeline-summary timeline-summary--extra">
+            {#each extraSegments as part}
+              {#if part.highlight}
+                <span class="timeline-keyword">{part.text}</span>
+              {:else}
+                {part.text}
+              {/if}
+            {/each}
+          </p>
+        {/if}
         {#if experience.signatureAttribution || experience.signatureLink}
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
@@ -655,69 +691,6 @@
     flex-shrink: 0;
   }
 
-  /* ── Lumi intro card ─────────────────────────── */
-  .lumi-intro-card {
-    width: 260px;
-    border-radius: 14px;
-    border: 1px solid rgba(106, 186, 182, 0.28);
-    background: linear-gradient(135deg, rgba(106, 186, 182, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 16px rgba(106, 186, 182, 0.18);
-  }
-
-  .lumi-intro-card__header {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
-
-  .lumi-intro-card__avatar {
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(106, 186, 182, 0.45);
-  }
-
-  .lumi-intro-card__name {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    line-height: 1;
-  }
-
-  .lumi-intro-card__badge {
-    margin-left: auto;
-    font-size: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6ABAB6;
-    background: rgba(106, 186, 182, 0.1);
-    border: 1px solid rgba(106, 186, 182, 0.3);
-    border-radius: 4px;
-    padding: 2px 5px;
-    flex-shrink: 0;
-  }
-
-  .lumi-intro-card__text {
-    font-size: 10.5px;
-    color: var(--color-text-muted);
-    line-height: 1.55;
-    margin: 0;
-  }
-
-  :global(html.theme-warm) .lumi-intro-card {
-    border-color: rgba(106, 186, 182, 0.35);
-    background: linear-gradient(135deg, rgba(106, 186, 182, 0.09) 0%, rgba(139, 92, 246, 0.06) 100%);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-  }
-
   @media (max-width: 640px) {
     .timeline-summary-with-diagram {
       flex-direction: column;
@@ -733,6 +706,15 @@
     margin: 0.75rem 0 0 0;
     line-height: 1.6;
     white-space: pre-line;
+  }
+
+  .timeline-summary--extra {
+    animation: extraIn 0.35s ease both;
+  }
+
+  @keyframes extraIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .timeline-keyword {
