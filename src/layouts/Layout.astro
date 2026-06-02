@@ -8,6 +8,10 @@ interface Props {
   canonicalUrl?: string;
   ogType?: string;
   ogImage?: string;
+  ogImageWidth?: string | number;
+  ogImageHeight?: string | number;
+  ogImageAlt?: string;
+  twitterCard?: string;
   showThemeToggle?: boolean;
 }
 
@@ -17,6 +21,10 @@ const {
   canonicalUrl = Astro.url.href,
   ogType = "website",
   ogImage = "https://mulloymorrow.com/og-home.png",
+  ogImageWidth = "2400",
+  ogImageHeight = "1260",
+  ogImageAlt = "Mulloy Morrow - Founder. Tech Leader. Builder.",
+  twitterCard = "summary_large_image",
   showThemeToggle = true
 } = Astro.props;
 ---
@@ -43,12 +51,12 @@ const {
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="2400" />
-    <meta property="og:image:height" content="1260" />
-    <meta property="og:image:alt" content="Mulloy Morrow - Founder. Tech Leader. Builder." />
+    {ogImageWidth && <meta property="og:image:width" content={String(ogImageWidth)} />}
+    {ogImageHeight && <meta property="og:image:height" content={String(ogImageHeight)} />}
+    <meta property="og:image:alt" content={ogImageAlt} />
     
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content={twitterCard} />
     <meta name="twitter:site" content="@thismulloy" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
