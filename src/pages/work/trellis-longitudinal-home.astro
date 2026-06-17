@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import TrellisPrototype from '../../components/trellis/TrellisPrototype.astro';
+import '../../styles/trellis.css';
+
+const title = 'Trellis Longitudinal Home | Mulloy Morrow';
+const description = 'Live design handoff for Trellis Health — a longitudinal home feed and journey view built around accumulated patient record.';
+const canonicalUrl = 'https://code.mulloymorrow.com/work/trellis-longitudinal-home/';
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl}>
+  <div class="trellis-page">
+    <TrellisPrototype />
+  </div>
+  <Footer />
+</Layout>

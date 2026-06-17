@@ -1,0 +1,443 @@
+---
+import TrellisFeedCard from './TrellisFeedCard.astro';
+import TrellisJourney from './TrellisJourney.astro';
+import { trellisPersonaOrder, trellisPersonas } from '../../data/trellis';
+
+const personas = trellisPersonaOrder.map((id) => trellisPersonas[id]);
+---
+
+<section class="trellis-prototype trellis-prototype--show-tiers" data-trellis-prototype>
+
+  <!-- ── Left slide-out control drawer ─────────────────────────── -->
+  <aside class="trellis-controls" aria-label="Prototype controls">
+    <!-- Handle: the sliver that sticks out when the drawer is tucked -->
+    <button type="button" class="trellis-controls__handle" data-drawer-handle aria-label="Show controls">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-handle-icon>
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+
+    <!-- Drawer content -->
+    <div class="trellis-controls__inner">
+      <!-- Title -->
+      <div class="trellis-controls__header">
+        <div class="trellis-controls__eyebrow">Trellis Health · Design Handoff</div>
+        <h2 class="trellis-controls__title">Feed + Journey</h2>
+      </div>
+
+      <!-- Icon button row: tier badges, device frame, fullscreen -->
+      <div class="trellis-icon-row">
+        <button type="button" class="trellis-icon-btn" data-toggle="tiers" aria-pressed="true" aria-label="Tier badges" title="Tier badges">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+        </button>
+        <button type="button" class="trellis-icon-btn" data-toggle="device-frame" aria-pressed="false" aria-label="Device frame" title="Device frame">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="2" width="14" height="20" rx="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </button>
+        <button type="button" class="trellis-icon-btn" data-fullscreen aria-label="Toggle fullscreen" title="Fullscreen">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon-expand>
+            <path d="M8 3H5a2 2 0 00-2 2v3"/><path d="M21 8V5a2 2 0 00-2-2h-3"/>
+            <path d="M3 16v3a2 2 0 002 2h3"/><path d="M16 21h3a2 2 0 002-2v-3"/>
+          </svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-icon-compress style="display:none">
+            <path d="M8 3v5H3"/><path d="M21 8h-5V3"/>
+            <path d="M3 16h5v5"/><path d="M16 21v-5h5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Persona selector -->
+      <div class="trellis-controls__section">
+        <div class="trellis-controls__eyebrow">Viewing as</div>
+        <div class="trellis-controls__select-hint">select persona</div>
+        <div class="trellis-persona-chips" role="tablist" aria-label="Trellis sample personas">
+          {personas.map((persona, index) => (
+            <button
+              type="button"
+              class="trellis-persona-chip"
+              data-persona-button={persona.id}
+              aria-selected={index === 0 ? 'true' : 'false'}
+            >
+              <span class="trellis-persona-chip__label">{persona.stageLabel}</span>
+              <span class="trellis-persona-chip__name">{persona.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Tier legend -->
+      <div class="trellis-controls__section trellis-controls__legend">
+        <div class="trellis-controls__eyebrow">The moat test</div>
+        <p class="trellis-legend-hint">Could a competitor with no user history render this card?</p>
+        <div class="trellis-legend-stack">
+          <div class="trellis-legend-item">
+            <span class="trellis-tier-badge trellis-tier-badge--t1">T1 · Longitudinal</span>
+            <span class="trellis-legend-desc">Impossible without her history</span>
+          </div>
+          <div class="trellis-legend-item">
+            <span class="trellis-tier-badge trellis-tier-badge--t2">T2 · Contextual</span>
+            <span class="trellis-legend-desc">Current state, light history</span>
+          </div>
+          <div class="trellis-legend-item">
+            <span class="trellis-tier-badge trellis-tier-badge--t3">T3 · Commodity</span>
+            <span class="trellis-legend-desc">Kept, never outranks 1–2</span>
+          </div>
+          <div class="trellis-legend-item">
+            <span class="trellis-tier-badge trellis-tier-badge--t4">T4 · System</span>
+            <span class="trellis-legend-desc">Transparency, quiet state</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Single persona phone (one visible at a time) ─────────── -->
+  <div class="trellis-phone-shell">
+    {personas.map((persona, index) => (
+      <section class="trellis-phone" data-persona-panel={persona.id} hidden={index !== 0}>
+        <!-- iOS chrome (visible when device-frame toggle is on) -->
+        <div class="trellis-ios-island" aria-hidden="true"></div>
+        <div class="trellis-ios-statusbar" aria-hidden="true">
+          <div class="trellis-ios-statusbar__time">9:41</div>
+          <div class="trellis-ios-statusbar__icons">
+            <svg width="19" height="12" viewBox="0 0 19 12" aria-hidden="true">
+              <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill="currentColor"/>
+              <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill="currentColor"/>
+              <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill="currentColor"/>
+              <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill="currentColor"/>
+            </svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" aria-hidden="true">
+              <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill="currentColor"/>
+              <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill="currentColor"/>
+              <circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/>
+            </svg>
+            <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+              <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/>
+              <rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/>
+              <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill="currentColor" fill-opacity="0.4"/>
+            </svg>
+          </div>
+        </div>
+        <!-- Plain spacer when device-frame is off -->
+        <div class="trellis-phone__spacer"></div>
+
+        <div class="trellis-phone__scroll" data-phone-scroll>
+          <div class="trellis-phone__content">
+            <header class="trellis-phone__header">
+              <div>
+                <div class="trellis-phone__date" data-header-eyebrow>{persona.eyebrow}</div>
+                <h3 class="trellis-phone__greeting" data-header-title>{persona.greeting}</h3>
+              </div>
+              <div class="trellis-phone__avatar">
+                {persona.first
+                  .split(' ')
+                  .map((part) => part[0])
+                  .join('')
+                  .slice(0, 2)}
+              </div>
+            </header>
+
+            <div class="trellis-panel" data-tab-panel="feed">
+              {persona.feed.map((card, cardIndex) => (
+                <TrellisFeedCard card={card} personaId={persona.id} cardIndex={cardIndex} />
+              ))}
+            </div>
+
+            <div class="trellis-panel" data-tab-panel="journey" hidden>
+              <TrellisJourney persona={persona} />
+            </div>
+
+            <footer class="trellis-phone__footer">
+              <div class="trellis-phone__lockline">
+                <svg width="11" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="trellis-phone__lockline-icon" aria-hidden="true">
+                  <rect x="4.5" y="10.5" width="15" height="10" rx="2.5"></rect>
+                  <path d="M8 10.5V7.5a4 4 0 018 0v3"></path>
+                </svg>
+                Your record · never sold
+              </div>
+              <span class="trellis-phone__footer-link">What Trellis knows about you →</span>
+            </footer>
+          </div>
+        </div>
+
+        <nav class="trellis-tabs" aria-label="Prototype tabs">
+          <button type="button" class="trellis-tab trellis-tab--active" data-tab-button="feed">
+            <svg class="trellis-tab__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Home</span>
+          </button>
+          <button type="button" class="trellis-tab" data-tab-button="journey">
+            <svg class="trellis-tab__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z"/><path d="M9 4v14"/><path d="M15 6v14"/>
+            </svg>
+            <span>Journey</span>
+          </button>
+        </nav>
+
+        <div class="trellis-ios-indicator" aria-hidden="true"></div>
+      </section>
+    ))}
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-trellis-prototype]');
+    if (!root) return;
+
+    const personaButtons = Array.from(root.querySelectorAll('[data-persona-button]'));
+    const personaPanels = Array.from(root.querySelectorAll('[data-persona-panel]'));
+    let activePersona = personaButtons[0]?.getAttribute('data-persona-button') ?? '';
+
+    const setActivePersona = (personaId) => {
+      activePersona = personaId;
+      personaButtons.forEach((button) => {
+        const selected = button.getAttribute('data-persona-button') === personaId;
+        button.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+      personaPanels.forEach((panel) => {
+        const selected = panel.getAttribute('data-persona-panel') === personaId;
+        panel.hidden = !selected;
+        if (selected) {
+          setTab(panel, 'feed');
+          resetJourneyFocus(panel);
+        }
+      });
+    };
+
+    const setTab = (panel, tab) => {
+      panel.querySelectorAll('[data-tab-button]').forEach((button) => {
+        const selected = button.getAttribute('data-tab-button') === tab;
+        button.classList.toggle('trellis-tab--active', selected);
+      });
+      panel.querySelectorAll('[data-tab-panel]').forEach((tabPanel) => {
+        tabPanel.hidden = tabPanel.getAttribute('data-tab-panel') !== tab;
+      });
+      const eyebrow = panel.querySelector('[data-header-eyebrow]');
+      const title = panel.querySelector('[data-header-title]');
+      if (tab === 'journey') {
+        if (eyebrow) eyebrow.textContent = `Your journey · ${eyebrow.dataset.base ?? eyebrow.textContent}`;
+        if (title) title.textContent = 'Your journey';
+      } else {
+        if (eyebrow?.dataset.base) eyebrow.textContent = eyebrow.dataset.base;
+        if (title?.dataset.base) title.textContent = title.dataset.base;
+        const scroll = panel.querySelector('[data-phone-scroll]');
+        if (scroll) scroll.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    const resetJourneyFocus = (panel) => {
+      panel.querySelectorAll('.journey-card--focused').forEach((card) => card.classList.remove('journey-card--focused'));
+    };
+
+    const openJourney = (panel, jid) => {
+      setTab(panel, 'journey');
+      resetJourneyFocus(panel);
+      const scroll = panel.querySelector('[data-phone-scroll]');
+      const target = panel.querySelector(`[data-jid="${jid || '__here'}"]`);
+      if (target) {
+        target.querySelector('.journey-card')?.classList.add('journey-card--focused');
+        if (scroll) {
+          const scrollTop = scroll.scrollTop + target.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
+          scroll.scrollTo({ top: Math.max(0, scrollTop - 76), behavior: 'smooth' });
+        }
+      }
+    };
+
+    // ── Fullscreen ───────────────────────────────────────────────
+    const fullscreenBtn = root.querySelector('[data-fullscreen]');
+    const iconExpand = fullscreenBtn?.querySelector('[data-icon-expand]');
+    const iconCompress = fullscreenBtn?.querySelector('[data-icon-compress]');
+    const updateFullscreenIcon = () => {
+      const isFs = !!document.fullscreenElement;
+      if (iconExpand) iconExpand.style.display = isFs ? 'none' : '';
+      if (iconCompress) iconCompress.style.display = isFs ? '' : 'none';
+    };
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          root.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
+      });
+      document.addEventListener('fullscreenchange', updateFullscreenIcon);
+    }
+
+    // ── Layer toggles (icon buttons) ─────────────────────────────
+    const toggleButtons = Array.from(root.querySelectorAll('[data-toggle]'));
+    toggleButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.getAttribute('data-toggle');
+        const next = button.getAttribute('aria-pressed') !== 'true';
+        button.setAttribute('aria-pressed', next ? 'true' : 'false');
+        if (key === 'device-frame') root.classList.toggle('trellis-prototype--device-frame', next);
+        else if (key === 'tiers') root.classList.toggle('trellis-prototype--show-tiers', next);
+      });
+    });
+
+    // ── Drawer auto-tuck on scroll ───────────────────────────────
+    const controlsEl = root.querySelector('.trellis-controls');
+    const handleIcon = controlsEl?.querySelector('[data-handle-icon]');
+    let lastScrollY = 0;
+
+    // Start tucked on mobile so the drawer doesn't cover the phone
+    if (window.matchMedia('(max-width: 520px)').matches) {
+      root.classList.add('trellis-prototype--controls-tucked');
+      if (handleIcon) handleIcon.setAttribute('points', '9 18 15 12 9 6');
+    }
+
+    const tuck = () => {
+      root.classList.add('trellis-prototype--controls-tucked');
+      root.classList.remove('trellis-prototype--controls-revealed');
+      if (handleIcon) handleIcon.setAttribute('points', '9 18 15 12 9 6'); // chevron right
+    };
+    const reveal = () => {
+      root.classList.remove('trellis-prototype--controls-tucked');
+      root.classList.remove('trellis-prototype--controls-revealed');
+      if (handleIcon) handleIcon.setAttribute('points', '15 18 9 12 15 6'); // chevron left
+    };
+
+    const handleScroll = () => {
+      const y = document.fullscreenElement ? root.scrollTop : window.scrollY;
+      if (y > lastScrollY + 8 && y > 60) {
+        tuck();
+      } else if (y < lastScrollY - 8) {
+        reveal();
+      }
+      lastScrollY = y;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Re-bind scroll listener when entering/exiting fullscreen
+    document.addEventListener('fullscreenchange', () => {
+      // Always remove first to prevent accumulation
+      root.removeEventListener('scroll', handleScroll);
+      if (document.fullscreenElement) {
+        root.addEventListener('scroll', handleScroll, { passive: true });
+      } else {
+        reveal();
+      }
+    });
+
+    // Click the handle to reveal; mouseleave the drawer to re-tuck
+    // On mobile (touch) the handle also closes — it's the only toggle mechanism
+    const handle = root.querySelector('[data-drawer-handle]');
+    if (handle) {
+      handle.addEventListener('click', () => {
+        const isTucked = root.classList.contains('trellis-prototype--controls-tucked');
+        const isMobile = window.matchMedia('(max-width: 520px)').matches;
+        if (isTucked) {
+          reveal();
+        } else if (isMobile) {
+          // On mobile: handle click closes the open drawer
+          tuck();
+        }
+      });
+    }
+    if (controlsEl) {
+      controlsEl.addEventListener('mouseleave', () => {
+        if (root.classList.contains('trellis-prototype--controls-tucked') ||
+            root.classList.contains('trellis-prototype--controls-revealed')) {
+          // only re-tuck if we were already scrolled past threshold
+          if (lastScrollY > 60) tuck();
+        }
+      });
+    }
+
+    // ── Persona panels ───────────────────────────────────────────
+    personaPanels.forEach((panel) => {
+      panel.querySelectorAll('[data-header-eyebrow]').forEach((el) => {
+        el.dataset.base = el.textContent ?? '';
+      });
+      panel.querySelectorAll('[data-header-title]').forEach((el) => {
+        el.dataset.base = el.textContent ?? '';
+      });
+
+      panel.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const tabButton = target.closest('[data-tab-button]');
+        if (tabButton instanceof HTMLElement) {
+          setTab(panel, tabButton.getAttribute('data-tab-button') ?? 'feed');
+          return;
+        }
+
+        const journeyButton = target.closest('[data-open-journey]');
+        if (journeyButton instanceof HTMLElement) {
+          openJourney(panel, journeyButton.getAttribute('data-open-journey'));
+          return;
+        }
+
+        const responseButton = target.closest('[data-followup-response]');
+        if (responseButton instanceof HTMLElement) {
+          const article = responseButton.closest('.trellis-card');
+          if (!article) return;
+          const prompt = article.querySelector('[data-followup-prompt]');
+          const ack = article.querySelector('[data-followup-ack]');
+          const label = article.querySelector('[data-followup-label]');
+          const text = article.querySelector('[data-followup-text]');
+          const response = responseButton.getAttribute('data-followup-response') ?? '';
+          const escalation = article.getAttribute('data-escalation') ?? '';
+          const calm = article.getAttribute('data-ack') ?? '';
+          if (prompt) prompt.hidden = true;
+          if (ack) ack.hidden = false;
+          if (label) label.textContent = response === 'Worse' ? 'Routed to your care team' : `You said: ${response.toLowerCase()}`;
+          if (text) text.textContent = response === 'Worse' ? escalation : calm;
+          return;
+        }
+
+        const screeningButton = target.closest('[data-screening-done]');
+        if (screeningButton instanceof HTMLElement) {
+          const article = screeningButton.closest('.trellis-card');
+          if (!article) return;
+          const actions = article.querySelector('[data-screening-actions]');
+          const success = article.querySelector('[data-screening-success]');
+          if (actions) actions.hidden = true;
+          if (success) success.hidden = false;
+          return;
+        }
+
+        const feedbackButton = target.closest('[data-feedback-value]');
+        if (feedbackButton instanceof HTMLElement) {
+          const article = feedbackButton.closest('[data-feedback-card]');
+          if (!article) return;
+          const label = article.querySelector('[data-feedback-label]');
+          const actions = article.querySelector('[data-feedback-actions]');
+          if (label) label.textContent = 'Thanks — this tunes your feed.';
+          if (actions) actions.hidden = true;
+          return;
+        }
+
+        const expandButton = target.closest('[data-expand-past]');
+        if (expandButton instanceof HTMLElement) {
+          const open = expandButton.getAttribute('aria-expanded') === 'true';
+          expandButton.setAttribute('aria-expanded', open ? 'false' : 'true');
+          const id = expandButton.getAttribute('aria-controls');
+          const detail = id ? panel.querySelector('#' + id) : null;
+          if (detail instanceof HTMLElement) detail.hidden = open;
+          return;
+        }
+      });
+    });
+
+    personaButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const personaId = button.getAttribute('data-persona-button');
+        if (personaId) setActivePersona(personaId);
+        // Collapse the drawer so the selected persona's feed is unobstructed
+        tuck();
+      });
+    });
+
+    setActivePersona(activePersona);
+  })();
+</script>

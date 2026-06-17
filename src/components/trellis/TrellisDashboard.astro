@@ -1,0 +1,310 @@
+---
+type Kpi = { label: string; value: string; target: string };
+type Bar = { label: string; pct: number; value: string; accent?: string };
+
+const tabs = [
+  {
+    id: 'a',
+    label: 'A · Feed Health',
+    audience: 'Product / Eng',
+    kpis: [
+      { label: 'Sessions starting on feed', value: '62%', target: '≥60%' },
+      { label: 'Moat-card share (T1–2)', value: '57%', target: '≥55%' },
+      { label: 'Follow-up loop closure', value: '43%', target: '≥40%' },
+      { label: 'Feed → agent rate', value: '16%', target: '≥15%' },
+      { label: 'Journey open rate (7d)', value: '71%', target: '≥70%' },
+      { label: 'Ahead-item → action', value: '22%', target: '≥20%' },
+    ] satisfies Kpi[],
+    bars: [
+      { label: '1.2 Follow-up', pct: 78, value: '61%', accent: '#55554f' },
+      { label: '1.3 Appt prep', pct: 66, value: '52%', accent: '#55554f' },
+      { label: '1.1 Trend', pct: 58, value: '46%', accent: '#55554f' },
+      { label: '2.2 Screening to-do', pct: 49, value: '38%', accent: '#8a8a84' },
+      { label: '2.1 Stage-aware ed', pct: 31, value: '24%', accent: '#8a8a84' },
+      { label: '3.1 Weekly dev', pct: 14, value: '11%', accent: '#c9c9c5' },
+    ] satisfies Bar[],
+  },
+  {
+    id: 'b',
+    label: 'B · Clinical Safety',
+    audience: 'Clinical Ops / Medical Director',
+    kpis: [
+      { label: 'Suppression accuracy', value: '100%', target: 'release gate' },
+      { label: 'Citation coverage', value: '100%', target: '100%' },
+      { label: 'Groundedness sample', value: '97%', target: '≥90%' },
+      { label: 'Triage SLA', value: '99%', target: 'per class' },
+    ] satisfies Kpi[],
+    bars: [
+      { label: '1.1 Trend', pct: 97, value: '97%', accent: '#55554f' },
+      { label: '1.4 Drug safety', pct: 96, value: '96%', accent: '#55554f' },
+      { label: '2.1 Stage-aware ed', pct: 94, value: '94%', accent: '#8a8a84' },
+      { label: '1.3 Debrief', pct: 91, value: '91%', accent: '#8a8a84' },
+      { label: '2.2 Screening', pct: 98, value: '98%', accent: '#55554f' },
+    ] satisfies Bar[],
+  },
+  {
+    id: 'c',
+    label: 'C · Cost & Reliability',
+    audience: 'Eng / Finance',
+    kpis: [
+      { label: 'Gen cost / DAU / day', value: '$0.038', target: '≤$0.05 ceiling' },
+      { label: 'Cache hit rate', value: '74%', target: '≥70%' },
+      { label: 'Live-LLM impressions', value: '17%', target: '≤20%' },
+      { label: 'Pipeline availability', value: '99.7%', target: '≥99.5%' },
+    ] satisfies Kpi[],
+    bars: [
+      { label: '1.3 Debrief summaries', pct: 74, value: '$1,410', accent: '#55554f' },
+      { label: '1.2 Follow-up', pct: 38, value: '$720', accent: '#55554f' },
+      { label: '1.1 Trend interpretation', pct: 22, value: '$415', accent: '#8a8a84' },
+      { label: '2.1 Stage-aware ed', pct: 9, value: '$170', accent: '#c9c9c5' },
+      { label: 'All other (template)', pct: 4, value: '$76', accent: '#c9c9c5' },
+    ] satisfies Bar[],
+  },
+];
+
+const moatWeeks = [
+  { t12: 38, t34: 42 },
+  { t12: 41, t34: 39 },
+  { t12: 46, t34: 36 },
+  { t12: 49, t34: 33 },
+  { t12: 52, t34: 30 },
+  { t12: 54, t34: 28 },
+  { t12: 56, t34: 27 },
+  { t12: 57, t34: 26 },
+];
+---
+
+<section class="trellis-dashboard" data-dashboard-tabs>
+  <div class="trellis-dashboard__head">
+    <div>
+      <div class="trellis-dashboard__eyebrow">Trellis · instrumentation layout, not visual design</div>
+      <h3 class="trellis-dashboard__title">Operational dashboards</h3>
+    </div>
+    <div class="trellis-dashboard__tablist" role="tablist" aria-label="Dashboard tabs">
+      {tabs.map((tab, index) => (
+        <button
+          type="button"
+          class:list={['trellis-dashboard__tab', index === 0 && 'trellis-dashboard__tab--active']}
+          data-dashboard-tab={tab.id}
+          aria-selected={index === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {tabs.map((tab, index) => (
+    <div class="trellis-dashboard__panel" data-dashboard-panel={tab.id} hidden={index !== 0}>
+      <div class="trellis-dashboard__audience">Audience · {tab.audience}</div>
+
+      <div class="trellis-dashboard__kpis">
+        {tab.kpis.map((kpi) => (
+          <article class="trellis-kpi">
+            <div class="trellis-kpi__label">{kpi.label}</div>
+            <div class="trellis-kpi__value">{kpi.value}</div>
+            <div class="trellis-kpi__target">Target {kpi.target}</div>
+          </article>
+        ))}
+      </div>
+
+      {tab.id === 'a' && (
+        <div class="trellis-dashboard__grid">
+          <article class="trellis-panel trellis-panel--span-7">
+            <div class="trellis-panel__title">Moat share of impressions — hero</div>
+            <div class="trellis-panel__note">Tier 1–2 vs 3–4 · weekly</div>
+            <div class="moat-chart">
+              <div class="moat-chart__bars">
+                {moatWeeks.map((week, index) => (
+                  <div class="moat-chart__stack">
+                    <div class="moat-chart__bar moat-chart__bar--light" style={`height:${week.t34}%`}></div>
+                    <div class="moat-chart__bar moat-chart__bar--dark" style={`height:${week.t12}%`}></div>
+                    <span class="moat-chart__label">W{index + 1}</span>
+                  </div>
+                ))}
+                <div class="moat-chart__target">Target 55%</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-5">
+            <div class="trellis-panel__title">Ranking-eligibility funnel</div>
+            <div class="trellis-panel__note">Last 7 days</div>
+            {[
+              ['Cards generated', 100, '12,400'],
+              ['Passed safety pipeline', 96, '11,890'],
+              ['Rank-eligible', 74, '9,120'],
+              ['Impressed', 39, '4,810'],
+            ].map(([label, pct, value]) => (
+              <div class="trellis-bar-row">
+                <span>{label}</span>
+                <div class="trellis-bar-track"><div class="trellis-bar-fill" style={`width:${pct}%`}></div></div>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-5">
+            <div class="trellis-panel__title">CTR + loop closure by card type</div>
+            <div class="trellis-panel__note">By tier</div>
+            {tab.bars.map((bar) => (
+              <div class="trellis-bar-row">
+                <span>{bar.label}</span>
+                <div class="trellis-bar-track"><div class="trellis-bar-fill" style={`width:${bar.pct}%;background:${bar.accent}`}></div></div>
+                <strong>{bar.value}</strong>
+              </div>
+            ))}
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-7">
+            <div class="trellis-panel__title">Journey view additions</div>
+            <div class="trellis-panel__note">Zone dwell and gap closure</div>
+            <div class="trellis-dashboard__mini-grid">
+              {[
+                ['Zone dwell · behind', '26%'],
+                ['Zone dwell · here', '41%'],
+                ['Zone dwell · ahead', '33%'],
+                ['Gap-closure rate', '58%'],
+              ].map(([label, value]) => (
+                <div class="trellis-stat-chip">
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+      )}
+
+      {tab.id === 'b' && (
+        <div class="trellis-dashboard__grid">
+          <article class="trellis-panel trellis-panel--span-12 trellis-panel--success">
+            <div class="trellis-panel__title">Sensitive-state suppression monitor</div>
+            <div class="trellis-panel__note">Top of dashboard, always</div>
+            <div class="trellis-panel__notice">
+              <strong>PASSING</strong>
+              <span>100% on labeled set · 0 production misses · propagation lag p95 1.8s</span>
+            </div>
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-6">
+            <div class="trellis-panel__title">Citation coverage + groundedness</div>
+            <div class="trellis-panel__note">By card category</div>
+            {tab.bars.map((bar) => (
+              <div class="trellis-bar-row">
+                <span>{bar.label}</span>
+                <div class="trellis-bar-track"><div class="trellis-bar-fill" style={`width:${bar.pct}%;background:${bar.accent}`}></div></div>
+                <strong>{bar.value}</strong>
+              </div>
+            ))}
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-6">
+            <div class="trellis-panel__title">Triage fires from feed cards</div>
+            <div class="trellis-panel__note">Disposition + SLA</div>
+            <table class="trellis-table">
+              <thead>
+                <tr><th>Source</th><th>Fires</th><th>SLA</th><th>Compliance</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1.2 “Worse” responses</td><td>64</td><td>4 min</td><td>99%</td></tr>
+                <tr><td>2.3 Check-in free text</td><td>38</td><td>11 min</td><td>98%</td></tr>
+                <tr><td>1.1 Out-of-range trend</td><td>12</td><td>3 min</td><td>100%</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      )}
+
+      {tab.id === 'c' && (
+        <div class="trellis-dashboard__grid">
+          <article class="trellis-panel trellis-panel--span-6">
+            <div class="trellis-panel__title">LLM spend by card type</div>
+            <div class="trellis-panel__note">Last 7 days</div>
+            {tab.bars.map((bar) => (
+              <div class="trellis-bar-row">
+                <span>{bar.label}</span>
+                <div class="trellis-bar-track"><div class="trellis-bar-fill" style={`width:${bar.pct}%;background:${bar.accent}`}></div></div>
+                <strong>{bar.value}</strong>
+              </div>
+            ))}
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-6">
+            <div class="trellis-panel__title">Template vs generation mix</div>
+            <div class="trellis-panel__note">% of impressions</div>
+            <div class="trellis-stack">
+              <span style="width:64%;background:#55554f"></span>
+              <span style="width:19%;background:#a8a8a3"></span>
+              <span style="width:17%;background:#e3e3e0"></span>
+            </div>
+            <div class="trellis-stack__legend">
+              <span>Template 64%</span>
+              <span>Cached gen 19%</span>
+              <span>Live gen 17%</span>
+            </div>
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-7">
+            <div class="trellis-panel__title">Pipeline error rates + degradation paths</div>
+            <div class="trellis-panel__note">What users saw instead</div>
+            <table class="trellis-table">
+              <thead>
+                <tr><th>Failure</th><th>Rate</th><th>Degradation path shown to user</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>EHR fetch failure</td><td>0.8%</td><td>Trend cards withheld · freshness note on record data</td></tr>
+                <tr><td>Retrieval failure</td><td>0.3%</td><td>Card dropped · quiet-state floor applies</td></tr>
+                <tr><td>Guardrail rejection</td><td>1.9%</td><td>Replaced by escalation or quiet-state card</td></tr>
+                <tr><td>Stale-data threshold</td><td>1.1%</td><td>“As of your May 12 visit” framing · no trend rendered</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="trellis-panel trellis-panel--span-5">
+            <div class="trellis-panel__title">Vendor / gateway health</div>
+            <div class="trellis-panel__note">Fallback activations: 2 this week</div>
+            <table class="trellis-table">
+              <thead>
+                <tr><th>Vendor</th><th>p95</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>LLM gateway · primary</td><td>870ms</td><td>Healthy</td></tr>
+                <tr><td>LLM gateway · fallback</td><td>—</td><td>Standby</td></tr>
+                <tr><td>EHR integration (FHIR)</td><td>1.2s</td><td>Degraded</td></tr>
+                <tr><td>Citation corpus / RAG</td><td>210ms</td><td>Healthy</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      )}
+    </div>
+  ))}
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-dashboard-tabs]');
+    if (!root) return;
+    const buttons = Array.from(root.querySelectorAll('[data-dashboard-tab]'));
+    const panels = Array.from(root.querySelectorAll('[data-dashboard-panel]'));
+
+    const activate = (id) => {
+      buttons.forEach((button) => {
+        const selected = button.getAttribute('data-dashboard-tab') === id;
+        button.classList.toggle('trellis-dashboard__tab--active', selected);
+        button.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-dashboard-panel') !== id;
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-dashboard-tab');
+        if (id) activate(id);
+      });
+    });
+  })();
+</script>

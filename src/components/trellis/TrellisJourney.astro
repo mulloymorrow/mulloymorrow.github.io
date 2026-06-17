@@ -1,0 +1,203 @@
+---
+import { hcgBand, hcgDraws, type TrellisPersona } from '../../data/trellis';
+
+interface Props {
+  persona: TrellisPersona;
+}
+
+const { persona } = Astro.props;
+const journey = persona.journey;
+const behind = [...journey.behind].reverse();
+
+const confMeta: Record<string, { chip: string; className: string }> = {
+  scheduled: { chip: 'Scheduled', className: 'journey-chip--scheduled' },
+  recommended: { chip: 'Window', className: 'journey-chip--recommended' },
+  typical: { chip: 'Common at this stage', className: 'journey-chip--typical' },
+  decision: { chip: 'Decision point', className: 'journey-chip--decision' },
+};
+
+const chartW = 340;
+const chartH = 200;
+const padL = 34;
+const padR = 12;
+const padT = 14;
+const padB = 24;
+const wkMin = 4;
+const wkMax = 8;
+const logMin = 1;
+const logMax = 5.6;
+const x = (wk: number) => padL + ((wk - wkMin) / (wkMax - wkMin)) * (chartW - padL - padR);
+const y = (value: number) => {
+  const logValue = Math.log10(Math.max(value, 2));
+  return chartH - padB - ((logValue - logMin) / (logMax - logMin)) * (chartH - padT - padB);
+};
+const topPoints = hcgBand.map((point) => `${x(point.wk).toFixed(1)},${y(point.hi).toFixed(1)}`);
+const bottomPoints = [...hcgBand].reverse().map((point) => `${x(point.wk).toFixed(1)},${y(point.lo).toFixed(1)}`);
+const bandPolygon = [...topPoints, ...bottomPoints].join(' ');
+const firstDraw = hcgDraws[0];
+const secondDraw = hcgDraws[1];
+---
+
+<div class="journey-root">
+  <div class="journey-spine" aria-hidden="true"></div>
+
+<div class="journey-zone-label">Behind you</div>
+  {behind.map((item, index) => {
+    const kind = item.kind ?? 'past';
+    const isEmpty = kind === 'empty';
+    const isMilestone = kind === 'milestone';
+    const detailId = `jp-${persona.id}-${index}`;
+    return (
+      <div class="journey-row" data-jid={item.id}>
+        <div class="journey-node-column">
+          {isEmpty ? (
+            <span class="journey-node journey-node--empty"></span>
+          ) : isMilestone ? (
+            <span class="journey-node journey-node--milestone" aria-hidden="true"></span>
+          ) : (
+            <span class="journey-node journey-node--done" aria-hidden="true"></span>
+          )}
+        </div>
+        <div class:list={['journey-card', 'journey-card--past', isEmpty && 'journey-card--empty']}>
+          {isEmpty ? (
+            <>
+              <div class="journey-card__top">
+                <span class="journey-card__title">{item.title}</span>
+                {item.week && <span class="journey-card__week">{item.week}</span>}
+              </div>
+              {item.detail && <p class="journey-card__detail">{item.detail}</p>}
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                class="journey-past-toggle"
+                data-expand-past
+                aria-expanded="false"
+                aria-controls={detailId}
+              >
+                <span class="journey-card__title">{item.title}</span>
+                <span class="journey-past-toggle__right">
+                  {item.week && <span class="journey-card__week">{item.week}</span>}
+                  <svg class="journey-past-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </button>
+              {item.detail && (
+                <p class="journey-card__detail" id={detailId} hidden>{item.detail}</p>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  })}
+
+  <div class="journey-zone-label">You are here</div>
+  <div class="journey-row" data-jid="__here">
+    <div class="journey-node-column">
+      <span class="journey-node journey-node--here"></span>
+    </div>
+    <div class="journey-card journey-card--here">
+      <div class="journey-card__here-header">
+        <span class="journey-card__here-week">{journey.here.week}</span>
+        <span class="journey-card__here-stage">{journey.here.stage}</span>
+      </div>
+
+      {journey.here.inflight.length > 0 && (
+        <div class="journey-inflight">
+          {journey.here.inflight.map((item) => (
+            <div class="journey-inflight__item">
+              <span class="journey-inflight__dot" aria-hidden="true"></span>
+              <div>
+                <div class="journey-inflight__label">{item.label}</div>
+                <div class="journey-inflight__sub">{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {journey.here.chart === 'hcg' && (
+        <div class="journey-chart">
+          <div class="journey-chart__eyebrow">Your hCG, in context</div>
+          <svg viewBox={`0 0 ${chartW} ${chartH}`} class="journey-chart__svg" aria-label="hCG trend chart">
+            {[100, 1000, 10000, 100000].map((value) => (
+              <g>
+                <line
+                  x1={padL}
+                  x2={chartW - padR}
+                  y1={y(value)}
+                  y2={y(value)}
+                  class="journey-chart__grid"
+                />
+                <text x={padL - 5} y={y(value) + 3} text-anchor="end" class="journey-chart__label">
+                  {value === 1000 ? '1k' : value === 10000 ? '10k' : value === 100000 ? '100k' : '100'}
+                </text>
+              </g>
+            ))}
+            <polygon points={bandPolygon} class="journey-chart__band"></polygon>
+            <polyline points={topPoints.join(' ')} class="journey-chart__edge"></polyline>
+            <polyline points={[...bottomPoints].reverse().join(' ')} class="journey-chart__edge"></polyline>
+            {[4, 5, 6, 7, 8].map((week) => (
+              <text x={x(week)} y={chartH - 8} text-anchor="middle" class="journey-chart__label">
+                WK {week}
+              </text>
+            ))}
+            <line
+              x1={x(firstDraw.wk)}
+              y1={y(firstDraw.value)}
+              x2={x(secondDraw.wk)}
+              y2={y(secondDraw.value)}
+              class="journey-chart__trend"
+            />
+            <circle cx={x(firstDraw.wk)} cy={y(firstDraw.value)} r="4" class="journey-chart__point"></circle>
+            <circle cx={x(secondDraw.wk)} cy={y(secondDraw.value)} r="4.5" class="journey-chart__point journey-chart__point--latest"></circle>
+            <text x={x(secondDraw.wk) + 8} y={y(secondDraw.value) - 8} class="journey-chart__note journey-chart__note--light">
+              6,100 · {secondDraw.label}
+            </text>
+            <text x={x(firstDraw.wk) - 6} y={y(firstDraw.value) + 14} text-anchor="end" class="journey-chart__note">
+              2,400 · {firstDraw.label}
+            </text>
+            <text x={x(6.05)} y={y(2400) + 4} class="journey-chart__accent">
+              ≈ doubling every 58h
+            </text>
+            <text x={chartW - padR} y={padT + 2} text-anchor="end" class="journey-chart__label">
+              TYPICAL RANGE · LOG SCALE
+            </text>
+          </svg>
+          <p class="journey-chart__caption">
+            Both draws fall within the typical range, rising on a healthy slope.
+          </p>
+          <p class="journey-chart__footnote">
+            Orientation, not interpretation · your lab&apos;s range is authoritative
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="journey-zone-label">Ahead of you</div>
+  {journey.ahead.map((item) => {
+    const meta = confMeta[item.conf ?? 'typical'];
+    return (
+      <div class="journey-row" data-jid={item.id}>
+        <div class="journey-node-column">
+          <span class:list={['journey-node', `journey-node--${item.conf}`]}></span>
+        </div>
+        <div class:list={['journey-card', 'journey-card--ahead', item.gap && 'journey-card--gap']}>
+          <div class="journey-card__top">
+            {item.when && <span class="journey-card__week">{item.when}</span>}
+            {item.gap && <span class="journey-chip journey-chip--gap">Gap</span>}
+          </div>
+          <div class="journey-card__title">{item.title}</div>
+          {item.sub && <p class="journey-card__detail">{item.sub}</p>}
+          {item.source && <div class="journey-card__source">{item.source}</div>}
+        </div>
+      </div>
+    );
+  })}
+
+  <div class="journey-more">Showing the next 8 weeks · Show more</div>
+</div>

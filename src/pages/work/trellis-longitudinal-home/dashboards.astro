@@ -1,0 +1,94 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Footer from '../../../components/Footer.astro';
+import TrellisDashboard from '../../../components/trellis/TrellisDashboard.astro';
+import '../../../styles/trellis.css';
+
+const title = 'Trellis Operational Dashboards | Mulloy Morrow';
+const description = 'Three operational dashboards covering feed health, clinical safety, and cost/reliability for the Trellis Health longitudinal home.';
+const canonicalUrl = 'https://code.mulloymorrow.com/work/trellis-longitudinal-home/dashboards/';
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl}>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__eyebrow">
+        <a href="/work/trellis-longitudinal-home/" class="hero__back">← Longitudinal home</a>
+        <span class="hero__eyebrow-sep">·</span>
+        <span>Trellis Health</span>
+      </div>
+      <h1 class="hero__title">Operational dashboards</h1>
+      <p class="hero__subtitle">
+        Three greyscale dashboards make release gates and safety instrumentation first-class product
+        requirements: feed health, clinical safety, and cost/reliability.
+      </p>
+    </div>
+  </section>
+
+  <main class="case-study">
+    <section class="section">
+      <div class="container intro">
+        <div>
+          <p class="section-label">Why it matters</p>
+          <h2>Instrumentation is part of the design.</h2>
+        </div>
+        <p class="intro__copy">
+          Suppression accuracy, citation coverage, triage SLA, groundedness, moat-share of impressions,
+          and cost/reliability all need to be observable if this surface is going to behave like a
+          clinical product rather than a content feed. These dashboards are intentionally low fidelity —
+          they are there to make the gates legible, not beautiful.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--dashboard">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-label">Operations</p>
+            <h2>Dashboard wireframes</h2>
+          </div>
+          <a href="/work/trellis-longitudinal-home/" class="text-link">← Back to case study</a>
+        </div>
+        <p class="section-copy">
+          Select a dashboard below. Dashboard A covers product metrics and feed health. Dashboard B
+          is owned by clinical ops and the medical director. Dashboard C is for engineering and finance.
+        </p>
+        <div class="native-surface native-surface--dashboard">
+          <TrellisDashboard />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container feature-grid">
+        <article class="feature-card">
+          <p class="feature-card__eyebrow">Dashboard A</p>
+          <h3>Feed health</h3>
+          <p>
+            Moat-card share, follow-up loop closure, feed-to-agent rate, journey open rate, and
+            ranking-eligibility funnel. Product and engineering.
+          </p>
+        </article>
+        <article class="feature-card">
+          <p class="feature-card__eyebrow">Dashboard B</p>
+          <h3>Clinical safety</h3>
+          <p>
+            Suppression accuracy (release gate), citation coverage, groundedness sampling, and
+            triage SLA. Clinical ops and medical director.
+          </p>
+        </article>
+        <article class="feature-card">
+          <p class="feature-card__eyebrow">Dashboard C</p>
+          <h3>Cost and reliability</h3>
+          <p>
+            LLM spend by card type, template vs generation mix, pipeline error rates, and vendor
+            health. Engineering and finance.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
