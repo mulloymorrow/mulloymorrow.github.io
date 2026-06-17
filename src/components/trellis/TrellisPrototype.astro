@@ -244,7 +244,8 @@ const personas = trellisPersonaOrder.map((id) => trellisPersonas[id]);
       if (target) {
         target.querySelector('.journey-card')?.classList.add('journey-card--focused');
         if (scroll) {
-          scroll.scrollTo({ top: Math.max(0, target.offsetTop - 76), behavior: 'smooth' });
+          const scrollTop = scroll.scrollTop + target.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
+          scroll.scrollTo({ top: Math.max(0, scrollTop - 76), behavior: 'smooth' });
         }
       }
     };
@@ -317,10 +318,11 @@ const personas = trellisPersonaOrder.map((id) => trellisPersonas[id]);
 
     // Re-bind scroll listener when entering/exiting fullscreen
     document.addEventListener('fullscreenchange', () => {
+      // Always remove first to prevent accumulation
+      root.removeEventListener('scroll', handleScroll);
       if (document.fullscreenElement) {
         root.addEventListener('scroll', handleScroll, { passive: true });
       } else {
-        root.removeEventListener('scroll', handleScroll);
         reveal();
       }
     });
