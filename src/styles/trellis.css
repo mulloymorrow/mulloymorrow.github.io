@@ -257,16 +257,32 @@
   max-height: calc(100vh - 110px);
   overflow-y: auto;
   overflow-x: hidden;
+  /* Thin scrollbar for the control drawer */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 34, 46, 0.18) transparent;
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--trellis-border);
   border-left: none;
   border-radius: 0 1.25rem 1.25rem 0;
-  box-shadow: 4px 0 24px rgba(14, 34, 46, 0.1);
+  box-shadow: 2px 0 16px rgba(14, 34, 46, 0.07);
   display: flex;
   flex-direction: row;
   transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trellis-controls::-webkit-scrollbar {
+  width: 4px;
+}
+
+.trellis-controls::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trellis-controls::-webkit-scrollbar-thumb {
+  background: rgba(14, 34, 46, 0.2);
+  border-radius: 2px;
 }
 
 /* Tucked state: slide left, leaving handle sticking out */
@@ -445,7 +461,8 @@
 }
 
 .trellis-page .trellis-prototype {
-  max-width: 520px;
+  max-width: 860px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -669,13 +686,29 @@
   flex: 1;
   overflow: auto;
   scroll-behavior: smooth;
+  /* Thin overlay scrollbar — matches brand, no layout shift */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 34, 46, 0.18) transparent;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar-thumb {
+  background: rgba(14, 34, 46, 0.2);
+  border-radius: 2px;
 }
 
 .trellis-phone__content {
   padding: 0 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .trellis-phone__header {
@@ -721,7 +754,7 @@
 .trellis-panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .trellis-panel[hidden] {
@@ -734,7 +767,7 @@
   border: 1px solid #e2d9c8;
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(14, 34, 46, 0.08);
-  padding: 1rem;
+  padding: 1.25rem;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -1744,10 +1777,10 @@
 }
 
 .trellis-panel {
-  background: #fff;
-  border: 1px solid #dededb;
-  border-radius: 0.75rem;
-  padding: 0.9rem 1rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .trellis-panel--success {
@@ -2124,9 +2157,15 @@
 .trellis-prototype:not(.trellis-prototype--show-why) .trellis-why { display: none; }
 
 /* ── quiet-day toggle ────────────────────────────────────────── */
+.trellis-feed-normal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .trellis-feed-quiet { display: none; }
 .trellis-prototype--quiet-day .trellis-feed-normal { display: none; }
-.trellis-prototype--quiet-day .trellis-feed-quiet { display: block; }
+.trellis-prototype--quiet-day .trellis-feed-quiet { display: flex; flex-direction: column; gap: 20px; }
 
 .trellis-card--quiet {
   text-align: center;
