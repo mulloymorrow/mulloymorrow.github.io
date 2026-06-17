@@ -4,11 +4,10 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import ScrollVideo from '../../components/ScrollVideo.svelte';
-import PingPongVideo from '../../components/PingPongVideo.svelte';
 
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
-const canonicalUrl = "https://code.mulloymorrow.com/blog";
+const canonicalUrl = new URL("/blog", Astro.site).toString();
 
 // Get the philosophy page
 const philosophyPage = await getEntry('pages', 'philosophy');
@@ -21,7 +20,7 @@ const sortedPosts = allPosts.sort((a, b) =>
 
 // Create a combined list with philosophy page and case studies included
 type ContentItem = {
-  type: 'blog' | 'page' | 'case-study';
+  type: 'blog' | 'page' | 'case-study' | 'essay';
   title: string;
   description: string;
   slug: string;
@@ -30,6 +29,15 @@ type ContentItem = {
 };
 
 const allContent: ContentItem[] = [
+  // Essay: The Body Beneath the Feeling (standalone designed page in public/)
+  {
+    type: 'essay' as const,
+    title: "The Body Beneath the Feeling",
+    description: "Where do emotions come from, and what lies beneath awareness? A guided tour of the rival answers — ending in a staged debate among five thinkers who would not agree about any of it.",
+    slug: '/blog/the-body-beneath-the-feeling/',
+    publishedAt: new Date('2026-06-01'),
+    tags: ['Essay', 'Consciousness', 'Neuroscience'],
+  },
   // Add Spotify case study presentation
   {
     type: 'case-study' as const,
@@ -87,7 +95,7 @@ const blogSchema = {
   "author": {
     "@type": "Person",
     "name": "Mulloy Morrow",
-    "url": "https://code.mulloymorrow.com"
+    "url": Astro.site?.toString() ?? "https://mulloymorrow.com"
   },
   "blogPost": sortedContent.slice(0, 10).map(item => ({
     "@type": "BlogPosting",
@@ -95,10 +103,10 @@ const blogSchema = {
     "description": item.description,
     "datePublished": item.publishedAt.toISOString(),
     "url": item.type === 'blog' 
-      ? `https://code.mulloymorrow.com/blog/${item.slug}/`
+      ? new URL(`/blog/${item.slug}/`, Astro.site).toString()
       : item.type === 'page'
-        ? `https://code.mulloymorrow.com/${item.slug}/`
-        : `https://code.mulloymorrow.com${item.slug}/`
+        ? new URL(`/${item.slug}/`, Astro.site).toString()
+        : new URL(item.slug.replace(/\/$/, '') + '/', Astro.site).toString()
   }))
 };
 ---
@@ -150,7 +158,7 @@ const blogSchema = {
                   slug={item.type === 'blog' ? item.slug : (item.type === 'page' ? `/${item.slug}` : item.slug)}
                   publishedAt={item.publishedAt}
                   tags={item.tags}
-                  isExternal={item.type === 'page' || item.type === 'case-study'}
+                  isExternal={item.type === 'page' || item.type === 'case-study' || item.type === 'essay'}
                 />
               ))}
             </div>
@@ -159,11 +167,7 @@ const blogSchema = {
       )}
     </main>
   </div>
-  <Footer>
-    <a href="/ai-mulloy/" class="portrait-video-link" slot="social-extra" title="Chat with AI-Mulloy">
-      <PingPongVideo client:load src="/video/portrait_drawing.mp4" className="portrait-video" />
-    </a>
-  </Footer>
+  <Footer />
 </Layout>
 
 <style>
@@ -278,15 +282,4 @@ const blogSchema = {
     }
   }
 
-  /* Portrait video in footer - same size as social icons */
-  .portrait-video-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform var(--transition-fast);
-  }
-
-  .portrait-video-link:hover {
-    transform: translateY(-2px);
-  }
 </style>

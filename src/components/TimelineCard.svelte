@@ -1,5 +1,8 @@
 <script lang="ts">
   import { getTechWikiUrl } from '../utils/techLinks';
+  import PingPongVideo from './PingPongVideo.svelte';
+  import SquadFormationDiagram from './SquadFormationDiagram.svelte';
+  import LumiDemoTabs from './LumiDemoTabs.svelte';
 
   interface PhaseLink {
     label: string;
@@ -13,6 +16,7 @@
     description: string;
     achievements: string[];
     link?: PhaseLink;
+    links?: (PhaseLink & { icon?: string; external?: boolean })[];
   }
 
   interface Experience {
@@ -22,16 +26,65 @@
     period: string;
     location?: string;
     summary: string;
+    /** When set, the first N paragraphs of `summary` (split on blank lines)
+     *  show in the collapsed card; the remainder is revealed on expand. */
+    summaryCollapsedParagraphs?: number;
     highlights: string[];
     technologies: string[];
     isCurrent?: boolean;
     badgeText?: string; // Optional badge to display next to company name (e.g., "Side Quest", "Consulting")
     logo?: string;
-    links?: { label: string; url: string }[]; // Optional links to display in expanded section // Path to logo image (relative to public folder, e.g., "/logos/company.png")
-    phases?: Phase[]; // Optional sub-sections within the experience
+    links?: { label: string; url: string; icon?: string }[];
+    pinnedLink?: { label: string; url: string; icon?: string; external?: boolean };
+    phases?: Phase[];
+    showSquadDiagram?: boolean;
+    showLumiDemo?: boolean;
+    lumiIntro?: string;
+    /** Optional lines after main summary (e.g. attribution + link) */
+    signatureAttribution?: string;
+    signatureLink?: { text: string; url: string };
   }
 
   export let experience: Experience;
+
+  /** Split summary on **highlight** markers for optional accent styling */
+  function parseSummaryHighlights(text: string): { highlight: boolean; text: string }[] {
+    const segments: { highlight: boolean; text: string }[] = [];
+    const re = /\*\*([^*]+)\*\*/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) {
+        segments.push({ highlight: false, text: text.slice(last, m.index) });
+      }
+      segments.push({ highlight: true, text: m[1] });
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) {
+      segments.push({ highlight: false, text: text.slice(last) });
+    }
+    if (segments.length === 0) {
+      segments.push({ highlight: false, text });
+    }
+    return segments;
+  }
+
+  /** Split summary into paragraphs (on blank lines) and parse each for highlights. */
+  function splitSummaryParagraphs(text: string, collapsedCount: number | undefined) {
+    const paragraphs = text.split(/\n\n+/);
+    const limit = collapsedCount ?? paragraphs.length;
+    const visibleText = paragraphs.slice(0, limit).join('\n\n');
+    const extraText   = paragraphs.slice(limit).join('\n\n');
+    return {
+      visible: parseSummaryHighlights(visibleText),
+      extra:   extraText ? parseSummaryHighlights(extraText) : [],
+    };
+  }
+
+  $: summaryParts      = splitSummaryParagraphs(experience.summary, experience.summaryCollapsedParagraphs);
+  $: summarySegments   = summaryParts.visible;
+  $: extraSegments     = summaryParts.extra;
+  $: hasExtraSummary   = extraSegments.length > 0;
   
   let isExpanded = false;
   
@@ -106,8 +159,181 @@
         </div>
       </div>
       
-      <p class="timeline-summary">{experience.summary}</p>
-      
+      {#if experience.showLumiDemo}
+        <div class="timeline-summary-with-diagram">
+          <div class="timeline-summary-column">
+            <p class="timeline-summary">
+              {#each summarySegments as part}
+                {#if part.highlight}
+                  <span class="timeline-keyword">{part.text}</span>
+                {:else}
+                  {part.text}
+                {/if}
+              {/each}
+            </p>
+            {#if hasExtraSummary && isExpanded}
+              <p class="timeline-summary timeline-summary--extra">
+                {#each extraSegments as part}
+                  {#if part.highlight}
+                    <span class="timeline-keyword">{part.text}</span>
+                  {:else}
+                    {part.text}
+                  {/if}
+                {/each}
+              </p>
+            {/if}
+            {#if experience.signatureAttribution || experience.signatureLink}
+              <!-- svelte-ignore a11y_no_static_element_interactions -->
+              <div
+                class="timeline-summary timeline-summary--signature"
+                on:click|stopPropagation
+                on:keydown|stopPropagation
+              >
+                {#if experience.signatureAttribution}
+                  {experience.signatureAttribution}
+                {/if}
+                {#if experience.signatureLink}
+                  {#if experience.signatureAttribution}<br />{/if}
+                  <a
+                    href={experience.signatureLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="timeline-signature-link"
+                    on:click|stopPropagation
+                  >{experience.signatureLink.text}</a>
+                {/if}
+              </div>
+            {/if}
+          </div>
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+            <LumiDemoTabs intro={experience.lumiIntro ?? null} />
+          </div>
+        </div>
+      {:else if experience.showSquadDiagram}
+        <div class="timeline-summary-with-diagram">
+          <div class="timeline-summary-column">
+            <p class="timeline-summary">
+              {#each summarySegments as part}
+                {#if part.highlight}
+                  <span class="timeline-keyword">{part.text}</span>
+                {:else}
+                  {part.text}
+                {/if}
+              {/each}
+            </p>
+            {#if hasExtraSummary && isExpanded}
+              <p class="timeline-summary timeline-summary--extra">
+                {#each extraSegments as part}
+                  {#if part.highlight}
+                    <span class="timeline-keyword">{part.text}</span>
+                  {:else}
+                    {part.text}
+                  {/if}
+                {/each}
+              </p>
+            {/if}
+            {#if experience.signatureAttribution || experience.signatureLink}
+              <!-- svelte-ignore a11y_no_static_element_interactions -->
+              <div
+                class="timeline-summary timeline-summary--signature"
+                on:click|stopPropagation
+                on:keydown|stopPropagation
+              >
+                {#if experience.signatureAttribution}
+                  {experience.signatureAttribution}
+                {/if}
+                {#if experience.signatureLink}
+                  {#if experience.signatureAttribution}<br />{/if}
+                  <a
+                    href={experience.signatureLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="timeline-signature-link"
+                    on:click|stopPropagation
+                  >{experience.signatureLink.text}</a>
+                {/if}
+              </div>
+            {/if}
+          </div>
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div class="timeline-diagram" on:click|stopPropagation on:keydown|stopPropagation>
+            <SquadFormationDiagram />
+          </div>
+        </div>
+      {:else}
+        <p class="timeline-summary">
+          {#each summarySegments as part}
+            {#if part.highlight}
+              <span class="timeline-keyword">{part.text}</span>
+            {:else}
+              {part.text}
+            {/if}
+          {/each}
+        </p>
+        {#if hasExtraSummary && isExpanded}
+          <p class="timeline-summary timeline-summary--extra">
+            {#each extraSegments as part}
+              {#if part.highlight}
+                <span class="timeline-keyword">{part.text}</span>
+              {:else}
+                {part.text}
+              {/if}
+            {/each}
+          </p>
+        {/if}
+        {#if experience.signatureAttribution || experience.signatureLink}
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div
+            class="timeline-summary timeline-summary--signature"
+            on:click|stopPropagation
+            on:keydown|stopPropagation
+          >
+            {#if experience.signatureAttribution}
+              {experience.signatureAttribution}
+            {/if}
+            {#if experience.signatureLink}
+              {#if experience.signatureAttribution}<br />{/if}
+              <a
+                href={experience.signatureLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="timeline-signature-link"
+                on:click|stopPropagation
+              >{experience.signatureLink.text}</a>
+            {/if}
+          </div>
+        {/if}
+      {/if}
+
+      {#if experience.pinnedLink}
+        <div class="timeline-pinned-link">
+          <a
+            href={experience.pinnedLink.url}
+            target={experience.pinnedLink.external === false ? '_self' : '_blank'}
+            rel={experience.pinnedLink.external === false ? '' : 'noopener noreferrer'}
+            class="pinned-link-btn"
+            on:click|stopPropagation
+          >
+            {#if experience.pinnedLink.icon === 'document'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            {:else}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            {/if}
+            {experience.pinnedLink.label}
+          </a>
+        </div>
+      {/if}
+
       <div class="timeline-expand-hint">
         <span>{isExpanded ? 'Click to collapse' : 'Click to expand'}</span>
         <svg 
@@ -195,12 +421,27 @@
         {#if experience.links && experience.links.length > 0}
           <div class="timeline-links">
             {#each experience.links as link}
-              <a href={link.url} target="_blank" rel="noopener noreferrer" class="timeline-link-btn" on:click|stopPropagation>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
+              <a href={link.url} target={link.url.startsWith('/') ? "_self" : "_blank"} rel={link.url.startsWith('/') ? "" : "noopener noreferrer"} class="timeline-link-btn {link.icon === 'ai' ? 'timeline-link-btn--ai' : ''} {link.icon === 'vision' ? 'timeline-link-btn--vision' : ''} {link.icon === 'lumi' ? 'timeline-link-btn--lumi' : ''}" on:click|stopPropagation>
+                {#if link.icon === 'ai'}
+                  <span class="timeline-link-btn__video">
+                    <PingPongVideo src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
+                  </span>
+                {:else if link.icon === 'vision'}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                {:else if link.icon === 'lumi'}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                {:else}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                {/if}
                 {link.label}
               </a>
             {/each}
@@ -405,13 +646,123 @@
     margin: 0;
   }
   
+  .timeline-summary-with-diagram {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-top: 0.75rem;
+  }
+
+  .timeline-summary-column {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .timeline-summary-with-diagram .timeline-summary-column > .timeline-summary:first-child {
+    margin-top: 0;
+  }
+
+  .timeline-summary--signature {
+    margin-top: 0.5rem;
+  }
+
+  .timeline-signature-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+  }
+
+  .timeline-signature-link:hover {
+    text-decoration: underline;
+    color: var(--color-text-primary);
+  }
+
+  .timeline-diagram {
+    flex: 1.2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* For the phone-frame Lumi demo, center it and don't force-stretch */
+  .timeline-diagram :global(.lumi-phone) {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-summary-with-diagram {
+      flex-direction: column;
+    }
+    .timeline-diagram {
+      width: 100%;
+    }
+  }
+
   .timeline-summary {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     margin: 0.75rem 0 0 0;
     line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  .timeline-summary--extra {
+    animation: extraIn 0.35s ease both;
+  }
+
+  @keyframes extraIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .timeline-keyword {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+
+  :global(html.theme-warm) .timeline-keyword {
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
   }
   
+  .timeline-pinned-link {
+    margin-top: 0.75rem;
+  }
+
+  .pinned-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.875rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: var(--color-bg-hover);
+    border: 1px solid var(--color-border-hover);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .pinned-link-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px var(--color-accent-glow);
+  }
+
+  .pinned-link-btn svg {
+    flex-shrink: 0;
+  }
+
   .timeline-expand-hint {
     display: flex;
     align-items: center;
@@ -647,6 +998,57 @@
 
   .timeline-link-btn svg {
     flex-shrink: 0;
+  }
+  
+  .timeline-link-btn--ai {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-cool));
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .timeline-link-btn--ai:hover {
+    background: linear-gradient(135deg, var(--color-accent-cool), var(--color-accent));
+    box-shadow: 0 4px 16px var(--color-accent-glow);
+  }
+  
+  .timeline-link-btn--vision {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: var(--color-bg-primary);
+    border-color: transparent;
+  }
+  
+  .timeline-link-btn--vision:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+  }
+
+  .timeline-link-btn--lumi {
+    background: linear-gradient(135deg, #6ABAB6, #5aa9a5);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .timeline-link-btn--lumi:hover {
+    background: linear-gradient(135deg, #5aa9a5, #4a9895);
+    box-shadow: 0 4px 16px rgba(106, 186, 182, 0.35);
+  }
+  
+  .timeline-link-btn__video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .timeline-link-btn__video :global(.ai-mulloy-video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.5);
   }
 
   .timeline-tech {

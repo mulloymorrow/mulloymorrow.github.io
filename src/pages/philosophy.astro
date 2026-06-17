@@ -13,7 +13,7 @@ const { Content, headings } = await page.render();
 
 const title = `${page.data.title} | Mulloy Morrow`;
 const description = page.data.description;
-const canonicalUrl = "https://code.mulloymorrow.com/philosophy";
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 // Format dates for display
 const lastUpdated = (page.data.updatedAt || page.data.publishedAt).toLocaleDateString('en-US', {
@@ -31,8 +31,8 @@ const articleSchema = {
   "author": {
     "@type": "Person",
     "name": "Mulloy Morrow",
-    "url": "https://code.mulloymorrow.com",
-    "jobTitle": "Director / Head of AI & Machine Learning",
+    "url": Astro.site?.toString() ?? "https://mulloymorrow.com",
+    "jobTitle": "Founder. Tech Leader. Builder.",
     "sameAs": [
       "https://linkedin.com/in/mulloymorrow",
       "https://twitter.com/thismulloy",
@@ -57,7 +57,7 @@ const sectionIds = headings
   .map(h => h.slug);
 ---
 
-<Layout title={title} description={description} canonicalUrl={canonicalUrl} ogType="article">
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} ogType="article" showThemeToggle={false}>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
   
   <PhilosophyThemeToggle client:load />

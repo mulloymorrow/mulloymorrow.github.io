@@ -99,6 +99,7 @@
     padding: var(--space-1) var(--space-3);
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-radius: var(--radius-full);
     color: white;
     font-size: var(--text-xs);

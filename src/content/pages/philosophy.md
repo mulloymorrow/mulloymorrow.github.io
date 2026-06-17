@@ -38,7 +38,7 @@ Human-centered AI means:
 
 This isn't about slowing down innovation—it's about accelerating it in directions that matter. It's about being intentional with our incredible capabilities.
 
-This philosophy guided my decision to leave a successful role at Spotify to build <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a>—a platform that uses cutting-edge AI not to increase screen time, but to strengthen real-world relationships. It's technically harder to build AI that respects human autonomy. It's also more valuable.
+This philosophy guided my decision to leave a successful role at Spotify to build <a href="https://nalya.ai/vision"><img src="/logos/stealth-ai.png" alt="Nalya logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Nalya.ai</a>—a platform that uses cutting-edge AI not to increase screen time, but to strengthen real-world relationships. It's technically harder to build AI that respects human autonomy. It's also more valuable.
 
 ## The Leadership Philosophy
 
@@ -71,11 +71,11 @@ I've chosen to focus my current work on human connection because it's both techn
 
 **Technology is never neutral—it amplifies the intentions and values of those who build it.** I choose to build technology that expands human potential.
 
-## Why Now? Why <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a>?
+## Why Now? Why <a href="https://nalya.ai/vision"><img src="/logos/stealth-ai.png" alt="Nalya logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Nalya.ai</a>?
 
 After years of building recommendation systems and personalization engines, I've mastered both the power and the nuances of AI at scale. **I've built systems that can keep people scrolling for hours—and now I'm using that same technology to solve the opposite problem.**
 
-Here's what excites me: I can use cutting-edge AI to help people build richer offline lives. <a href="https://connectioncompanion.com/vision"><img src="/logos/stealth-ai.png" alt="Connection Companion logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Connection Companion</a> is my bet that AI's greatest application isn't maximizing screen time—it's helping people strengthen real-world relationships.
+Here's what excites me: I can use cutting-edge AI to help people build richer offline lives. <a href="https://nalya.ai/vision"><img src="/logos/stealth-ai.png" alt="Nalya logo" style="height: 1.2em; vertical-align: middle; margin-right: 0.25em;" />Nalya.ai</a> is my bet that AI's greatest application isn't maximizing screen time—it's helping people strengthen real-world relationships.
 
 I'm building a platform that uses agentic AI, LLMs, and ML systems to:
 

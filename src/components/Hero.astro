@@ -1,6 +1,7 @@
 ---
 import SocialLinks from './SocialLinks.astro';
 import CursorReveal from './CursorReveal.svelte';
+import PingPongVideo from './PingPongVideo.svelte';
 ---
 
 <section class="hero" id="top">
@@ -13,17 +14,12 @@ import CursorReveal from './CursorReveal.svelte';
     </div>
   
   <div class="hero__content container">
-    <div class="hero__intro animate-on-scroll">
-      <span class="hero__wave">👋</span>
-      <span class="hero__greeting">Hey there, I'm</span>
-    </div>
-    
     <h1 class="hero__name animate-on-scroll delay-1">
       Mulloy Morro<button class="hero__secret-w" id="maze-trigger" aria-label="Trigger maze animation">w</button>
     </h1>
     
     <h2 class="hero__title animate-on-scroll delay-2">
-      Director / Head of <span class="text-accent">AI & Machine Learning</span>
+      Founder.<span class="text-accent"> Tech Leader. Builder.</span>
     </h2>
     
     <p class="hero__tagline animate-on-scroll delay-3">
@@ -31,7 +27,11 @@ import CursorReveal from './CursorReveal.svelte';
     </p>
     
     <div class="hero__cta animate-on-scroll delay-4">
-      <SocialLinks size="lg" exclude={['Telegram']} />
+      <SocialLinks size="lg" exclude={['Telegram']}>
+        <a href="/ai-mulloy/" class="ai-mulloy-link" title="Chat with AI-Mulloy">
+          <PingPongVideo client:load src="/video/portrait_drawing.mp4" className="ai-mulloy-video" />
+        </a>
+      </SocialLinks>
     </div>
     
     <a href="#experience" class="hero__scroll-indicator animate-on-scroll delay-5" aria-label="Scroll to experience">
@@ -123,39 +123,6 @@ import CursorReveal from './CursorReveal.svelte';
     padding: var(--space-8) 0;
   }
   
-  .hero__intro {
-    margin-bottom: var(--space-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-  }
-  
-  .hero__wave {
-    font-size: var(--text-2xl);
-    animation: wave 2.5s ease-in-out infinite;
-    transform-origin: 70% 70%;
-    display: inline-block;
-  }
-  
-  @keyframes wave {
-    0%, 100% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-    60%, 100% { transform: rotate(0deg); }
-  }
-  
-  .hero__greeting {
-    font-family: var(--font-heading);
-    font-size: var(--text-xl);
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    letter-spacing: 0.02em;
-  }
-  
   .hero__name {
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 700;
@@ -238,10 +205,31 @@ import CursorReveal from './CursorReveal.svelte';
     .hero__tagline {
       font-size: var(--text-base);
     }
-    
-    .hero__scroll-indicator {
-      display: none;
-    }
+  }
+  
+  /* AI-Mulloy video link in social links */
+  .ai-mulloy-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 0 0 1.5px var(--color-border);
+  }
+  
+  .ai-mulloy-link:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 0 12px var(--color-accent-glow), 0 0 0 1.5px var(--color-accent);
+  }
+  
+  .ai-mulloy-link :global(.ai-mulloy-video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.5);
   }
   
   /* Secret 'w' button - looks like normal text */
