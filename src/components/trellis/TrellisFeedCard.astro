@@ -320,3 +320,36 @@ if (series.length > 0) {
     </svg>
   </article>
 )}
+
+{card.type === 'commerce' && (
+  <article class="trellis-card trellis-commerce" data-commerce-card>
+    <div class={`trellis-card-tier trellis-card-tier--${card.tier}`}>{tierText}</div>
+    <div class="trellis-commerce__header">
+      <div class="trellis-commerce__icon-tile" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="8.5" width="10" height="12" rx="2"/>
+          <rect x="8.2" y="4.5" width="7.6" height="4" rx="1.2"/>
+          <path d="M7 13h10M7 17h10"/>
+        </svg>
+      </div>
+      <div class="trellis-commerce__meta">
+        <div class="trellis-eyebrow">{data.kicker}</div>
+        <div class="trellis-commerce__category">{data.category}</div>
+        <p class="trellis-commerce__sub">{data.sub}</p>
+      </div>
+      <button type="button" class="trellis-inline-button trellis-inline-button--ghost" data-commerce-toggle aria-expanded="false">Browse</button>
+    </div>
+    <div class="trellis-commerce__panel" hidden>
+      <ul class="trellis-commerce__list">
+        {data.options.map((opt: { name: string }) => (
+          <li class="trellis-commerce__item">{opt.name}</li>
+        ))}
+      </ul>
+      <div class="trellis-commerce__footer">
+        <span class="trellis-commerce__range">{data.priceRange}</span>
+        <a class="trellis-commerce__cta" href={data.affiliateUrl} target="_blank" rel="noopener noreferrer">{data.affiliateLabel}</a>
+      </div>
+    </div>
+    <div class="trellis-why">{data.why}</div>
+  </article>
+)}
