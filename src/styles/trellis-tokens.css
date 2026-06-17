@@ -1,0 +1,179 @@
+/* ============================================================
+   TRELLIS HEALTH — DESIGN TOKENS
+   Consolidated from the official design handoff zip:
+     tokens/colors.css · tokens/typography.css
+     tokens/spacing.css · tokens/fonts.css
+   ============================================================ */
+
+/* ---- Webfonts ---------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- Deep Blue (primary ink / brand) ---------------------- */
+  --blue-950: #0A171F;
+  --blue-900: #0E222E;
+  --blue-800: #143241;
+  --blue-700: #1B4357;
+  --blue-600: #245A72;
+  --blue-500: #2F758F;
+  --blue-400: #5C97AC;
+  --blue-300: #93BDCC;
+  --blue-200: #C4DBE4;
+  --blue-100: #E4EEF2;
+  --blue-50:  #F1F7F9;
+
+  /* ---- Aqua (accent) ---------------------------------------- */
+  --aqua-700: #1A7D8A;
+  --aqua-600: #1F9CAB;
+  --aqua-500: #34BCCB;
+  --aqua-400: #66D2DE;
+  --aqua-300: #92E1EA;
+  --aqua-200: #BFEEF3;
+  --aqua-100: #DFF7F9;
+  --aqua-50:  #EFFBFC;
+
+  /* ---- Warm neutrals (Bone / Sand) -------------------------- */
+  --bone-50:  #FBF9F4;
+  --bone-100: #F6F2EA;
+  --bone-200: #EFE9DD;
+  --sand-300: #E2D9C8;
+  --sand-400: #CFC2AC;
+  --taupe-500: #A8987F;
+  --taupe-600: #7E7059;
+
+  /* ---- True neutrals ---------------------------------------- */
+  --grey-50:  #F7F7F6;
+  --grey-100: #EDEDEB;
+  --grey-200: #DEDEDB;
+  --grey-300: #C6C6C2;
+  --grey-400: #9C9C97;
+  --grey-500: #6F6F6A;
+  --grey-600: #4C4C48;
+  --white:    #FFFFFF;
+
+  /* ---- Functional ------------------------------------------- */
+  --coral-500: #DD6A4F;
+  --coral-100: #F8E4DC;
+  --amber-500: #E0A23C;
+  --amber-100: #F8EBD2;
+  --sage-600:  #4C7A5E;
+  --sage-500:  #5E9472;
+  --sage-100:  #E0EDE4;
+  --rose-500:  #C2566B;
+  --rose-100:  #F6E0E5;
+
+  /* ---- Semantic surfaces ------------------------------------ */
+  --surface-page:        var(--bone-50);
+  --surface-card:        var(--white);
+  --surface-card-warm:   var(--bone-100);
+  --surface-sunken:      var(--bone-200);
+  --surface-inverse:     var(--blue-900);
+  --surface-accent-soft: var(--aqua-100);
+
+  /* ---- Semantic text ---------------------------------------- */
+  --text-strong:   var(--blue-900);
+  --text-body:     #213340;
+  --text-muted:    var(--taupe-600);
+  --text-subtle:   var(--taupe-500);
+  --text-inverse:  var(--bone-50);
+  --text-accent:   var(--aqua-700);
+  --text-link:     var(--blue-600);
+
+  /* ---- Lines & borders -------------------------------------- */
+  --border-hairline: var(--sand-300);
+  --border-default:  #E0DACE;
+  --border-strong:   var(--blue-900);
+  --border-accent:   var(--aqua-400);
+  --dotted-ink:      var(--blue-900);
+
+  /* ---- Brand actions --------------------------------------- */
+  --action-primary-bg:    var(--blue-900);
+  --action-primary-fg:    var(--bone-50);
+  --action-primary-hover: var(--blue-800);
+  --action-accent-bg:     var(--aqua-500);
+  --action-accent-fg:     var(--blue-950);
+  --action-accent-hover:  var(--aqua-400);
+
+  /* ---- Focus ----------------------------------------------- */
+  --focus-ring: var(--aqua-500);
+
+  /* ---- Font families --------------------------------------- */
+  --font-serif:   'Newsreader', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Hanken Grotesk', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+  --font-display: var(--font-serif);
+  --font-body:    var(--font-sans);
+  --font-label:   var(--font-mono);
+
+  /* ---- Font weights --------------------------------------- */
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+  --fw-extrabold: 800;
+
+  /* ---- Type scale ----------------------------------------- */
+  --text-display-xl: 76px;
+  --text-display-l:  56px;
+  --text-display-m:  42px;
+  --text-h1:      34px;
+  --text-h2:      27px;
+  --text-h3:      22px;
+  --text-h4:      18px;
+  --text-body-lg: 19px;
+  --text-body:    16px;
+  --text-body-sm: 14px;
+  --text-caption: 13px;
+  --text-eyebrow: 12px;
+
+  /* ---- Line heights --------------------------------------- */
+  --lh-tight:   1.04;
+  --lh-snug:    1.18;
+  --lh-body:    1.55;
+  --lh-relaxed: 1.7;
+
+  /* ---- Letter spacing ------------------------------------- */
+  --ls-display: -0.02em;
+  --ls-heading: -0.01em;
+  --ls-body:    0em;
+  --ls-eyebrow: 0.18em;
+  --ls-label:   0.08em;
+
+  /* ---- Spacing (8px base) --------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  /* ---- Radii ---------------------------------------------- */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   16px;
+  --radius-lg:   22px;
+  --radius-xl:   32px;
+  --radius-2xl:  44px;
+  --radius-pill: 999px;
+
+  /* ---- Shadows -------------------------------------------- */
+  --shadow-xs:     0 1px 2px rgba(14, 34, 46, 0.05);
+  --shadow-sm:     0 2px 8px rgba(14, 34, 46, 0.06);
+  --shadow-md:     0 8px 24px rgba(14, 34, 46, 0.08);
+  --shadow-lg:     0 18px 48px rgba(14, 34, 46, 0.10);
+  --shadow-accent: 0 10px 30px rgba(52, 188, 203, 0.22);
+  --shadow-inset:  inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* ---- Motion --------------------------------------------- */
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:      140ms;
+  --dur-base:      240ms;
+  --dur-slow:      420ms;
+}

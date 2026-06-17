@@ -173,6 +173,28 @@ export const trellisPersonas: Record<string, TrellisPersona> = {
 
 export const trellisPersonaOrder = ['nina', 'sasha', 'maya'];
 
+/* Commerce card — prototype-only, default off.
+   CEO guidance: names only in feed; price range + affiliate link in expanded panel only. */
+export const trellisCommerceCard: TrellisCard = {
+  type: 'commerce',
+  tier: 't3',
+  tag: '3.x Commerce',
+  data: {
+    kicker: 'Recommended for you',
+    category: 'Iron support',
+    sub: 'Gentle options for third-trimester iron.',
+    why: 'Your ferritin is below baseline · Week 32',
+    options: [
+      { name: 'Slow-release iron bisglycinate' },
+      { name: 'Liquid iron, food-based' },
+      { name: 'Vitamin C pairing drops' },
+    ],
+    priceRange: '$12–$24',
+    affiliateLabel: 'Browse on Fullscript →',
+    affiliateUrl: 'https://us.fullscript.com',
+  },
+};
+
 export const hcgBand = [
   { wk: 4.0, lo: 10, hi: 430 },
   { wk: 4.5, lo: 40, hi: 1800 },

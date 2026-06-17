@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import './trellis-tokens.css';
 
+/* Legacy aliases kept for backward compat with this stylesheet */
 :root {
-  --trellis-ink: #0e222e;
-  --trellis-page: #fbf9f4;
-  --trellis-surface: #ffffff;
-  --trellis-warm: #f6f2ea;
-  --trellis-border: #e2d9c8;
-  --trellis-muted: #7e7059;
-  --trellis-subtle: #a8987f;
-  --trellis-aqua: #34bccb;
+  --trellis-ink:    var(--blue-900);
+  --trellis-page:   var(--bone-50);
+  --trellis-surface: var(--white);
+  --trellis-warm:   var(--bone-100);
+  --trellis-border: var(--sand-300);
+  --trellis-muted:  var(--taupe-600);
+  --trellis-subtle: var(--taupe-500);
+  --trellis-aqua:   var(--aqua-500);
 }
 
 .hero {
@@ -256,16 +257,32 @@
   max-height: calc(100vh - 110px);
   overflow-y: auto;
   overflow-x: hidden;
+  /* Thin scrollbar for the control drawer */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 34, 46, 0.18) transparent;
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--trellis-border);
   border-left: none;
   border-radius: 0 1.25rem 1.25rem 0;
-  box-shadow: 4px 0 24px rgba(14, 34, 46, 0.1);
+  box-shadow: 2px 0 16px rgba(14, 34, 46, 0.07);
   display: flex;
   flex-direction: row;
   transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trellis-controls::-webkit-scrollbar {
+  width: 4px;
+}
+
+.trellis-controls::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trellis-controls::-webkit-scrollbar-thumb {
+  background: rgba(14, 34, 46, 0.2);
+  border-radius: 2px;
 }
 
 /* Tucked state: slide left, leaving handle sticking out */
@@ -322,10 +339,10 @@
 
 .trellis-controls__eyebrow {
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.58rem;
+  font-size: var(--text-eyebrow);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #7e7059;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-muted);
   display: block;
 }
 
@@ -444,7 +461,8 @@
 }
 
 .trellis-page .trellis-prototype {
-  max-width: 520px;
+  max-width: 860px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -498,11 +516,22 @@
   font-family: 'Newsreader', Georgia, serif;
   font-size: 0.95rem;
   line-height: 1.2;
-  color: #0e222e;
+  color: var(--text-strong);
 }
 
 .trellis-persona-chip[aria-selected='true'] .trellis-persona-chip__name {
-  color: #fbf9f4;
+  color: var(--text-inverse);
+}
+
+.trellis-persona-chip__story {
+  font-size: 0.62rem;
+  line-height: 1.4;
+  color: var(--text-subtle);
+  margin-top: 0.1rem;
+}
+
+.trellis-persona-chip[aria-selected='true'] .trellis-persona-chip__story {
+  color: var(--blue-200);
 }
 
 /* ── Compact tier legend row ────────────────────────────────────── */
@@ -657,13 +686,29 @@
   flex: 1;
   overflow: auto;
   scroll-behavior: smooth;
+  /* Thin overlay scrollbar — matches brand, no layout shift */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 34, 46, 0.18) transparent;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trellis-phone__scroll::-webkit-scrollbar-thumb {
+  background: rgba(14, 34, 46, 0.2);
+  border-radius: 2px;
 }
 
 .trellis-phone__content {
   padding: 0 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .trellis-phone__header {
@@ -709,7 +754,7 @@
 .trellis-panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .trellis-panel[hidden] {
@@ -722,7 +767,7 @@
   border: 1px solid #e2d9c8;
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(14, 34, 46, 0.08);
-  padding: 1rem;
+  padding: 1.25rem;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -776,23 +821,25 @@
 }
 
 .trellis-eyebrow {
-  color: #7e7059;
-  font-size: 0.58rem;
+  color: var(--text-muted);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
   margin-bottom: 0.3rem;
 }
 
 .trellis-eyebrow--inverse,
 .trellis-why--inverse {
-  color: #93bdcc;
+  color: var(--blue-300);
 }
 
 .trellis-headline,
 .journey-card__here-week {
   margin: 0;
-  font-family: 'Newsreader', Georgia, serif;
-  font-size: 1.2rem;
-  line-height: 1.26;
-  color: #0e222e;
+  font-family: var(--font-serif);
+  font-size: 1.31rem; /* ~21px — matches handoff */
+  line-height: 1.22;
+  letter-spacing: var(--ls-heading);
+  color: var(--text-strong);
 }
 
 .trellis-headline--compact,
@@ -801,7 +848,7 @@
 }
 
 .trellis-headline--inverse {
-  color: #fbf9f4;
+  color: var(--text-inverse);
 }
 
 .trellis-sub,
@@ -1730,10 +1777,10 @@
 }
 
 .trellis-panel {
-  background: #fff;
-  border: 1px solid #dededb;
-  border-radius: 0.75rem;
-  padding: 0.9rem 1rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .trellis-panel--success {
@@ -2066,10 +2113,10 @@
   border: 1px solid currentColor;
 }
 
-.trellis-tier-badge--t1 { color: #fff;    background: #0e4d6e; }
-.trellis-tier-badge--t2 { color: #0d5f6e; background: #b8edf3; }
-.trellis-tier-badge--t3 { color: #7a5c1e; background: #f5e4bd; }
-.trellis-tier-badge--t4 { color: #555;    background: #e8e8e6; }
+.trellis-tier-badge--t1 { color: var(--blue-900); background: var(--blue-100);  border-color: var(--blue-900); }
+.trellis-tier-badge--t2 { color: var(--aqua-700); background: var(--aqua-100);  border-color: var(--aqua-700); }
+.trellis-tier-badge--t3 { color: var(--taupe-600); background: var(--bone-200); border-color: var(--taupe-600); }
+.trellis-tier-badge--t4 { color: var(--grey-500); background: var(--grey-100);  border-color: var(--grey-500); }
 
 .trellis-tier-legend__desc {
   font-size: 0.72rem;
@@ -2096,13 +2143,151 @@
   pointer-events: none;
 }
 
-.trellis-card-tier--t1 { color: #fff;    background: #0e4d6e; }
-.trellis-card-tier--t2 { color: #0d5f6e; background: #b8edf3; }
-.trellis-card-tier--t3 { color: #7a5c1e; background: #f5e4bd; }
-.trellis-card-tier--t4 { color: #555;    background: #e8e8e6; }
+.trellis-card-tier--t1 { color: var(--blue-900); background: var(--blue-100);  border-color: var(--blue-900); }
+.trellis-card-tier--t2 { color: var(--aqua-700); background: var(--aqua-100);  border-color: var(--aqua-700); }
+.trellis-card-tier--t3 { color: var(--taupe-600); background: var(--bone-200); border-color: var(--taupe-600); }
+.trellis-card-tier--t4 { color: var(--grey-500); background: var(--grey-100);  border-color: var(--grey-500); }
 
 .trellis-prototype--show-tiers .trellis-card-tier {
   display: block;
+}
+
+/* ── why-this toggle ─────────────────────────────────────────── */
+.trellis-why { display: flex; }
+.trellis-prototype:not(.trellis-prototype--show-why) .trellis-why { display: none; }
+
+/* ── quiet-day toggle ────────────────────────────────────────── */
+.trellis-feed-normal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.trellis-feed-quiet { display: none; }
+.trellis-prototype--quiet-day .trellis-feed-normal { display: none; }
+.trellis-prototype--quiet-day .trellis-feed-quiet { display: flex; flex-direction: column; gap: 20px; }
+
+.trellis-card--quiet {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.trellis-quiet__headline {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: var(--ls-heading);
+  color: var(--text-strong);
+  margin-bottom: 0.5rem;
+}
+
+.trellis-quiet__sub {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+/* ── commerce toggle ─────────────────────────────────────────── */
+.trellis-commerce-slot { display: none; }
+.trellis-prototype--show-commerce .trellis-commerce-slot { display: block; }
+
+/* ── commerce card ───────────────────────────────────────────── */
+.trellis-commerce__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.trellis-commerce__icon-tile {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--aqua-100);
+  border: 1px solid var(--border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-900);
+}
+
+.trellis-commerce__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.trellis-commerce__category {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-top: 0.15rem;
+}
+
+.trellis-commerce__sub {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-subtle);
+  margin: 0;
+}
+
+.trellis-commerce__panel {
+  border-top: 1px solid var(--border-hairline);
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.trellis-commerce__panel[hidden] { display: none; }
+
+.trellis-commerce__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trellis-commerce__item {
+  font-size: 0.82rem;
+  color: var(--text-body);
+  padding: 0.55rem 0.1rem;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.trellis-commerce__item:last-child {
+  border-bottom: none;
+}
+
+.trellis-commerce__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+}
+
+.trellis-commerce__range {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: var(--ls-label);
+  color: var(--text-muted);
+}
+
+.trellis-commerce__cta {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.trellis-commerce__cta:hover {
+  text-decoration: underline;
 }
 
 /* ensure card positioning for badge overlay */
