@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 
 <Layout 
   title="Reinventing Spotify's Discovery | Mulloy Morrow"
-  description="AI Leadership Case Study: How I led the transformation of Spotify's music discovery systems using machine learning."
+  description="How I led the transformation of Spotify's music discovery systems using machine learning. Choose between a leadership-focused narrative or a technical deep dive."
 >
   <main class="article">
     <div class="article__background">
@@ -33,18 +33,91 @@ import Footer from '../../components/Footer.astro';
         </div>
         
         <h1 class="article__title">Reinventing Spotify's Discovery</h1>
-        <p class="article__subtitle">AI Leadership Case Study: How I led the transformation of Spotify's music discovery systems using machine learning.</p>
+        <p class="article__subtitle">How I led the transformation of Spotify's music discovery systems using machine learning. Pick the version that fits you — a leadership-focused narrative or a technical deep dive.</p>
       </header>
       
       <div class="article__content">
-        <div class="presentation-embed">
+        <div class="deck-switcher" role="tablist" aria-label="Choose presentation version">
+          <button
+            type="button"
+            class="deck-switcher__tab is-active"
+            data-deck="leadership"
+            role="tab"
+            id="deck-tab-leadership"
+            aria-selected="true"
+            aria-controls="deck-panel-leadership"
+          >
+            <svg class="deck-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span class="deck-switcher__text">
+              <span class="deck-switcher__label">Leadership</span>
+              <span class="deck-switcher__sublabel">Strategy, vision &amp; org impact</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="deck-switcher__tab"
+            data-deck="technical"
+            role="tab"
+            id="deck-tab-technical"
+            aria-selected="false"
+            aria-controls="deck-panel-technical"
+          >
+            <svg class="deck-switcher__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+            <span class="deck-switcher__text">
+              <span class="deck-switcher__label">Technical</span>
+              <span class="deck-switcher__sublabel">Architecture, models &amp; methods</span>
+            </span>
+          </button>
+        </div>
+
+        <div
+          class="presentation-embed"
+          data-deck-panel="leadership"
+          id="deck-panel-leadership"
+          role="tabpanel"
+          aria-labelledby="deck-tab-leadership"
+        >
           <div class="presentation-embed__wrapper">
             <iframe 
               src="https://docs.google.com/presentation/d/e/2PACX-1vSRGx4GVA51zPpLcUVtjIlZQ097EmV8sTZ11jwO-H_XZBooAzNA9VrzgSb4CabIMvTSiQY3VLPgQl2j/pubembed?start=true&loop=false&delayms=3000" 
               frameborder="0" 
               allowfullscreen="true" 
               loading="lazy"
-              title="AI Presentation"
+              title="Reinventing Spotify's Discovery — Leadership presentation"
+            ></iframe>
+          </div>
+          <p class="presentation-embed__hint">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+            </svg>
+            Use arrow keys to navigate slides. Click fullscreen for the best experience.
+          </p>
+        </div>
+
+        <div
+          class="presentation-embed"
+          data-deck-panel="technical"
+          id="deck-panel-technical"
+          role="tabpanel"
+          aria-labelledby="deck-tab-technical"
+          hidden
+        >
+          <div class="presentation-embed__wrapper">
+            <iframe 
+              data-src="https://docs.google.com/presentation/d/1iR2FE6OGtSot9SwqAE6MOoBo6j0DItuhs_6jYRqjKGo/embed?start=false&loop=false&delayms=3000" 
+              frameborder="0" 
+              allowfullscreen="true" 
+              loading="lazy"
+              title="Reinventing Spotify's Discovery — Technical presentation"
             ></iframe>
           </div>
           <p class="presentation-embed__hint">
@@ -174,6 +247,38 @@ import Footer from '../../components/Footer.astro';
   </main>
   <Footer />
 </Layout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.deck-switcher__tab');
+  const panels = document.querySelectorAll<HTMLElement>('[data-deck-panel]');
+
+  function activateDeck(deck: string) {
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.deck === deck;
+      tab.classList.toggle('is-active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.deckPanel === deck;
+      panel.hidden = !isActive;
+
+      if (isActive) {
+        const iframe = panel.querySelector<HTMLIFrameElement>('iframe[data-src]');
+        if (iframe && !iframe.getAttribute('src')) {
+          iframe.setAttribute('src', iframe.dataset.src ?? '');
+        }
+      }
+    });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const deck = tab.dataset.deck;
+      if (deck) activateDeck(deck);
+    });
+  });
+</script>
 
 <style>
   .article {
@@ -319,6 +424,72 @@ import Footer from '../../components/Footer.astro';
     margin-bottom: var(--space-16);
   }
   
+  /* Deck Switcher */
+  .deck-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  .deck-switcher__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-base);
+  }
+
+  .deck-switcher__tab:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+  }
+
+  .deck-switcher__tab.is-active {
+    border-color: var(--color-accent);
+    background: var(--color-accent-glow);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .deck-switcher__icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: color var(--transition-base);
+  }
+
+  .deck-switcher__tab:hover .deck-switcher__icon,
+  .deck-switcher__tab.is-active .deck-switcher__icon {
+    color: var(--color-accent);
+  }
+
+  .deck-switcher__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .deck-switcher__label {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .deck-switcher__sublabel {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    line-height: 1.2;
+  }
+
   /* Presentation Embed Styles */
   .presentation-embed {
     background: var(--color-bg-surface);
@@ -674,6 +845,16 @@ import Footer from '../../components/Footer.astro';
       font-size: var(--text-lg);
     }
     
+    .deck-switcher {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .deck-switcher__tab {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
     .presentation-embed {
       border-radius: var(--radius-xl);
       margin: 0 calc(-1 * var(--space-4));
