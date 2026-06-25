@@ -1,0 +1,1286 @@
+---
+title: "The Five-Layer Defense Architecture for AI Agents in Regulated, Evidence-Bound Industries"
+description: "A generic defense-in-depth framework for AI agents in regulated industries, with worked examples in healthcare, legal, and financial services."
+publishedAt: 2026-06-25
+tags:
+  - AI Agents
+  - Regulated Industries
+  - AI Safety
+  - Architecture
+draft: false
+---
+
+# The Five-Layer Defense Architecture for AI Agents in Regulated, Evidence-Bound Industries
+
+
+## A Generic Framework with Worked Examples in Healthcare, Legal, and Financial Services
+
+
+> **Bottom line up front.** A defensible AI agent in any regulated, evidence-bound industry is not "an LLM with a safety filter." It is a five-layer defense-in-depth system in which a deterministic router/triage layer is the most reliable component, retrieval over a versioned corpus of authoritative sources is the only path to substantive content, generation is constrained to cite-or-refuse, and licensed humans (always-on triage plus async expert review) close the loop. The same architecture instantiates across healthcare, legal, financial advisory, tax, insurance, and compliance — only the content of each layer changes. The structure is invariant.
+>
+> **Note on scope.** This document presents the architecture in the abstract first, then works it through three examples in detail: consumer healthcare, consumer legal advice, and consumer financial advice. The cross-industry comparison at the end shows how the same five layers absorb very different regulatory regimes, corpora, professional licensing structures, and failure modes without the architecture itself bending.
+
+
+---
+
+
+## TL;DR
+
+
+- **The architecture is industry-invariant; the content is industry-specific.** Every regulated AI advice system needs the same five layers: input classification with deterministic triage, retrieval over a versioned authoritative corpus, citation-required constrained generation, calibrated refusal with state-aware escalation, and async expert review. What changes per industry is *what counts as an emergency*, *what counts as authoritative*, *who is licensed to take the handoff*, and *what regulator has bite*.
+- **The router is the safety system in every industry.** A deterministic input classifier sits in front of generation. The LLM never decides whether a question crosses a regulated line — that decision is a rule, authored by the licensed professionals who stand behind the product. The LLM only writes the wrapper text after the disposition is locked. Reliability budget concentrates on Layers 1 and 4 (routing and refusal/escalation), because they decide whether retrieval and generation run at all.
+- **Generic education vs. licensed advice is the universal regulatory line.** Healthcare draws it as "education and triage-with-handoff" vs. SaMD/practice-of-medicine. Legal draws it as "legal information" vs. "legal advice" / unauthorized practice of law. Financial draws it as "general financial education" vs. "personalized investment recommendations" subject to the Investment Advisers Act of 1940 and Reg BI. Tax draws it as "general guidance" vs. "tax advice" subject to Circular 230. The architectural commitment in every case is: stay on the education side autonomously; route to a licensed human for anything else; never let the LLM be the one who decides which side a request lands on.
+
+
+---
+
+
+# PART 1 — THE FRAMEWORK
+
+
+## 1. The Core Problem, Framed Generically
+
+
+A consumer opens any AI advice product and types a question. Three superficial cousins, three radically different correct responses:
+
+
+The first is a **bounded, factual lookup** — "what's the standard deduction for a single filer this year," "what's a typical security deposit cap in California," "how does dollar-cost-averaging work." Answer is well-sourced, contested only at the edges, and within the educational scope of the product.
+
+
+The second is a **regulated-advice request** — "should I sue my landlord," "should I sell my Tesla and buy NVDA," "how do I structure my LLC for the new tax year." Answering these substantively crosses a professional-licensure line. The correct response is not "be more cautious"; it is "this is a question for a licensed [lawyer/advisor/EA], here is how to find one and what to ask."
+
+
+The third is a **time-sensitive escalation** — "the sheriff is at my door right now," "I'm in margin call and don't know what to do," "I just got a federal subpoena." These need to break the conversational frame, surface the right hotline or emergency contact, and create a record a licensed human can act on within an SLA.
+
+
+These three superficially-similar messages have completely different risk profiles, latency tolerances, and correct response shapes. The core engineering problem is therefore not "make the LLM answer well." It is: **route every inbound utterance to a stack whose failure modes are acceptable for that utterance's risk class, and make the routing itself the most reliable component in the system.**
+
+
+The product question that follows: how do you stay fast and warm enough to be a daily-use consumer product while being conservative enough to never produce unauthorized professional advice or miss a real emergency?
+
+
+## 2. The Five-Layer Defense Model
+
+
+Defense-in-depth borrowed from security engineering. Every layer assumes the others will sometimes fail.
+
+
+| # | Layer | Job | Failure mode it prevents |
+| --- | --- | --- | --- |
+| 1 | **Input classification & triage** | Classify each turn into a risk class; extract structured entities (jurisdiction, dollar amounts, deadlines, named parties); detect emergencies and scope-of-practice violations | Routing a regulated-advice request to a generic-LLM path |
+| 2 | **Retrieval over vetted authoritative sources** | Pull passages from a curated, versioned corpus (statutes, regulations, official guidance, internal protocols) — never rely on parametric LLM knowledge for substantive content | Hallucinated citations, fabricated regulations, outdated rules |
+| 3 | **Constrained generation** | Force the model to answer only from retrieved passages, emit citations, conform to a structured-output schema, and pass groundedness verifiers | Confident-sounding fabrication; advice that crosses the licensure line |
+| 4 | **Refusal & escalation** | Detect low confidence, high stakes, or scope-of-practice violations; route to a templated safe action (licensed-professional handoff, emergency hotline, refusal-with-pointer) | Answering when the system shouldn't |
+| 5 | **Human-in-the-loop expert review** | Async or real-time licensed-professional queues for ambiguous, novel, or auto-flagged conversations; clinician/lawyer/advisor edits feed evals | Silent regression; novel-case blindness |
+
+
+Layers 1 and 4 are where the reliability budget concentrates. They decide whether layers 2-3 even run. A perfect retrieval-and-generation pipeline that fires on a request the system shouldn't be answering is a worse failure than a failed retrieval — it produces confidently-wrong content rather than a refusal.
+
+
+## 3. The Generic Routing Taxonomy
+
+
+The five categories that appear in every consumer advice product, with rough proportions of inbound volume calibrated to public usage patterns from comparable consumer apps:
+
+
+| Category | Volume | Stack |
+| --- | --- | --- |
+| Chitchat / community / emotional | ~30-45% | Classifier → small/cheap model with persona prompt + safety filter; no retrieval, no citations |
+| Logistical (account, billing, navigation, "how do I find…") | ~15-25% | Classifier → tool-use agent over app/CRM APIs; no substantive content path |
+| General education ("what is X," "how does X work") | ~20-30% | Full RAG stack with citations and constrained generation; stays on the education side of the licensure line |
+| Personalized advice request (regulated) | ~5-15% | Hardened RAG over jurisdictionally-relevant authoritative sources; mandatory citation; warm handoff to licensed professional always offered |
+| Time-sensitive emergency / deadline | ~2-7% | Deterministic rules → templated escalation; LLM only writes the patient-facing wrapper |
+| Out-of-scope (cross-domain, jurisdiction-mismatch, prohibited topics) | <2% | Hard-coded refusal + warm pointer to the right resource (different licensed professional, regulatory hotline, etc.) |
+
+
+The percentages matter because they drive **reliability-budget allocation**. The chitchat path doesn't need a Ph.D.-grade retrieval pipeline. The emergency path absolutely needs a deterministic, audited triage layer.
+
+
+## 4. Where to Spend Reliability Budget
+
+
+A useful frame: for each risk class, what is the worst plausible failure, and what's its prior probability?
+
+
+- **Emergency / deadline**: low base rate but catastrophic worst case (missed statute of limitations, missed margin call, missed appeal window). Spend disproportionately here. Use deterministic rules layered *before* LLM reasoning, not after.
+- **Regulated personalized advice**: medium base rate, high worst case (unauthorized practice of law, fiduciary breach, tax penalty). Spend on retrieval quality, citation enforcement, and refusal calibration. The model should be *structurally incapable* of producing personalized advice without an authoritative-source citation.
+- **General education**: high base rate, medium worst case (a hallucinated legal rule, an out-of-date tax bracket, an incorrect financial concept). Spend on grounding, currency of corpus, and tone calibration.
+- **Chitchat**: high base rate, low worst case. Spend on latency and persona; use a small model; avoid scope creep into substantive content.
+
+
+A common mistake: teams build an undifferentiated RAG agent and bolt on a "safety filter" at the end. This is upside-down. **The router is the safety system.** Downstream stacks are conditional on the router being right.
+
+
+## 5. Speed vs. Reliability vs. Trust — the Universal Tradeoffs
+
+
+Three tradeoffs every regulated advice product has to defend:
+
+
+**First-token latency vs. grounded answers.** Streaming a generic LLM response feels fast but means the safety check happens *after* the user has read the wrong answer. The defensible pattern is: classify in <150ms with a small model, then *either* stream a chitchat response *or* run retrieval-then-generate (~1.5-3s) with a typing indicator. Never stream ungrounded substantive content.
+
+
+**Refusal rate vs. perceived helpfulness.** If the system refuses too often the product feels broken; too rarely and it ships harm. Calibrate refusal rates per category against an expert-labeled golden set and treat the refusal-rate curve as a release-gating metric. Per-category targets: chitchat refusal <5%; education refusal ~5-10%; regulated-advice refusal target 80%+ (route to licensed human by design); emergency refusal target ~0% (the system *always* dispositions, doesn't refuse).
+
+
+**Personalization vs. licensure-line creep.** The more the system uses the user's specific facts to tailor a substantive answer, the closer it gets to crossing the regulated-advice line. Be deliberate about which personalization features are personalization-of-education ("here's how the standard deduction works given your filing status") vs. personalization-of-advice ("you should take the standard deduction this year").
+
+
+The trust dynamic is non-linear: users tolerate "I can't answer that, here's a licensed professional who can" far better than they tolerate one wrong answer. **A single high-profile failure costs more trust than 10,000 conservative refusals.** That asymmetry should drive every threshold decision.
+
+
+## 6. The Architectural Commitments That Hold Across Industries
+
+
+Six commitments that show up in every defensible instantiation of this architecture:
+
+
+**The router is deterministic, not generative.** The classification of risk class and the firing of triage rules are encoded as deterministic logic — JSON-Logic, Open Policy Agent, hand-written rules engine. A small LLM may produce structured entity extraction, but the *disposition* is rule-based and authored by the licensed professionals who stand behind the product. The LLM never overrides it.
+
+
+**The corpus is authoritative, versioned, and signed.** Generic web content is excluded. The corpus is whitelisted, version-controlled, signed off by an expert review board, and re-reviewed on a cadence (regulations change, case law evolves, market structures shift). Every retrieved chunk carries provenance metadata that travels through the rest of the pipeline and into the user-visible citation.
+
+
+**Generation is structurally incapable of producing unsourced substantive content.** Tool-use forces retrieval as the only path to substantive material. Output schema requires citation tokens. A second-pass groundedness verifier (NLI or string-overlap) rejects responses where claims aren't entailed by retrieved spans. The model can refuse, can summarize retrieved content, can paraphrase — but cannot invent.
+
+
+**Refusal is calibrated and warm.** When the system can't answer, it doesn't say "consult a professional" abstractly — it routes to a specific licensed professional (in the user's jurisdiction where applicable), with context, within an SLA. The escalation paths are state-aware where licensure is jurisdictional.
+
+
+**Human review is the primary eval signal.** Licensed-professional edits in the review queue are the labeled training/eval data. User thumbs-ups are noisy and reward different things (warmth, speed) than safety. The expert review queue is what tells you when you're drifting.
+
+
+**Change control is documented and gating.** Model updates, prompt updates, corpus updates, and threshold updates run through a CI pipeline gated on a versioned golden set with expert-labeled rows, plus subgroup metrics, plus red-team coverage. Releases that regress safety metrics are blocked.
+
+
+## 7. The Generic Reference Architecture
+
+
+```
+[Client app — web/iOS/Android]
+   │  TLS, attested where applicable
+   ▼
+[Edge service: WAF, auth, rate-limit, jurisdiction tagging]
+   │  PII-aware logging at the boundary
+   ▼
+┌────────────────────────────────────────────────────────────┐
+│                  SAFETY ORCHESTRATOR                        │
+│                                                             │
+│  L1  Input classifier  →  intent + risk_class + entities    │
+│       (small distilled model, <150ms)                       │
+│       + deterministic regex/keyword pre-filters             │
+│                                                             │
+│  L1.5 Triage rules engine (deterministic, OPA/JSON-Logic)   │
+│       — authored by the expert review board                 │
+│                                                             │
+│  L2  Retrieval                                              │
+│       Vector + sparse + reranker over the                   │
+│       versioned authoritative corpus,                       │
+│       filtered by jurisdiction, recency, scope              │
+│                                                             │
+│  L3  Constrained generator                                  │
+│       Tool-use forcing retrieval; schema-enforced output;   │
+│       citation-required; output guardrails                  │
+│                                                             │
+│  L4  Confidence/refusal gate                                │
+│       Calibrated refusal; jurisdiction-aware escalation     │
+│                                                             │
+│  L5  Human review queue (async/sync)                        │
+│       Pub/Sub → licensed-professional console               │
+│       → eval store with expert-labeled rows                 │
+└────────────────────────────────────────────────────────────┘
+   │
+   ▼
+[Integrations: jurisdiction lookup, professional-network handoff,
+  document store, audit log, eval pipeline]
+
+```
+
+
+The same diagram, with different labels per industry.
+
+
+---
+
+
+# PART 2 — WORKED EXAMPLE: CONSUMER HEALTHCARE
+
+
+> **Scope of the example.** The product modeled here is a **consumer maternal & infant-health agent** — the shape of a direct-to-consumer app where a layperson types a free-text health question and an LLM orchestrates the response. Maternal/perinatal health is used as the concrete vertical because it exercises every layer hard (true emergencies, drug-safety questions, mental-health signals, intimate-partner-violence signals), but the architecture is vertical-agnostic within consumer health: chronic-disease coaching, medication questions, and symptom triage instantiate the same five layers with a different corpus and red-flag taxonomy.
+
+
+---
+
+
+## H.1 The Regulatory Frame
+
+
+Healthcare has not one defining constraint but two that interact, and the interaction is what makes consumer-facing health AI hard.
+
+
+**The device line (FDA).** Software that diagnoses, treats, or drives a patient-specific clinical decision can be a *medical device* — Software as a Medical Device (SaMD) — under FD&C Act §201(h), triggering premarket review. The **21st Century Cures Act (§3060(a))** carved out certain *Clinical Decision Support* software from the device definition under §520(o)(1)(E), and FDA's **final CDS guidance — reissued January 2026, superseding the 2022 version** — sets four non-device criteria. The critical architectural fact: the carve-out is built *around a licensed professional who can independently review the basis of the recommendation*. Criterion 3 contemplates output directed to a *health care professional* (not a patient), and Criterion 4 requires that the professional be able to independently review the basis rather than rely primarily on the software. The 2026 update softened the treatment of single-recommendation software and expanded the transparency expectations, but it **remained silent on consumer-facing tools** and reaffirmed that FDA's device policies continue to apply to software intended for patients or caregivers. The takeaway for a *consumer* product is blunt: you generally **cannot lean on the CDS carve-out**, because there is no licensed professional in the loop to do the independent review the carve-out presumes. A consumer tool that starts producing patient-specific diagnoses or treatment directives drifts toward the device side. The defensible way to stay off that pathway is to stay on the **education + triage-with-handoff** side of the line — which is exactly the posture legal's UPL line and financial's recommendation line were modeled on.
+
+
+**The practice-of-medicine line (states).** Independent of FDA, every state restricts the practice of medicine to licensed clinicians, and the corporate-practice-of-medicine (CPOM) doctrine in many states requires that clinical decisions sit with a licensed clinician or a physician-owned professional corporation (PC). The liability holder is the **medical director / PC entity** — the healthcare equivalent of legal's attorney-of-record and financial's registered-adviser-of-record.
+
+
+**The patient-communication line (state AI law).** California's **AB 3030** (effective January 1, 2025) requires that any covered entity using generative AI to produce patient communications *about clinical information* (1) disclose that the communication was AI-generated and (2) give clear instructions for reaching a human. Critically, AB 3030 **exempts communications reviewed and approved by a licensed or certified provider before dissemination** — which means the architecture's Layer-5 human-review path is also a compliance path. The disclaimer requirement maps directly onto Layer 3's mandatory disclaimers; the human-contact requirement maps onto Layer 4's handoff.
+
+
+**Privacy.** HIPAA applies where the product is a covered entity or business associate. Many direct-to-consumer health apps are *not* covered entities — the gap is filled by the **FTC Health Breach Notification Rule** and FTC Act §5, and the **Pieces Technologies AVC** (Texas AG, September 18, 2024) is the canonical enforcement precedent for the mismatch between AI marketing claims (hallucination rates) and actual system behavior. Privacy posture is therefore *HIPAA-where-applicable, FTC-everywhere*.
+
+
+The defensible product posture is **general health education and triage-with-handoff, not diagnosis or treatment**. When a response applies clinical knowledge to a specific person's symptoms, medications, or history to recommend a specific course of action, the system has crossed into the practice of medicine, and a licensed clinician must stand behind it.
+
+
+## H.2 The Five Layers Instantiated
+
+
+### H.2.1 Layer 1 — Input classification & triage
+
+
+The classifier outputs structured fields:
+
+
+```
+{
+  intent: "education" | "info_lookup" | "drug_safety" | "symptom_triage" |
+          "personal_medical_advice" | "emergency" | "mental_health" | "chitchat",
+  domain: "pregnancy" | "postpartum" | "lactation" | "pediatric" |
+          "reproductive" | "chronic_condition" | "general" | ... ,
+  symptoms_mentioned: [...],
+  medications_mentioned: [...],
+  gestational_age_or_pp_day: ... | "unknown",
+  named_red_flags: [...],
+  self_harm_signals: bool,
+  ipv_signals: bool,
+  is_acute: bool,
+  jurisdiction_state: "CA" | "NY" | ... | "unknown"   // clinician licensing + state AI law
+}
+
+```
+
+
+Healthcare carries two intent classes the legal and financial instantiations don't: **`drug_safety`** (is substance X safe in pregnancy/lactation — the reason MotherToBaby and LactMed are in the corpus) and **`symptom_triage`** (a description of symptoms that has to be routed by acuity, not answered substantively).
+
+
+**Deterministic emergency rules**, encoded as JSON-Logic and signed off by the clinical advisory board, are the LLM-cannot-override floor. The red-flag taxonomy is the obstetric warning-sign set (the ACOG / CDC "Hear Her" urgent-maternal-warning-signs content), loaded as *content into the preemptor*, not baked into the LLM's reasoning:
+
+
+```
+IF self_harm_signals == true
+THEN disposition = "EMERGENCY_MENTAL_HEALTH_PROTOCOL"
+
+IF named_red_flags INTERSECT {
+      severe_persistent_headache_with_vision_changes, chest_pain,
+      difficulty_breathing, heavy_vaginal_bleeding, signs_of_stroke,
+      seizure, thoughts_of_harming_self_or_baby, fever_with_stiff_neck }
+   AND domain IN {pregnancy, postpartum}
+THEN disposition = "EMERGENCY_911_OR_LD"
+
+IF ipv_signals == true
+THEN disposition = "IPV_SAFE_ESCALATION"        // safety-aware, low-visibility
+
+IF intent == "drug_safety" AND domain == "pregnancy"
+THEN disposition = "MANDATORY_CLINICIAN_HANDOFF"
+
+IF intent == "symptom_triage" AND is_acute == true
+THEN disposition = "TRIAGE_NURSE_HANDOFF"
+
+```
+
+
+The disposition is a *routing* decision — surface 911 / labor-and-delivery / a hotline / a clinician — never a clinical-management decision. The LLM may classify a turn as `education`; if a red-flag rule fires, the disposition becomes the rule's output regardless.
+
+
+### H.2.2 Layer 2 — Retrieval over vetted clinical sources
+
+
+The corpus, in order of authority:
+
+
+- **Professional-society guidelines** — ACOG (obstetrics/gynecology), SMFM (maternal-fetal medicine), AAP (pediatrics). Primary clinical authority; versioned by guideline revision.
+- **Government public-health sources** — CDC, FDA safety communications and drug labels, NIH. Public-facing, citable, authoritative.
+- **Specialized drug-in-pregnancy/lactation references** — **MotherToBaby** (teratogen / pregnancy-exposure information) and **LactMed** (NIH lactation drug database). These are the load-bearing corpus for the `drug_safety` intent and have no analog in the legal or financial instantiations.
+- **Vetted clinical reference** — UpToDate or equivalent point-of-care references, treated as clinician-reviewed secondary authority.
+- **Consumer-facing patient-education material** — society and government materials *written for laypeople and reviewed by clinicians* (ACOG patient FAQs, CDC consumer pages). The healthcare analog of legal-aid self-help content: critical for a consumer product because the register is already right.
+- **Internal protocols** — authored by the clinical advisory board; product-aware; the most useful corpus for routing.
+
+
+Explicitly **excluded**: forums (Reddit, Facebook groups), "mommy blogs," anecdote, generic web scrape, and — importantly — *the model's parametric medical knowledge*. The corpus is whitelisted, versioned, signed off.
+
+
+**Jurisdictional axis.** Less about which state's *substance* applies (clinical guidelines are largely national) and more about **scope-of-practice and telehealth modality**: which clinician type is licensed to take a handoff in the user's state, and what telehealth rules govern that contact.
+
+
+**Recency.** Slower-moving than financial (guidelines update on a roughly yearly cadence) but with a fast tier: FDA drug-safety communications, recalls, and outbreak guidance can change overnight. Every chunk carries a `last_validated` date; the fast tier (safety communications) is polled and gets a staleness penalty measured in days, not quarters.
+
+
+### H.2.3 Layer 3 — Constrained generation
+
+
+**No diagnosis in the autonomous path.** The system can explain "what preeclampsia is and what symptoms warrant urgent evaluation," can summarize "what ACOG says about gestational-diabetes screening," can describe "the symptoms clinicians treat as warning signs." It cannot autonomously say "you have preeclampsia" or "this sounds like mastitis." That sentence is the practice-of-medicine line.
+
+
+**No specific dosing.** "Acetaminophen is generally considered compatible with pregnancy per MotherToBaby, within labeled limits" is education with a citation. "Take 1,000 mg of acetaminophen every six hours" is a prescription. The autonomous path never emits a numeric patient-directed dose.
+
+
+**No false reassurance.** The uniquely dangerous healthcare failure mode is *down-triage* — telling someone they don't need care. "It's probably nothing" and "you don't need to go to the ER" are banned in the autonomous path. When uncertain, the system **up-triages**.
+
+
+**Mandatory disclosures and disclaimers**, structural rather than theatrical: an AB-3030-compliant disclosure that the response is AI-generated with instructions to reach a human; "this is general health information, not medical advice"; "if you're experiencing [the red-flag symptoms], seek care now."
+
+
+**Output schema:**
+
+
+```
+{
+  answer_text: string,
+  citations: [{source_id, span, last_validated, guideline_version}],
+  domain: string,
+  scope: "education" | "info_lookup" | "triage_disposition" | "refusal_with_referral",
+  confidence: 0.0..1.0,
+  diagnosis_made: false,          // structural invariant in the autonomous path
+  dosing_provided: false,         // structural invariant in the autonomous path
+  clinician_handoff_offered: bool,
+  emergency_flagged: bool,
+  ai_disclosure_emitted: true,    // AB 3030
+  disclaimers_emitted: ["not_medical_advice", "ai_generated", "seek_care_if", ...]
+}
+
+```
+
+
+`diagnosis_made` and `dosing_provided` are structural assertions — the output validator rejects any autonomous-path response where either is true, exactly as the financial instantiation rejects `recommendation_made: true`.
+
+
+### H.2.4 Layer 4 — Refusal & escalation
+
+
+| Signal | Action |
+| --- | --- |
+| `EMERGENCY_911_OR_LD` red-flag fires | Bypass LLM; templated screen — call 911 or go to labor & delivery now, what to tell them, call your OB; on-call clinician paged |
+| `EMERGENCY_MENTAL_HEALTH_PROTOCOL` (self-harm) | Templated screen — 988 Suicide & Crisis Lifeline + Postpartum Support International + crisis text line; warm, non-clinical tone; clinician paged |
+| `IPV_SAFE_ESCALATION` | National Domestic Violence Hotline; **safety-aware presentation** — quick-exit, no address logging, no visibly escalating UI if the device may be monitored |
+| `MANDATORY_CLINICIAN_HANDOFF` (drug safety in pregnancy, mental health) | Refusal-with-referral; telehealth clinician licensed in the user's state, or MotherToBaby counseling line |
+| `TRIAGE_NURSE_HANDOFF` (acute symptom) | Nurse line within SLA; deadline-aware UI |
+| Confidence below threshold OR no retrieved passages | "I'm not finding clear clinical guidance on this — let me connect you to a clinician" → enqueue async review |
+| Out-of-scope (legal/financial bleeding into a health Q) | Refuse + point to the right professional |
+| In scope, education, high confidence | Answer with citations, AB-3030 disclosure, and disclaimers |
+| In scope, info_lookup | Answer with citations; offer clinician handoff if the user signals personal application |
+
+
+The **state-licensed-clinician handoff** must route to a clinician licensed in the user's state and credentialed for the modality. The system must know the user's state and the responding clinician's licensure — the same jurisdictional discipline as legal's bar-admission requirement.
+
+
+### H.2.5 Layer 5 — Human-in-the-loop clinician review
+
+
+- **Async clinician review queue** for any conversation flagged emergency, IPV, self-harm, low-confidence, novel, or sampled. The reviewer is credentialed for the domain: **triage RN, OB/midwife, IBCLC** (lactation), **perinatal psychiatrist**.
+- **The medical director of record** is the named liability holder whose license and PC entity stand behind the product — sign-off on protocols, on the red-flag taxonomy, and on sampled reviews.
+- **Mandatory review, no exceptions**, for every emergency disposition, every IPV/self-harm disposition, and every drug-safety-in-pregnancy turn.
+- **Sampling** for routine education and info-lookup to detect diagnosis-creep and false-reassurance drift.
+- **The reviewing clinician's edits are the eval signal** — what got pulled back from a diagnosis, what reassurance got removed, what red flag should have fired and didn't. This is also the AB-3030 review path: clinician-approved templates are exempt from the per-message disclaimer trigger.
+
+
+## H.3 What Routing Looks Like for Three Real Cases
+
+
+**Case H1 — "I'm 32 weeks and I've had a pounding headache all day that won't go away, and now I'm seeing spots and flashing lights."** (emergency, perinatal red flag)
+
+
+L1: classifies as `symptom_triage` + `pregnancy`; the red-flag rule fires on severe-persistent-headache-with-vision-changes in pregnancy. Disposition locked: `EMERGENCY_911_OR_LD`.
+
+
+L2: retrieves wrapper-text only — a plain-language statement of why these are urgent warning signs in pregnancy and what to tell the care team.
+
+
+L3: templated response — "These can be urgent warning signs in pregnancy and shouldn't wait. Call your OB or labor & delivery now, or call 911 — tell them you're 32 weeks with a severe headache and vision changes. [AI-generated; here's how to reach a person.]" It does **not** name a diagnosis, does **not** reassure, does **not** suggest waiting.
+
+
+L4: emergency UI; on-call clinician paged.
+
+
+L5: full clinician review within 24 hours; conversation to eval store. *(Directing to emergency care is the safe action; the architecture's bias is toward over-triage on red flags.)*
+
+
+**Case H2 — "Is it safe to take Zoloft while I'm breastfeeding?"** (drug-safety — the distinctively healthcare case)
+
+
+L1: classifies as `drug_safety` + `lactation`. The drug-safety rule offers a mandatory clinician handoff (and would *force* it if the domain were `pregnancy`).
+
+
+L2: full retrieval — LactMed's sertraline entry, MotherToBaby's lactation summary, AAP/ACOG guidance on antidepressants in lactation.
+
+
+L3: cited educational response that draws the line carefully — "In general terms, LactMed describes sertraline as one of the more-studied SSRIs in lactation, typically associated with low levels in breastmilk; this is general information, not a recommendation about your situation, which depends on your dose, your baby, and your history. The right person to weigh that is your clinician — I can connect you, or you can reach the MotherToBaby counseling line." AB-3030 disclosure; no dosing; `diagnosis_made: false`, `dosing_provided: false`.
+
+
+L4: clinician handoff offered.
+
+
+L5: elevated sampling — every drug-safety turn is a candidate for review even when classified as education, the highest-stakes non-emergency category.
+
+
+**Case H3 — "ugh 6 days postpartum and I just cannot stop crying today lol everything sets me off"** (chitchat with latent perinatal-mood signal)
+
+
+L1: classifies as `chitchat` with a weak `postpartum` + `mental_health` signal. Routes to the chitchat path *but* raises self-harm / perinatal-mood monitoring sensitivity for the rest of the session, and the deterministic self-harm preemptor stays armed.
+
+
+L2: skipped.
+
+
+L3: small, warm model — validates the feeling and normalizes early-postpartum mood swings without medicalizing the casual register, and leaves a soft off-ramp: "the early weeks can be a rollercoaster — if the heaviness sticks around past a couple of weeks, or you ever have thoughts of hurting yourself, please reach out; I can connect you to Postpartum Support International any time." It does **not** diagnose postpartum depression and does **not** alarm.
+
+
+L4: scope-creep + self-harm check; ships if clean.
+
+
+L5: ~1% sampling, with elevated review weight if the user showed distress earlier in the session.
+
+
+The asymmetry across these three is the same as in legal and financial: same surface ("I feel bad / I have a question / something's wrong"), wildly different correct responses, and the router is what makes the routing legible.
+
+
+## H.4 Healthcare-Specific Pitfalls
+
+
+**Diagnosis creep** is the practice-of-medicine-line failure — "this sounds like mastitis," "you have PPD." Mitigation: banned-phrase guardrails on diagnostic language; the `diagnosis_made: false` invariant; any diagnostic-language turn routes to clinician handoff.
+
+
+**Dosing** is the prescription-line failure. Mitigation: the `dosing_provided: false` invariant; drug questions route to MotherToBaby/LactMed *education* plus clinician handoff; no numeric patient-directed dose in the autonomous path, ever.
+
+
+**Missed emergency (false negative)** is the catastrophic worst case — a real red flag classified as education. Mitigation: deterministic ACOG/SMFM preemptors tuned for high sensitivity (deliberately over-triage), continuously measured recall per rule, mandatory clinician review of every emergency disposition, and red-team coverage of the *phrasings* people actually use ("my head is killing me and the lights look weird" must fire the same rule as the clinical phrasing).
+
+
+**False reassurance** is the failure unique to healthcare and arguably the most dangerous — telling someone they're fine when they aren't. Mitigation: down-triage language is banned; the system never tells a user they don't need care; uncertainty resolves toward *up*-triage.
+
+
+**Self-harm and IPV detection cannot be optional** — the direct analog of financial's distress protocol. Perinatal mood and anxiety disorders and IPV both spike in the peripartum period. The Layer-1 classifier must detect both; Layer 4 routes self-harm to 988 + Postpartum Support International and IPV to the National Domestic Violence Hotline with a *safety-aware, low-visibility* presentation (the screen itself can be a hazard if the device is monitored).
+
+
+**Stale guidance / missed safety communications** is the recency failure. Mitigation: versioned guideline dates with a fast tier for FDA safety communications and recalls; clinical-board re-validation on a cadence; staleness penalties at retrieval.
+
+
+**The device-line / scope-creep failure.** A consumer tool that starts producing patient-specific diagnoses or treatment directives walks toward SaMD regulation and *cannot* fall back on the CDS carve-out, which is HCP-facing by design and (per the January 2026 final guidance) silent on consumer tools. Mitigation: the P15 capability manifest declares "education + triage, not diagnosis or treatment," the runtime enforces it via the Layer-3 invariants, and the marketing copy must align — the Pieces Technologies AVC is the cautionary tale for marketing that outruns the system.
+
+
+**Automation bias** — the FDA's stated concern in the CDS guidance — is mostly a *clinician-facing* risk, but it has a consumer mirror: a warm, confident chat UI invites over-reliance. Mitigation: the disclosure and handoff aren't buried; the product surface is designed so the off-ramp to a human is always one tap away, not a dead-end disclaimer.
+
+
+**The "asking for a friend / my sister is pregnant and…" bypass.** Users route around the personalization filter by phrasing their own situation in the third person. Mitigation: the classifier is trained on third-person framing; personal-medical-advice features still route through the regulated path regardless of grammatical person.
+
+
+---
+
+
+# PART 3 — WORKED EXAMPLE: CONSUMER LEGAL ADVICE
+
+
+## L.1 The Regulatory Frame
+
+
+The defining constraint in legal AI is **unauthorized practice of law (UPL)**. Every U.S. state restricts the practice of law to licensed attorneys, and each state defines "practice" slightly differently. The functional test is roughly: applying legal knowledge to a specific person's facts to recommend a specific course of action.
+
+
+The American Bar Association's **Formal Opinion 512** (July 29, 2024) is the foundational guidance. It's framed for lawyers using GAI, not for consumer products, but it establishes the duties that a consumer-facing legal AI must structurally honor or risk liability for the lawyers behind it: Model Rule 1.1 (competence), 1.4 (communication), 1.6 (confidentiality), and 5.3 (responsibilities regarding nonlawyer assistance — including AI tools).
+
+
+State bar guidance is layering on top. By early 2026, multiple states (NY, CA, FL, OR, MN, NJ, and others) have published their own opinions, mostly mirroring the ABA but with state-specific emphases — Minnesota's working group, for example, explicitly addresses LLM risks for UPL. The 50-state survey is now non-trivial.
+
+
+The defensible product posture is **legal information, not legal advice**, with an explicit handoff path to a licensed attorney when the user's question crosses into application-to-specific-facts territory. This is the legal equivalent of healthcare's "education + triage-with-handoff" posture.
+
+
+## L.2 The Five Layers Instantiated
+
+
+### L2.1 Layer 1 — Input classification & triage
+
+
+The classifier outputs structured fields:
+
+
+```
+{
+  intent: "education" | "info_lookup" | "personal_legal_advice" | 
+          "deadline_emergency" | "scope_violation" | "chitchat",
+  jurisdiction: "CA" | "NY" | ... | "unknown",
+  practice_area: "landlord_tenant" | "employment" | "family" | 
+                 "criminal" | "immigration" | "consumer" | ... ,
+  named_parties: [...],
+  dollar_amounts: [...],
+  deadlines_mentioned: [...],
+  is_active_litigation: bool,
+  is_facing_government_action: bool
+}
+
+```
+
+
+**Deterministic emergency rules** (the equivalent of ACOG/SMFM red-flag criteria) are encoded as JSON-Logic rules signed off by the legal advisory board:
+
+
+```
+IF is_facing_government_action == true 
+   AND deadline_within_hours <= 72
+THEN disposition = "EMERGENCY_LEGAL_AID_REFERRAL"
+
+IF intent == "personal_legal_advice"
+   AND practice_area IN ("criminal", "immigration", "child_custody")
+THEN disposition = "MANDATORY_ATTORNEY_HANDOFF"
+
+IF named_parties contains ("ICE", "police", "DCFS", "sheriff")
+   AND is_active_situation == true
+THEN disposition = "EMERGENCY_LEGAL_AID_REFERRAL"
+
+IF "subpoena" OR "summons" OR "complaint served" mentioned
+   AND deadline_within_days <= 30
+THEN disposition = "URGENT_ATTORNEY_HANDOFF"
+
+```
+
+
+These rules are the LLM-cannot-override floor. The LLM may classify a turn as "education," but if the rule fires, the disposition becomes the rule's output regardless.
+
+
+### L2.2 Layer 2 — Retrieval over vetted legal sources
+
+
+The corpus, in order of authority and recency-sensitivity:
+
+
+- **Federal and state statutes** — primary law, machine-readable from official sources (uscode.house.gov, state legislative repositories). Versioned per session of legislature.
+- **Federal and state regulations** — CFR, state administrative codes. Versioned by effective date.
+- **Federal and state case law** — primary precedent, sourced from official reporters or vetted commercial providers (Westlaw, Lexis, Fastcase, CourtListener). Citation parsing is non-trivial — `Bluebook` rules apply.
+- **Court rules** — Federal Rules of Civil/Criminal Procedure, Federal Rules of Evidence, state rules of court, local rules.
+- **Official agency guidance** — IRS publications, SSA POMS, USCIS policy manual, EEOC guidance, etc.
+- **Legal aid materials and self-help resources** — verified consumer-facing content from court self-help centers, legal aid organizations (LawHelp.org, state legal services), the Legal Services Corporation network. *These are critical for consumer-facing products because they're written for laypeople and reviewed by attorneys.*
+- **Internal protocols** — authored by the legal advisory board; product-aware; the most useful corpus for routing decisions.
+
+
+Explicitly **excluded**: random forums (Reddit r/legaladvice, Avvo answers), blog content, generic web scrapes. The corpus is whitelisted, versioned, signed off.
+
+
+**Jurisdictional filtering at retrieval time** is not optional. A California tenant's question must retrieve California statutes and case law, not Texas. A New York employment question must retrieve NY Labor Law, not federal-only sources. The retrieval index is partitioned by jurisdiction.
+
+
+**Recency** is more critical than in healthcare. A statute amended last session may render prior case law moot. Every retrieved chunk carries a `last_validated` date and an `effective_through` date. Stale content gets a confidence penalty.
+
+
+### L2.3 Layer 3 — Constrained generation
+
+
+The non-negotiables port directly from the healthcare instantiation, with legal-specific tightening:
+
+
+**Citations are mandatory, in proper form.** Output must include `[citation: source_id, span]` tokens, and the rendered citations must be in Bluebook (or jurisdiction-appropriate) form. Hallucinated citations are the most-publicized AI failure mode in legal — *Mata v. Avianca* (S.D.N.Y. 2023) is the canonical example. The output validator includes a citation verifier that resolves every cite against the corpus.
+
+
+**No application of law to specific facts in the autonomous path.** This is the core scope rule. The system can explain "what the statute says about security deposits in California," can summarize "how courts have applied this rule," can describe "what factors courts weigh." It cannot autonomously say "based on what you've described, you have a strong case." That sentence is the line.
+
+
+**Output schema:**
+
+
+```
+{
+  answer_text: string,
+  citations: [{source_id, jurisdiction, citation_form, span}],
+  practice_area: string,
+  jurisdiction_assumed: string,
+  scope: "education" | "info_lookup" | "refusal_with_referral",
+  confidence: 0.0..1.0,
+  attorney_handoff_offered: bool,
+  emergency_flagged: bool,
+  disclaimers_emitted: ["not_legal_advice", "jurisdiction_specific", ...]
+}
+
+```
+
+
+**Disclaimers are mandatory and consistent** — not as theatrical hedging, but as part of the contract with users and regulators. ABA Op. 512 contemplates that consumer-facing legal AI must communicate the nature of the tool clearly.
+
+
+### L2.4 Layer 4 — Refusal & escalation
+
+
+The escalation matrix is jurisdiction-aware and practice-area-specific:
+
+
+| Signal | Action |
+| --- | --- |
+| Triage rule fires EMERGENCY_LEGAL_AID_REFERRAL | Bypass LLM; show templated screen with state legal aid hotline + ACLU rapid-response (where applicable) + immigration hotline (where applicable) + state bar lawyer-referral service |
+| MANDATORY_ATTORNEY_HANDOFF (criminal, immigration, custody) | Refusal-with-referral; partner attorney network or LSC-funded provider in user's state |
+| URGENT_ATTORNEY_HANDOFF (subpoena, summons, eviction) | Templated 72-hour-clock UI; attorney handoff offered; eviction-specific resources where applicable |
+| Confidence below threshold OR no retrieved passages | "I'm not finding clear authority on this — let me connect you to an attorney" → enqueue async expert review |
+| Out-of-scope (medical/financial bleeding into legal Q) | Refuse + recommend appropriate professional + don't attempt the cross-domain answer |
+| In scope, education, high confidence | Answer with citations and disclaimers |
+| In scope, info_lookup | Answer with citations; offer attorney handoff if user indicates personal application |
+
+
+The **state-licensed-attorney handoff** is the legal equivalent of healthcare's licensed-clinician handoff. It must route to an attorney licensed in the user's state. The system must know the user's state and the responding attorney's bar admissions.
+
+
+### L2.5 Layer 5 — Human-in-the-loop attorney review
+
+
+- **Async attorney review queue** for any conversation flagged emergency, low-confidence, novel, or sampled. Reviewing attorney is licensed in the relevant state.
+- **Mandatory review** for every emergency disposition (every immigration emergency, every active criminal-justice contact, every imminent-deadline situation).
+- **Sampling** for routine education and info-lookup turns to detect drift and scope creep.
+- **The reviewing attorney's edits are the eval signal** — what got rephrased, what got pulled back from the licensure line, what citations got corrected.
+
+
+## L.3 What Routing Looks Like for Three Real Cases
+
+
+**Case L1 — "I got a notice of unlawful detainer this morning. The hearing is in 5 days."** (urgent, jurisdiction-specific, deadline-driven)
+
+
+L1: classifies as `personal_legal_advice` + `landlord_tenant` + `URGENT_ATTORNEY_HANDOFF` triage rule fires. Disposition locked: tenant-rights legal aid handoff in user's state.
+
+
+L2: retrieves wrapper-text only — state-specific tenant-rights summary, deadline-driven self-help court information, legal aid contact for the user's county.
+
+
+L3: generates a templated response — "You have a 5-day window. Here's what unlawful detainer means in [state]. I'm connecting you to [legal aid provider in user's county] right now. Their intake number is [X]. If you can't reach them, here's the state bar lawyer-referral service. Do not ignore the hearing date — if you don't appear, you can be removed."
+
+
+L4: triggers tenant-rights resource UI; pages partner-network attorney for callback within 4 hours.
+
+
+L5: full attorney review within 24 hours; conversation lands in eval store.
+
+
+**Case L2 — "What's the difference between an LLC and an S-corp?"** (general education, no jurisdiction-specific advice)
+
+
+L1: classifies as `education` + `business_formation`; no triage rules fire.
+
+
+L2: full retrieval — IRS small-business publications, generic comparison from official sources, state-specific notes if jurisdiction is known.
+
+
+L3: structured education output, cited, with explicit "this is general information, your specific situation depends on your state, your business model, and your tax posture — for personalized advice see a CPA or business attorney."
+
+
+L4: handoff offered but not forced; user can opt to continue with education or escalate.
+
+
+L5: ~2-5% sampling for tone and scope-creep drift.
+
+
+**Case L3 — "Has my landlord been a jerk this winter, lol the heat keeps cutting out"** (chitchat with latent legal substance)
+
+
+L1: classifies as `chitchat` with weak `landlord_tenant` keyword hit. Routes to chitchat path but flags for "did this become a real legal question" check.
+
+
+L2: skipped.
+
+
+L3: small model, warm, in-register, doesn't medicalize/legalize the casual tone, but ends with a soft "if it's actually a habitability problem you want to act on, I can pull up your state's heat-and-hot-water rules" — preserves the off-ramp without forcing it.
+
+
+L4: scope-creep check passes; ships.
+
+
+L5: ~1% sampling for drift.
+
+
+The asymmetry across these three superficial-cousins is the same as in healthcare: same surface, wildly different correct responses, and the router is what makes the routing legible.
+
+
+## L.4 Legal-Specific Pitfalls
+
+
+**Citation hallucination** is the single most-publicized failure mode. Mitigations: require every citation to resolve to a corpus chunk; reject responses with unresolved cites; second-pass NLI verifier on the cite-to-claim relationship; expert review of any novel citation.
+
+
+**Jurisdiction confusion** is the second-most-common. A New York user retrieving California case law is almost always wrong. Mitigations: jurisdiction is a mandatory entity in Layer 1 extraction (with "unknown" as a valid value that triggers a clarifying question); retrieval is partitioned by jurisdiction; output schema requires `jurisdiction_assumed` to be present and surfaced to the user.
+
+
+**Scope creep into "your case"** is the licensure-line failure. Mitigation: banned-phrase guardrails ("you should sue," "you have a strong case," "you'll likely win") block the autonomous path; any turn that triggers them routes to attorney handoff.
+
+
+**Stale law** is the recency failure. Mitigations: corpus has versioned effective dates; retrieval applies a recency penalty for content past `last_validated`; weekly re-validation of high-traffic content by the legal advisory board.
+
+
+**The "my friend has a question" bypass.** Users sometimes route around the personalization filter by phrasing their own question hypothetically. Mitigation: classifier is trained on this pattern; "asking for a friend" with personal-advice features still routes through the regulated-advice path.
+
+
+---
+
+
+# PART 4 — WORKED EXAMPLE: CONSUMER FINANCIAL ADVICE
+
+
+## F.1 The Regulatory Frame
+
+
+The defining constraint in financial-advice AI is the **Investment Advisers Act of 1940** combined with the SEC's evolving stance on AI. As of early 2026, no AI-specific federal rule exists for investment advisers — the SEC's 2023 proposed rule on predictive data analytics was withdrawn under the Atkins SEC in June 2025. The SEC instead applies existing fiduciary, supervisory, and disclosure rules to AI use.
+
+
+The SEC's 2026 Examination Priorities (released November 17, 2025) explicitly call out AI as a focus across fraud detection, back-office, AML, trading, portfolio management, and customer service. Examiners now look at written AI policies under Rule 206(4)-7, AI governance, vendor diligence under Reg S-P, accurate Form ADV disclosure, and human oversight of material AI-driven decisions.
+
+
+Three duties matter most for product design:
+
+
+**Fiduciary duty of care and loyalty** under Section 206 of the Advisers Act. The duty doesn't transfer to the AI — the registered adviser remains responsible for the advice the AI generates. As one industry framing puts it, delegating decisions to a machine does not absolve the human fiduciary from oversight.
+
+
+**Regulation Best Interest (Reg BI)** for broker-dealers, requiring recommendations to be in the customer's best interest considering investment objectives, risk tolerance, time horizon, costs, and alternatives.
+
+
+**Reg S-P** for client confidentiality, with updated requirements (vendor due diligence, breach notification, recordkeeping) phased in through June 3, 2026 for smaller RIAs.
+
+
+The defensible product posture is **financial education and general information, not personalized investment recommendations**. The line is the equivalent of healthcare's CDS-carve-out and legal's UPL line: when a response applies general principles to the user's specific portfolio, financial situation, risk tolerance, and objectives to recommend a specific course of action, the system has crossed into regulated advice and a registered fiduciary must stand behind it.
+
+
+## F.2 The Five Layers Instantiated
+
+
+### F.2.1 Layer 1 — Input classification & triage
+
+
+Classifier output:
+
+
+```
+{
+  intent: "education" | "data_lookup" | "portfolio_specific_advice" | 
+          "trade_emergency" | "tax_advice" | "scope_violation" | "chitchat",
+  asset_class: "equities" | "fixed_income" | "crypto" | "options" | 
+               "real_estate" | "alternatives" | ...,
+  named_securities: [...],
+  dollar_amounts: [...],
+  account_type: "taxable" | "ira" | "401k" | "529" | "hsa" | ...,
+  time_horizon_mentioned: ...,
+  user_indicates_trade_intent: bool,
+  user_indicates_distress: bool,
+  is_options_or_margin: bool
+}
+
+```
+
+
+Deterministic emergency rules:
+
+
+```
+IF user_indicates_distress == true 
+   AND ("losing everything" OR "margin call" OR "can't pay" OR 
+        suicidal_ideation_signals)
+THEN disposition = "EMERGENCY_DISTRESS_PROTOCOL"
+
+IF user_indicates_trade_intent == true
+   AND named_securities.length > 0
+   AND ("sell everything" OR "liquidate" OR "all in")
+THEN disposition = "MANDATORY_ADVISOR_HANDOFF"
+
+IF intent == "tax_advice"
+   AND deadline_within_days <= 30
+THEN disposition = "URGENT_TAX_PROFESSIONAL_HANDOFF"
+
+IF asset_class IN ("options", "leveraged_etf", "crypto_perp")
+   AND user_skill_signals == "novice"
+THEN disposition = "MANDATORY_ADVISOR_HANDOFF"
+
+```
+
+
+The distress protocol is critical — financial losses correlate with suicidal ideation, and the system must recognize and route this signal the same way a healthcare system recognizes self-harm signals. This is a structural commitment, not a nice-to-have.
+
+
+### F.2.2 Layer 2 — Retrieval over vetted financial sources
+
+
+Corpus:
+
+
+- **Federal securities laws and SEC regulations** — Securities Act of 1933, Securities Exchange Act of 1934, Investment Advisers Act of 1940, Investment Company Act of 1940, plus the rules thereunder (Reg BI, Reg S-P, Rule 206(4)-7, Form ADV instructions).
+- **SEC, FINRA, MSRB, CFTC official guidance** — Investor.gov educational content, FINRA investor education, SEC staff bulletins, no-action letters, enforcement actions (for "what got someone in trouble" patterns).
+- **Tax authority** — IRC sections, Treasury regulations, IRS publications (especially Pub. 550 investment income, Pub. 590 IRAs, Pub. 575 pensions/annuities), revenue procedures, revenue rulings.
+- **Self-regulatory organization rules** — FINRA Rule Book (especially Rules 2090, 2111 suitability, 3110 supervision, 4511 recordkeeping), MSRB rules for municipal securities.
+- **Authoritative reference content** — CFA Institute curriculum and standards, CFP Board standards (if relevant to product positioning), Bogleheads wiki for index-fund-investing reference (treated as community-vetted, not authoritative — separate corpus tier).
+- **Market data and prospectuses** — vetted feed integration; product disclosures from official issuer filings (10-K, 10-Q, prospectus documents from SEC EDGAR).
+- **Internal protocols** — authored by the financial advisory board, including a banned-recommendations list.
+
+
+Excluded: stock-tip newsletters, social-media content, generic "should I buy X" forum threads, unverified financial blogs.
+
+
+**Recency is critical and sometimes intra-day.** A discussion of interest rates needs to know the current Fed Funds rate. A discussion of a specific company needs to know if it's been delisted, acquired, or had a material event in the last 24 hours. The retrieval pipeline must distinguish "evergreen education" (slow-changing) from "current market state" (fast-changing) and apply different recency policies.
+
+
+### F.2.3 Layer 3 — Constrained generation
+
+
+**No specific recommendations in the autonomous path.** The system can explain "how target-date funds work," "what a Roth IRA's contribution limits are," "how dollar-cost-averaging compares to lump-sum investing in published research." It cannot autonomously say "given your situation, you should put your savings into VTI" or "you should sell your tech holdings." That sentence crosses into regulated advice.
+
+
+**No specific dollar amounts attached to user-described scenarios.** "If you contribute the maximum to your IRA, that's $7,000 in 2024 ($8,000 if 50+)" is a fact lookup. "You should contribute $7,000 to your IRA" is advice.
+
+
+**No predictions, no performance forecasts, no time-bound directional calls.** "Markets have historically returned ~10% annually over rolling 30-year periods" is education. "Markets will likely rise next quarter" is forecasting.
+
+
+**Mandatory disclaimers**, not as theater but as structural product/regulatory protection: "this is general information, not personalized investment advice"; "past performance does not predict future results"; "consult a registered investment adviser before making investment decisions."
+
+
+**Output schema:**
+
+
+```
+{
+  answer_text: string,
+  citations: [{source, jurisdiction, span, last_updated}],
+  topic: string,
+  scope: "education" | "data_lookup" | "refusal_with_referral",
+  confidence: 0.0..1.0,
+  recommendation_made: false,  // structurally always false in autonomous path
+  advisor_handoff_offered: bool,
+  distress_protocol_triggered: bool,
+  disclaimers_emitted: ["not_advice", "past_performance", ...]
+}
+
+```
+
+
+The `recommendation_made` field is a structural assertion. The output validator rejects any response where the field is true outside the human-in-the-loop path.
+
+
+### F.2.4 Layer 4 — Refusal & escalation
+
+
+| Signal | Action |
+| --- | --- |
+| EMERGENCY_DISTRESS_PROTOCOL | Templated screen with 988 + financial-counseling hotline (NFCC) + warm offer to connect to fee-only advisor |
+| MANDATORY_ADVISOR_HANDOFF | Refusal-with-referral; partner advisor network (CFP, fee-only fiduciary preferred) in user's state |
+| URGENT_TAX_PROFESSIONAL_HANDOFF | EA/CPA referral with deadline-aware UI |
+| Confidence below threshold OR no retrieved passages | "I'm not finding clear authority on this — let me connect you to an advisor" → enqueue async review |
+| Out-of-scope (legal/tax bleeding into financial Q) | Refuse + recommend appropriate professional |
+| In scope, education, high confidence | Answer with citations and disclaimers |
+| In scope, data lookup (current price, current yield, current rate) | Answer with vetted-data-feed citation |
+
+
+### F.2.5 Layer 5 — Human-in-the-loop fiduciary review
+
+
+- **Async fiduciary review queue** for any conversation flagged distress, mandatory-handoff, low-confidence, or sampled.
+- **The registered adviser of record** — the named fiduciary whose RIA registration covers the product. This is the financial equivalent of the legal advisory board's named "lawyer of record" and healthcare's named medical director. They sign off on protocols, sample reviews, and edits.
+- **Mandatory review for distress signals.** No exceptions.
+- **Sampling** (10-15%) for any turn that names a specific security, even if classified as education. This is the highest-stakes non-emergency category.
+- **Reviewer edits become the eval signal.** What got pulled back from the recommendation line, what got rephrased to avoid forecasting, what got reclassified as advice rather than education.
+
+
+## F.3 What Routing Looks Like for Three Real Cases
+
+
+**Case F1 — "I just got a margin call notification and don't have the cash. What do I do?"** (emergency)
+
+
+L1: classifies as `portfolio_specific_advice` + `trade_emergency`; deterministic distress rule fires (margin call + can't-pay signal). Disposition locked.
+
+
+L2: retrieves wrapper-text only — what a margin call is in plain English, NFCC contact, partner-network advisor with same-day availability.
+
+
+L3: templated response — "A margin call means your broker requires more cash or securities in the account by [typically the next business day]. The decisions here have tax and credit consequences. I'm connecting you to a fiduciary advisor right now — they can review the specific situation. While you wait: do not panic-sell unless your broker requires it; here's the NFCC hotline if this is causing financial distress beyond the trading account."
+
+
+L4: distress UI; fiduciary advisor paged with SLA; conversation flagged for advisor-of-record review within 4 hours.
+
+
+L5: full review within 24 hours; row to eval store.
+
+
+**Case F2 — "What's the difference between a Roth and a traditional IRA?"** (general education)
+
+
+L1: classifies as `education` + `retirement_accounts`; no triage rules fire.
+
+
+L2: full retrieval — IRS Pub. 590-A and 590-B, SEC investor.gov retirement basics, fee-and-tax-treatment comparison content from authoritative sources.
+
+
+L3: cited educational response: "Roth IRAs are funded with after-tax dollars; qualified withdrawals are tax-free. Traditional IRAs are funded with pre-tax dollars (subject to income limits if covered by a workplace plan); withdrawals are taxed as ordinary income. Per IRS Pub. 590-A, the contribution limit for [year] is $X..." Disclaimers; advisor handoff offered for "given your specific situation, which is right for you."
+
+
+L4: handoff offered, not forced.
+
+
+L5: ~3-5% sampling.
+
+
+**Case F3 — "Lol watching my portfolio bounce around today, anyone else feeling this?"** (chitchat with latent investment-emotion signal)
+
+
+L1: classifies as `chitchat` with weak `equities` + `emotional` signal; routes to chitchat path but increases distress-monitoring sensitivity for the rest of the session.
+
+
+L2: skipped.
+
+
+L3: small model, warm, normalizes the emotional reaction without making any market commentary or implying that any action should be taken.
+
+
+L4: scope-creep check; ships if no banned phrases.
+
+
+L5: ~1% sampling, with elevated review weight if the user has been in distress earlier in the session.
+
+
+## F.4 Financial-Specific Pitfalls
+
+
+**"AI-washing"** is the SEC's stated focus. Marketing claims about "AI-driven recommendations" or "AI portfolio management" must match what the system actually does. The output schema's `recommendation_made: false` invariant in the autonomous path is the structural defense — the marketing copy must align.
+
+
+**Performance forecasting** is the most-tempting hallucination mode. A model trained on financial content has seen many "the market will…" sentences and will produce them readily. Banned-phrase guardrails block these patterns; the groundedness verifier rejects forward-looking statements that aren't sourced to a published forecast (and even then, attribution is required).
+
+
+**Jurisdictional and account-type confusion.** A traditional 401(k) rule isn't a 403(b) rule isn't an IRA rule. State tax treatment varies. The retrieval index is partitioned by account-type and jurisdiction, and the schema requires the assumption to be explicit.
+
+
+**Suitability and risk-tolerance creep.** FINRA Rule 2111 makes suitability a regulated concept for broker-dealers. A consumer AI product that asks the user "what's your risk tolerance" and then produces a portfolio mix has structurally walked into the regulated zone. Mitigation: keep risk-tolerance assessment in the educational frame ("here's how investors typically think about risk tolerance, and how to discuss it with an advisor"), not the prescriptive frame.
+
+
+**Distress signals.** Financial losses are correlated with suicidal ideation in clinical literature. Distress detection cannot be optional. The Layer 1 classifier must include it; the Layer 4 escalation must route to 988 alongside any financial response.
+
+
+**Recency on market data.** A response citing "the current Fed Funds rate is 4.5%" must pull from a current data feed, not the corpus. Mitigation: separate retrieval tier for current-market-state data with sub-hour staleness; explicit `as_of` timestamp on all market-state claims.
+
+
+---
+
+
+# PART 5 — CROSS-INDUSTRY COMPARISON
+
+
+The same five layers, three industries:
+
+
+| Layer | Healthcare | Legal | Financial Advice |
+| --- | --- | --- | --- |
+| **L1 emergencies** | Bleeding, suicidal ideation, IPV, anaphylaxis | Imminent court date, government action, criminal contact, custody emergency | Margin call, distress signals, suicidal ideation tied to financial loss |
+| **L1 risk classes** | chitchat / education / drug-safety / triage / out-of-scope | chitchat / education / info-lookup / personal-advice / deadline-emergency | chitchat / education / data-lookup / portfolio-advice / trade-emergency |
+| **L2 corpus** | ACOG, SMFM, MotherToBaby, LactMed, CDC, UpToDate, internal protocols | Statutes, regs, case law, court rules, agency guidance, legal aid materials | SEC/FINRA rules, IRC, IRS pubs, EDGAR filings, vetted education |
+| **L2 jurisdictional axis** | State scope-of-practice, telehealth modality | State (every issue) | Federal + state (tax, blue-sky, RIA registration) |
+| **L2 recency criticality** | Slow (guideline updates ~yearly) | Medium (sessions of legislature, new appellate decisions) | Fast (intra-day market data, weekly Fed) |
+| **L3 scope rule** | No diagnosis, no specific dosing | No application of law to specific facts; no UPL | No personalized recommendations; no forecasting |
+| **L3 banned phrases** | "I diagnose," "you should take X mg" | "you should sue," "you have a strong case," "you'll win" | "you should buy/sell X," "the market will," "this is the right move for you" |
+| **L4 emergency targets** | 911, L&D, 988, Postpartum Support Intl, NDVH | State legal aid, state bar referral, ACLU rapid response, immigration hotline, public defender intake | 988, NFCC, fee-only fiduciary, partner-network CFP |
+| **L4 mandatory handoff cases** | Drug safety in pregnancy, mental health, IPV | Criminal, immigration, custody, active litigation | Margin/options/leverage with novice user, distress, urgent tax |
+| **L5 reviewer** | Triage RN, OB/midwife, IBCLC, perinatal psych | Attorney licensed in user's state, practice-area-specific | Registered investment adviser (RIA), CFP, EA/CPA |
+| **Regulatory anchor** | FDA SaMD, HIPAA, AB 3030, state telehealth, CDS carve-out (FDA final guidance, Jan 2026) | ABA Op. 512, state UPL rules, Model Rules 1.1/1.4/1.6/5.3, state bar opinions | Investment Advisers Act §206, Reg BI, Reg S-P, Rule 206(4)-7, SEC 2026 Exam Priorities, FINRA Rules 2090/2111 |
+| **Liability transfer** | Medical director / PC entity | Attorney of record / law-firm structure | Registered adviser of record / RIA |
+| **Worst single failure mode** | Missed emergency triage → bad maternal/patient outcome | UPL or hallucinated citation → bar discipline / disbarment / sanction | Unauthorized advice or AI-washing → SEC enforcement / fiduciary breach |
+
+
+What this table reveals is that the architecture's **structure is invariant**; what varies is the *content* poured into each layer. The same engineering team, with the same eval pipeline, the same orchestrator, and the same primitive set, can stand up a defensible system in any of these industries by swapping the corpus, the rules engine, the licensed-professional network, and the regulatory anchor — without rewriting the architecture itself.
+
+
+This is what "operating system for handling user requests" means structurally. The five-layer pattern is the OS; the industry instantiation is the application.
+
+
+---
+
+
+# PART 6 — PATTERNS AND ANTI-PATTERNS
+
+
+## Patterns That Hold Across Industries
+
+
+**The router as the safety system.** In every industry, the disposition is locked by a deterministic classifier-plus-rules engine before generation runs. The LLM never decides whether a question crosses a regulated line.
+
+
+**The corpus as the only path to substantive content.** In every industry, the model is structurally incapable of producing substantive content without a citation resolved to a vetted corpus chunk. Tool-use forcing, schema-required citations, and groundedness verifiers compose to make this true.
+
+
+**Refusal with warm handoff, not bare refusal.** "I can't help with that" is the wrong shape of refusal. "I can't help with that, and here's the [licensed professional] who can, in your state, with this SLA, with this context" is the right shape.
+
+
+**The licensed professional is the named liability holder.** Healthcare has the medical director. Legal has the attorney of record. Financial has the registered adviser. The architecture reflects this: every consequential decision either runs through a deterministic protocol the licensed professional has signed off on, or it routes to that licensed professional in real time.
+
+
+**Expert review is the eval signal.** User satisfaction is noisy and rewards different things than safety. The licensed-professional review queue's edits are the labeled training/eval data. Releases gate on regression against this expert-edited golden set.
+
+
+**Change control with a versioned, signed corpus.** Regulations change, case law evolves, rates move, guidelines update. The corpus is versioned, change-controlled, and re-validated on a cadence. The eval set is versioned with the corpus.
+
+
+## Anti-Patterns to Recognize
+
+
+**"Just bolt a safety filter onto a generic LLM."** Upside-down. The router is the safety system. Without a deterministic classifier in front, the safety filter can only veto outputs the model has already committed to producing — and many of the worst failures are confident-sounding outputs the filter doesn't catch.
+
+
+**"The LLM will know not to give legal/financial/medical advice."** It won't. Models trained on broad internet content have seen and produced confident regulated-advice content many times. The architecture must make the bad outputs *structurally impossible to emit*, not merely *trained against*.
+
+
+**"We'll add citations as a feature."** Citations as a feature are theatrical. Citations as the only path to substantive content are architectural. The difference is whether the model *can* answer without them.
+
+
+**"Disclaimers will protect us."** Disclaimers are a regulatory hygiene minimum, not a safety mechanism. A confidently-wrong answer with a disclaimer is still a confidently-wrong answer.
+
+
+**"The model will decide when it's uncertain and ask for clarification."** Uncertainty is a calibration property the model doesn't have natively. Build it into the architecture: confidence comes from retrieval signal (low top-k similarity), self-consistency disagreement, and verifier-model output — not from the model's self-report.
+
+
+**"We'll iterate on safety after launch."** The cost of a high-profile failure in any of these industries is high enough that "iterate after launch" is rarely the right cadence. The pre-launch eval set, the expert-labeled golden set, and the red-team coverage gate launch.
+
+
+**"Our users are sophisticated, they'll know the limits."** No they won't. The product surface determines the user expectation, and a chat interface invites natural-language questions that don't observe scope boundaries. The architecture has to enforce the boundaries, not the user.
+
+
+## What the Five-Layer Pattern Does Not Solve
+
+
+This architecture is necessary but not sufficient. It does not address:
+
+
+**Model bias and equity.** Healthcare has the maternal-mortality-by-race problem; legal has racially-disparate outcomes baked into precedent; financial has access disparities. Subgroup eval gates are a separate engineering investment on top of the safety stack.
+
+
+**Adversarial users.** Users who actively try to bypass the licensure-line filter ("asking for a friend," "hypothetically," "in a fiction story") need adversarial-eval coverage as a separate workstream.
+
+
+**Cross-domain leakage.** A medical question with financial implications, a legal question with tax implications. The five-layer pattern handles single-domain routing; cross-domain orchestration is a higher-level concern.
+
+
+**Long-context personalization.** When the system knows a lot about the user across many sessions, the line between "education" and "advice" gets fuzzier. The architecture handles per-turn classification; personalization-creep over time is a separate governance question.
+
+
+**Regulatory change.** The regulators move. ABA Op. 512 didn't exist before July 2024. The SEC's 2026 Exam Priorities reset the AI-supervision posture as of November 2025. The architecture has to be paired with a regulatory-watching function — not just at launch, but continuously.
+
+
+---
+
+
+## Closing Note
+
+
+The five-layer defense pattern is what makes regulated-domain AI defensible in front of regulators, in front of users, and in front of the licensed professionals whose names appear on the product. It is not the only architecture that could work, but it is the one that maps cleanly to how each of these industries actually regulates professional advice: a licensed person stands behind every substantive output, the substantive output is grounded in an authoritative corpus, and the determination of when the system can answer autonomously vs. when it must hand off is encoded as deterministic rules the licensed person has signed off on.
+
+
+The bet underneath this architecture is that the regulatory shape of these industries is not going to converge on "let the LLM decide." It is going to converge on what's already true in each profession: licensed humans are accountable for the advice that bears their name, and software is a tool they use under their supervision and at their direction. The architecture is what makes that supervision auditable, scalable, and trustworthy enough to stand up to the consequence model of these domains.
+
+
+---
+
+
+# APPENDIX — Architectural Primitives
+
+
+The five-layer defense pattern in the body of this document describes *what the system does*. This appendix describes *what the system is built out of* — the structural primitives the orchestrator and its tools must implement for the five-layer pattern to be defensible at all. The list is split into two tiers: the twelve **generic primitives** every agentic system needs (P1-P12), and the six **regulated-domain primitives** that emerge when the system operates in a mixed-trust, evidence-bound, or licensure-gated environment (P13-P18).
+
+
+The split matters because it tells you what to expect. Building a generic agent? P1-P12 is your scope. Building a regulated-domain agent — healthcare, legal, financial, tax, insurance, compliance — and you need all eighteen, with the last six doing the bulk of the work that makes the architecture defensible in front of regulators.
+
+
+What this appendix is *not*: a list of features, a list of skills, a list of clinical or legal or financial content. Those are configurations *of* primitives — for example, a red-flag triage taxonomy is not a primitive, it's the content loaded into P18 (Parallel Deterministic Preemptors). A FHIR resource map is not a primitive, it's the schema loaded into P13 (External Authoritative Data Source). The acid test for whether something is an architectural primitive: it has a data structure, a runtime enforcement mechanism, and a test, all three. If any of those three is missing, you're looking at a configuration, a skill, or a concern — not a primitive.
+
+
+## A.1 The Twelve Generic Agent Primitives
+
+
+These twelve are universal. Any agentic LLM system, regulated or not, that handles real users or production traffic needs this substrate. They define the orchestrator's structural shape and the contract every tool must publish into the orchestrator's registry.
+
+
+### P1 — Tool Registry with Metadata-First Design
+
+
+**What it is.** A central registry of every tool the orchestrator can call, where each tool publishes its metadata: name, semantic description, input/output schema, side-effect profile (`read-only` / `mutating` / `destructive`), required permissions, and capability tags. **Why it lives in the orchestrator.** The registry is the orchestrator's source of truth for what's callable. Tools register *into* it; they don't own it. A tool's metadata is published; it cannot be self-asserted at call time. **Verification surface.** A tool's metadata can be inspected, diffed across versions, and validated at registration. The registry is queryable.
+
+
+### P2 — Permission System with Trust Tiers
+
+
+**What it is.** Every tool declares the permissions it requires. Every call is gated by an orchestrator-side check that the caller (agent type, session, user) has those permissions. Trust tiers (e.g., `internal` / `partner` / `third_party_mcp`) modulate what permissions can be granted. **Why it matters.** The orchestrator decides whether a call is allowed before dispatch. A tool cannot self-authorize. Permissions are a runtime property, not a static configuration. **Verification surface.** Permission grants are logged. Denials are logged. Audit trails answer "who could have called what."
+
+
+### P3 — Workflow State & Idempotency
+
+
+**What it is.** Workflow state spans tool calls within a session. Mutating tools honor idempotency keys: identical calls with the same key produce identical results. Critical for retry safety. **Why it matters.** Without idempotency, retries on flaky network calls produce duplicate side effects (double-charged accounts, duplicate medication orders, duplicate filings). The orchestrator owns the workflow; tools honor the contract per-call. **Verification surface.** Idempotency keys are testable in isolation per tool. Workflow traces show the sequence and any retries.
+
+
+### P4 — Session Persistence
+
+
+**What it is.** Conversation state, tool-call history, and intermediate results persist across turns within a session. The orchestrator owns this state; tools are stateless or session-scoped at most. **Why it matters.** Multi-turn conversations require the orchestrator to remember what happened earlier in this session. Without P4, every turn is an island. **Verification surface.** Session snapshots are inspectable. Replay from a snapshot is testable.
+
+
+### P5 — Token Budget Tracking
+
+
+**What it is.** The orchestrator tracks tokens consumed per turn, per session, per tool call, per model. Budgets can be enforced (refuse to dispatch a call that would exceed a per-session cap) and reported (the user-visible cost of a session). **Why it matters.** Token budgets are the run-time spend lever. Without tracking, cost overruns are silent until the bill arrives. Without enforcement, no per-tier rate-limiting is possible. **Verification surface.** Token counts are emitted with every model call. Budget breaches are testable.
+
+
+### P6 — Structured Streaming Events
+
+
+**What it is.** The orchestrator emits a typed event stream to the client: thinking, tool-calls-in-progress, tool-results, partial-output, final-output, errors. Tools emit *into* this stream by publishing typed events the orchestrator can route. Errors are typed objects, not free-text strings. **Why it matters.** Streaming UI requires structure. Without typed events, the client renders raw model output, which makes both safety filtering and UX consistency impossible. **Verification surface.** Event schemas are versioned. Type-checking is automated.
+
+
+### P7 — System Event Logging
+
+
+**What it is.** Per-call telemetry: who called, when, with what inputs, what was returned, what side effects occurred, what tokens were consumed, what permissions were used. Tools emit; the orchestrator aggregates. **Why it matters.** This is the audit trail that lets you answer "what happened in that conversation?" months later. Without it, regulators, malpractice carriers, and incident reviewers have nothing to look at. **Verification surface.** Logs are immutable, retained per regulatory requirement, and queryable.
+
+
+### P8 — Basic Verification Harness
+
+
+**What it is.** Every tool ships with its own unit and integration tests. Invariants ("this tool never returns PHI to an unauthorized caller," "this tool's idempotency key always produces the same result") are testable in isolation, not just at the orchestrator boundary. **Why it matters.** Tools that aren't independently testable are tools that drift silently. The harness is what makes tool versioning trustworthy. **Verification surface.** Test results are part of the tool's registration metadata. Releases gate on test pass.
+
+
+### P9 — Tool Pool Assembly
+
+
+**What it is.** Per-session, the orchestrator assembles a *pool* of tools the current agent is allowed to call, based on agent type, user permissions, deny-lists, and runtime mode. The pool is smaller than the registry. **Why it matters.** A consumer-facing agent should not see admin tools in its pool, even if those tools are registered. The pool is the runtime-narrowed permission boundary. **Verification surface.** Pool composition is logged per session. Test cases verify that prohibited tools never enter the pool.
+
+
+### P10 — Provenance-Aware Context Assembly
+
+
+**What it is.** When the orchestrator builds a prompt for the model, it includes provenance metadata for every retrieved passage, every memory entry, every tool result. Provenance travels through the response and into the citation. **Why it matters.** Citations require provenance. Groundedness verifiers require provenance. Audit trails require provenance. Without P10, the model's outputs cannot be traced back to their sources. **Verification surface.** Every claim in a final output is traceable to a provenance-tagged context entry. Tests verify citation accuracy.
+
+
+### P11 — Agent Type System
+
+
+**What it is.** Agents are typed. A "patient-facing pregnancy agent" is a different type than a "clinician-facing summarization agent" is a different type than a "billing-lookup agent." Each type has its own tool pool, permissions, system prompts, output constraints, and trust posture. The orchestrator routes turns to agent types. **Why it matters.** Without P11, you have one big agent doing everything badly. With P11, you can reason about each agent's safety properties separately and gate them on different criteria. **Verification surface.** Agent type definitions are versioned. Type-specific eval sets are run on type-specific releases.
+
+
+### P12 — Memory System with Provenance
+
+
+**What it is.** A persistent memory store the orchestrator reads from when assembling context for a session. Every memory entry carries provenance: where it came from, when it was written, who wrote it, what consent covers it. Memory is read across sessions and written across tool calls. **Why it matters.** Memory without provenance is rumor. Provenance lets the system distinguish "the user told us this" from "a previous LLM inferred this" from "an authoritative source confirmed this," and weight context assembly accordingly. **Verification surface.** Memory entries are immutable; updates produce new versions. Provenance is queryable. Consent-bounded reads are enforceable.
+
+
+## A.2 The Six Regulated-Domain Primitives
+
+
+These six emerge specifically when the system operates in a regulated, evidence-bound, or mixed-trust environment. They were originally identified in the healthcare-specific work but generalize directly to legal, financial, tax, insurance, compliance, and any other licensure-gated industry.
+
+
+Each is a genuinely new architectural pattern — not a configuration of the generic twelve. The acid test still holds: each has a data structure, a runtime enforcement mechanism, and a test.
+
+
+### P13 — External Authoritative Data Source with Proposal-Write Semantics
+
+
+**Principle.** The agent reads from a system of record it does not own and cannot mutate. All writes back to that system land as drafts/proposals requiring an authorized human's sign-off before they take effect. **Why it's an architectural primitive.** The boundary between "agent suggested" and "professional authorized" must be enforced at the data-source integration, not in the UI. A tool that writes directly to canonical state is a different shape than a tool that writes drafts pending sign-off. **Industry instantiations:**
+
+
+- **Healthcare:** FHIR resources written as `DocumentReference` in draft status, never directly modifying `Encounter` or `Condition` records.
+- **Legal:** Document-management-system writes that land as draft annotations or proposed redlines, attorney sign-off required before they become part of the matter file.
+- **Financial:** CRM and portfolio-management writes that land as proposed activities (e.g., suggested rebalancing) requiring registered-adviser approval before execution.
+
+
+**Verification surface.** Every write to an external authoritative system is inspectable, has a `status: proposed | accepted | rejected` field, and an audit trail of who acted on it.
+
+
+### P14 — Capability Tags & Flow-Sensitive Trifecta Containment
+
+
+**Principle.** Every tool publishes capability tags that describe what it does at the trust level: `reads_pii`, `reads_phi`, `consumes_untrusted_content`, `exfiltrates`, `mutates_external_record`, etc. The orchestrator enforces *combinations* of tags within a session — specifically, the "lethal trifecta" pattern (Simon Willison, June 2025): a turn that combines reading sensitive data + consuming untrusted content + exfiltrating to an external destination is blocked or routed to human approval, regardless of what the model wants to do. **Why it's an architectural primitive.** The risk is not in any single tool; it's in the *combination*. Flow-sensitive enforcement requires the orchestrator to track tag propagation across calls within a session — a pure tool-side mechanism cannot see this. The capability tags are tool-side; the enforcement is orchestrator-side. **Industry instantiations:**
+
+
+- **Healthcare:** PHI + patient-uploaded document (untrusted) + outbound message to external party = blocked or human-approved.
+- **Legal:** Privileged client communication + opposing-counsel document (untrusted) + email send = blocked. This is a Model Rule 1.6 (confidentiality) automation.
+- **Financial:** Material non-public information + analyst-blog-content (untrusted) + trade-execution = blocked. This is an insider-trading prevention pattern at the architecture level.
+
+
+**Verification surface.** Tags are part of tool registration metadata. Trifecta-combination blocks are logged and testable. Adversarial test cases verify the combination cannot be bypassed.
+
+
+### P15 — Capability Boundary Declaration
+
+
+**Principle.** The system publishes a machine-checkable manifest declaring what it does and does not do. The manifest binds runtime guardrails to external claims (marketing copy, regulatory filings, terms of service). If marketing says "the AI does X," the manifest must permit X; if the manifest does not permit Y, the runtime cannot do Y regardless of what the model produces. **Why it's an architectural primitive.** Without P15, marketing claims and runtime behavior drift. Regulators (the FTC's Health Breach Notification Rule, the SEC's "AI-washing" focus, state bar AI marketing rules) increasingly enforce alignment between what the system claims to do and what it actually does. The capability boundary is the auditable artifact that makes alignment provable. **Industry instantiations:**
+
+
+- **Healthcare:** Pieces Technologies AVC (Texas AG, September 18, 2024) is the canonical enforcement precedent — marketing claims about hallucination rates that the actual system did not honor.
+- **Legal:** A consumer legal AI's manifest declares "education and information only, no application of law to specific facts." The runtime enforces this; the marketing copy must align.
+- **Financial:** SEC AI-washing focus (2024-2026 Exam Priorities). The manifest declares whether the AI makes recommendations, provides general information, or only retrieves data. Form ADV disclosures must align.
+
+
+**Verification surface.** The manifest is a versioned artifact. Releases that exceed the manifest's declared capabilities are blocked at CI. External audits can verify runtime behavior against the manifest.
+
+
+### P16 — Bounded Modification Protocol
+
+
+**Principle.** Model updates, prompt updates, corpus updates, and threshold updates run through a versioned change envelope with pre-declared bounds. Changes within the envelope are pre-approved; changes outside it require re-review (and possibly re-submission to the relevant regulator). **Why it's an architectural primitive.** Regulated AI cannot ship the way unregulated SaaS ships. The FDA's December 2024 final guidance on Predetermined Change Control Plans formalized this for medical devices; the same pattern applies wherever a regulator cares about model stability. Without P16, every non-trivial change becomes a re-submission event, which makes the product economically unviable. With P16, you have a pre-negotiated envelope of allowed changes. **Industry instantiations:**
+
+
+- **Healthcare:** FDA PCCP for SaMD; pre-declared retraining ranges, data sources, performance bounds.
+- **Legal:** Bar guidance on AI tool changes; some jurisdictions require notice when material changes affect AI-assisted client work.
+- **Financial:** Rule 206(4)-7 written policies on AI changes; SEC examiners look for evidence that changes are governed and documented.
+
+
+**Verification surface.** Change envelopes are versioned. Each release tags the envelope it operated under. Releases that exceed the envelope are blocked or require re-review.
+
+
+### P17 — Dual-Stream Reconciliation
+
+
+**Principle.** When the system has two or more sources of truth about the same entity (e.g., what the user *told us* vs. what an authoritative record *says*), the orchestrator reconciles them and surfaces discrepancies rather than silently picking one. Reconciliation is a distinct architectural step, not a tool's responsibility. **Why it's an architectural primitive.** A single tool sees its own data. Reconciliation requires comparing across sources, which is one layer up. Without P17, the system either (a) trusts user-provided data over authoritative records (dangerous) or (b) trusts authoritative records over user-provided data (dangerous in different ways). Surfacing the discrepancy is the architecturally correct move. **Industry instantiations:**
+
+
+- **Healthcare:** Patient narrative ("I'm not on any medications") vs. FHIR record (active prescriptions for three drugs). The system flags the discrepancy and routes to clinician review.
+- **Legal:** Client's account of facts vs. court filings on record. Discrepancies flagged before any substantive response.
+- **Financial:** Client's stated risk tolerance vs. transaction history showing leveraged positions. Discrepancy flags suitability concerns.
+
+
+**Verification surface.** Reconciliation events are logged. Discrepancy detection rate is a tracked metric. Test cases verify that known discrepancies trigger flags.
+
+
+### P18 — Parallel Deterministic Preemptors
+
+
+**Principle.** Independent, deterministic classifiers run *in parallel to* the conversational LLM and have override authority. They do not modify the LLM's output; they replace it when their criteria fire. The criteria are encoded by domain experts (clinicians, attorneys, compliance officers, fiduciary advisors) and signed off as policy. **Why it's an architectural primitive.** This is the structural mechanism behind "the router is the safety system." Without P18, emergency detection and scope-violation detection are inside the LLM's reasoning loop — and the LLM can be wrong, slow, or adversarially manipulated. With P18, the deterministic classifier fires fast, fires reliably, and cannot be talked out of its disposition by the LLM or the user. **Industry instantiations:**
+
+
+- **Healthcare:** ACOG/SMFM red-flag rules for obstetric emergencies; suicidal-ideation detection; anaphylaxis triage.
+- **Legal:** Imminent-deadline detection (subpoena, summons, eviction with hearing date); criminal-justice-system contact; immigration-emergency keywords.
+- **Financial:** Margin-call detection; distress-signal detection (correlated with suicidal ideation); novice-user-on-leveraged-instruments detection.
+
+
+**Verification surface.** Preemptor rules are version-controlled and signed off by the expert review board. Recall rates per rule are continuously measured. Override events are logged and reviewed.
+
+
+## A.3 Layer Assignment
+
+
+The eighteen primitives split between the orchestration layer (the agent host) and the tool layer (anything the orchestrator can call, regardless of transport — in-process function, internal RPC, CLI binary, MCP server, code-execution sandbox).
+
+
+**Owned by the orchestration layer:** P1, P2, P3, P4, P5, P6, P9, P10, P11, P12, P14 enforcement, P15, P17, P18. **Required of every tool:** P1 metadata, P2 declared permissions, P3 idempotency, P6 typed output, P7 telemetry, P8 unit tests, P13 proposal-write semantics, P14 capability tags (the labels; enforcement is orchestrator-side), P16 versioning.
+
+
+The split is not negotiable. A tool that tries to enforce flow-sensitive trifecta containment on its own (P14 enforcement) cannot — it sees only its own call. The orchestrator that tries to delegate idempotency to itself rather than tools (P3) cannot — it doesn't know the tool's semantics. The architectural test is: *can a single tool satisfy this in isolation, without coordination across other tools or the model?* Yes → tool layer. No → orchestration layer. Both → split responsibility (the tool publishes; the orchestrator enforces).
+
+
+## A.4 What This List Is Not
+
+
+This list does not include:
+
+
+- **Configurations of existing primitives.** A red-flag taxonomy is not a primitive; it is content loaded into P18. A FHIR resource map is not a primitive; it is the schema attached to a P13-instantiated tool. A capability boundary manifest's *contents* are not a primitive; the manifest itself (P15) is.
+- **Skills or content packs.** A drug-interaction rule set, a state-by-state UPL guide, a list of banned phrases — these are domain-specific content that loads into P18 (preemptors), P10 (provenance), or output guardrails. They are how the system gets configured for a specific industry; they are not new architectural elements.
+- **Compliance requirements.** HIPAA logging policies, SEC recordkeeping, ABA Model Rule duties — these are *requirements* that constrain how P7, P12, and P15 are configured. They are not themselves primitives.
+- **Product positioning decisions.** "Are we education-only or do we cross into advice?" is a product/legal question that determines what P15 declares. It is not a primitive.
+
+
+The primitive list is short on purpose. Eighteen architectural elements is enough; thirty would be inflation. If a candidate primitive can be expressed as "P_n configured with X," it is a configuration. If it requires its own data structure, its own runtime enforcement mechanism, and its own tests, it earns its slot.
