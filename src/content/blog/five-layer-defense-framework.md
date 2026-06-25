@@ -90,7 +90,7 @@ The five categories that appear in every consumer advice product, with rough pro
 | General education ("what is X," "how does X work") | ~20-30% | Full RAG stack with citations and constrained generation; stays on the education side of the licensure line |
 | Personalized advice request (regulated) | ~5-15% | Hardened RAG over jurisdictionally-relevant authoritative sources; mandatory citation; warm handoff to licensed professional always offered |
 | Time-sensitive emergency / deadline | ~2-7% | Deterministic rules → templated escalation; LLM only writes the patient-facing wrapper |
-| Out-of-scope (cross-domain, jurisdiction-mismatch, prohibited topics) | <2% | Hard-coded refusal + warm pointer to the right resource (different licensed professional, regulatory hotline, etc.) |
+| Out-of-scope (cross-domain, jurisdiction-mismatch, prohibited topics) | &lt;2% | Hard-coded refusal + warm pointer to the right resource (different licensed professional, regulatory hotline, etc.) |
 
 
 The percentages matter because they drive **reliability-budget allocation**. The chitchat path doesn't need a Ph.D.-grade retrieval pipeline. The emergency path absolutely needs a deterministic, audited triage layer.
@@ -117,10 +117,10 @@ A common mistake: teams build an undifferentiated RAG agent and bolt on a "safet
 Three tradeoffs every regulated advice product has to defend:
 
 
-**First-token latency vs. grounded answers.** Streaming a generic LLM response feels fast but means the safety check happens *after* the user has read the wrong answer. The defensible pattern is: classify in <150ms with a small model, then *either* stream a chitchat response *or* run retrieval-then-generate (~1.5-3s) with a typing indicator. Never stream ungrounded substantive content.
+**First-token latency vs. grounded answers.** Streaming a generic LLM response feels fast but means the safety check happens *after* the user has read the wrong answer. The defensible pattern is: classify in &lt;150ms with a small model, then *either* stream a chitchat response *or* run retrieval-then-generate (~1.5-3s) with a typing indicator. Never stream ungrounded substantive content.
 
 
-**Refusal rate vs. perceived helpfulness.** If the system refuses too often the product feels broken; too rarely and it ships harm. Calibrate refusal rates per category against an expert-labeled golden set and treat the refusal-rate curve as a release-gating metric. Per-category targets: chitchat refusal <5%; education refusal ~5-10%; regulated-advice refusal target 80%+ (route to licensed human by design); emergency refusal target ~0% (the system *always* dispositions, doesn't refuse).
+**Refusal rate vs. perceived helpfulness.** If the system refuses too often the product feels broken; too rarely and it ships harm. Calibrate refusal rates per category against an expert-labeled golden set and treat the refusal-rate curve as a release-gating metric. Per-category targets: chitchat refusal &lt;5%; education refusal ~5-10%; regulated-advice refusal target 80%+ (route to licensed human by design); emergency refusal target ~0% (the system *always* dispositions, doesn't refuse).
 
 
 **Personalization vs. licensure-line creep.** The more the system uses the user's specific facts to tailor a substantive answer, the closer it gets to crossing the regulated-advice line. Be deliberate about which personalization features are personalization-of-education ("here's how the standard deduction works given your filing status") vs. personalization-of-advice ("you should take the standard deduction this year").
