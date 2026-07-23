@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The longevity diet, decoded | Mulloy Morrow</title>
+<meta name="description" content="Dietary composition, protein source, and meal timing shape aging pathways. A practical, research-backed guide to longevity eating patterns.">
+<meta name="author" content="Mulloy Morrow">
+<link rel="canonical" href="https://mulloymorrow.com/blog/longevity-diet-research/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mulloy Morrow">
+<meta property="og:title" content="The longevity diet, decoded">
+<meta property="og:description" content="A practical interpretation of the longevity diet literature with worked examples and visual comparisons.">
+<meta property="og:url" content="https://mulloymorrow.com/blog/longevity-diet-research/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The longevity diet, decoded">
+<meta name="twitter:description" content="A practical interpretation of the longevity diet literature with worked examples and visual comparisons.">
+<style>
+  :root {
+    --color-bg-primary: #0a0a0f;
+    --color-bg-secondary: #101018;
+    --color-bg-surface: #141419;
+    --color-bg-elevated: #1a1a22;
+    --color-bg-hover: #22222c;
+    --color-accent: #14b8a6;
+    --color-accent-dim: #0d9488;
+    --color-accent-glow: rgba(20, 184, 166, 0.15);
+    --color-text-primary: #e4e4e7;
+    --color-text-secondary: #a1a1aa;
+    --color-text-muted: #71717a;
+    --color-border: #27272a;
+    --color-border-hover: #3f3f46;
+    --gradient-bg: radial-gradient(ellipse at top, #141419 0%, #0a0a0f 50%, #050508 100%);
+    --font-heading: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", monospace;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-24: 6rem;
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --shadow-glow: 0 0 20px var(--color-accent-glow);
+  }
+
+  :root.theme-warm {
+    --color-bg-primary: #faf7f2;
+    --color-bg-secondary: #fff9f0;
+    --color-bg-surface: #ffffff;
+    --color-bg-elevated: #fffdfb;
+    --color-bg-hover: #fef3e2;
+    --color-accent: #e07b54;
+    --color-accent-dim: #c96a45;
+    --color-accent-glow: rgba(224, 123, 84, 0.12);
+    --color-text-primary: #2d3436;
+    --color-text-secondary: #5a6169;
+    --color-text-muted: #8b9198;
+    --color-border: #e8e2d9;
+    --color-border-hover: #d4cdc2;
+    --gradient-bg: linear-gradient(135deg, #faf7f2 0%, #fff9f0 50%, #fef6ec 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--color-bg-primary); }
+  body {
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    background: var(--gradient-bg);
+    background-attachment: fixed;
+    line-height: 1.6;
+  }
+
+  .lv-page {
+    min-height: 100vh;
+    background: var(--gradient-bg);
+    background-attachment: fixed;
+    color: var(--color-text-secondary);
+  }
+
+  .lv-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  .lv-backlink {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 32px;
+  }
+  .lv-backlink:hover { color: var(--color-accent); }
+
+  .lv-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    padding: 6px 12px;
+    margin: 0;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .lv-title {
+    font-size: clamp(2rem, 4.5vw, 2.9rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 18px 0 20px;
+  }
+
+  .lv-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .lv-meta span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .lv-badge-featured {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    padding: 4px 10px;
+  }
+
+  .lv-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .lv-tag {
+    display: inline-block;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-surface);
+  }
+
+  .lv-prose p { margin: 0 0 1rem; }
+  .lv-prose h2 { margin: 2rem 0 0.75rem; font-size: 1.8rem; }
+  .lv-prose h3 { margin: 1.4rem 0 0.6rem; font-size: 1.2rem; }
+  .lv-prose ol, .lv-prose ul { margin: 0 0 1rem 1.2rem; padding: 0; }
+  .lv-prose li { margin-bottom: 0.35rem; }
+  .lv-prose blockquote {
+    margin: 1rem 0;
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1rem;
+    color: var(--color-text-primary);
+    font-style: italic;
+  }
+  .lv-prose em { color: var(--color-text-primary); }
+  .lv-prose strong { color: var(--color-text-primary); }
+  .lv-fignum {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .lv-prose sup a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  [data-toggle] {
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  [data-toggle]:hover, [data-goto]:hover {
+    border-color: var(--color-border-hover);
+  }
+  [data-goto] { transition: border-color .15s ease; }
+  [data-toggle][data-active="true"] {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+  }
+  [data-panel][data-open="false"] { display: none; }
+
+  @media (max-width: 900px) {
+    .lv-wrap { padding: 24px 18px 64px; }
+  }
+
+  @media (max-width: 720px) {
+    .lv-prose [style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .lv-prose [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
+</style>
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add("theme-warm");
+  if (window.__lvThemeWired) return;
+  window.__lvThemeWired = 1;
+
+  function closestInPath(ev, predicate) {
+    var path = ev.composedPath ? ev.composedPath() : [];
+    for (var i = 0; i < path.length; i += 1) {
+      if (path[i] && predicate(path[i])) return path[i];
+    }
+    return null;
+  }
+
+  document.addEventListener("click", function(ev) {
+    var b = closestInPath(ev, function(node) { return node && node.id === "lv-theme-toggle"; });
+    if (!b) return;
+    var light = root.classList.toggle("theme-warm");
+    var lbl = b.querySelector(".lv-tt-label");
+    var ic = b.querySelector(".lv-tt-icon");
+    if (lbl) lbl.textContent = light ? "Dark" : "Light";
+    if (ic) ic.textContent = light ? "\u263D" : "\u2600";
+  });
+
+  document.addEventListener("click", function(ev) {
+    var t = closestInPath(ev, function(node) { return node && node.getAttribute && node.getAttribute("data-toggle"); });
+    if (!t) return;
+    var group = t.getAttribute("data-toggle");
+    var key = t.getAttribute("data-key");
+    var rt = t.getRootNode();
+    var target = rt.querySelector('[data-panel="' + group + '"][data-key="' + key + '"]');
+    rt.querySelectorAll('[data-panel="' + group + '"]').forEach(function(p) { p.setAttribute("data-open", "false"); });
+    rt.querySelectorAll('[data-toggle="' + group + '"]').forEach(function(c) { c.setAttribute("data-active", "false"); });
+    if (target) {
+      target.setAttribute("data-open", "true");
+      t.setAttribute("data-active", "true");
+    }
+  });
+
+  document.addEventListener("click", function(ev) {
+    var t = closestInPath(ev, function(node) { return node && node.getAttribute && node.getAttribute("data-goto"); });
+    if (!t) return;
+    var a = t.getRootNode().querySelector('[data-anchor="' + t.getAttribute("data-goto") + '"]');
+    if (a) window.scrollTo({ top: a.getBoundingClientRect().top + window.pageYOffset - 16, behavior: "smooth" });
+  });
+
+  document.addEventListener("keydown", function(ev) {
+    var key = ev.key;
+    if (key !== "Enter" && key !== " ") return;
+    var t = ev.target;
+    if (t && t.getAttribute && (t.getAttribute("data-toggle") || t.getAttribute("data-goto"))) {
+      ev.preventDefault();
+      t.click();
+    }
+  });
+})();
+</script>
+</head>
+<body>
+<div class="lv-page">
+  <button id="lv-theme-toggle" type="button" aria-label="Toggle color theme" style="position:fixed;top:20px;right:20px;z-index:50;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;padding:8px 14px;border-radius:9999px;border:1px solid var(--color-border);background:var(--color-bg-surface);color:var(--color-text-secondary);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.06);">
+    <span class="lv-tt-icon" style="font-size:0.9rem;line-height:1;">☽</span><span class="lv-tt-label">Dark</span>
+  </button>
+  <article class="lv-wrap">
+    <a href="/blog/" class="lv-backlink">&larr; All writing</a>
+    <p class="lv-eyebrow">Longevity</p>
+    <h1 class="lv-title">The longevity diet, decoded</h1>
+    <div class="lv-meta">
+      <span>Jul 2026 · 10 min read</span>
+      <span class="lv-badge-featured">Featured</span>
+    </div>
+    <div class="lv-tags">
+      <span class="lv-tag">Nutrition</span>
+      <span class="lv-tag">Healthspan</span>
+      <span class="lv-tag">mTOR / IGF-1</span>
+      <span class="lv-tag">Protein</span>
+    </div>
+
+    <div class="lv-prose">
+      <p style="font-size:1.2rem;color:var(--color-text-primary);line-height:1.65;">What we eat doesn't just fuel us &mdash; it tunes the cellular machinery that decides how fast we age. Landmark work in <em>Cell</em>, <em>Nature Food</em> and <em>PLoS Medicine</em> now converges on a clear signal: <strong>dietary composition, protein source, macronutrient quality, and eating timing directly shape cellular aging, metabolic health, and lifespan.</strong><sup><a href="#ref1">1</a>,<a href="#ref4">4</a></sup></p>
+      <p>This is my read of that research &mdash; the patterns worth adopting, the data behind them, and two worked examples of how to actually change a plate.</p>
+      <blockquote>Where your protein comes from matters more than how many grams you eat.</blockquote>
+
+      <div style="border:1px solid var(--color-border);background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;margin:24px 0;">
+        <div style="font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-accent);margin-bottom:12px;">Contents — jump to</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div data-goto="diets" role="button" tabindex="0" style="cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--color-border);border-radius:12px;">
+            <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--color-accent);font-weight:600;">01</span>
+            <span><span style="display:block;font-family:var(--font-heading);font-size:0.95rem;font-weight:600;color:var(--color-text-primary);">The diets</span><span style="font-size:0.8rem;color:var(--color-text-muted);">Meet the four eaters &amp; their weeks</span></span>
+          </div>
+          <div data-goto="science" role="button" tabindex="0" style="cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--color-border);border-radius:12px;">
+            <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--color-accent);font-weight:600;">02</span>
+            <span><span style="display:block;font-family:var(--font-heading);font-size:0.95rem;font-weight:600;color:var(--color-text-primary);">The evidence</span><span style="font-size:0.8rem;color:var(--color-text-muted);">Latest science &amp; research insights</span></span>
+          </div>
+          <div data-goto="analysis" role="button" tabindex="0" style="cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--color-border);border-radius:12px;">
+            <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--color-accent);font-weight:600;">03</span>
+            <span><span style="display:block;font-family:var(--font-heading);font-size:0.95rem;font-weight:600;color:var(--color-text-primary);">Your plate</span><span style="font-size:0.8rem;color:var(--color-text-muted);">Personalized dietary analysis</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div data-anchor="diets"></div>
+      <h2>Meet the diets</h2>
+      <p>Before the data, it helps to picture the people behind each pattern. The number on each card is the macro ratio &mdash; protein / carbohydrate / fat &mdash; because that ratio is what actually drives the aging pathways below.</p>
+      <p style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-accent);margin:0 0 10px;">Tap a persona to see a week on their plate ↓</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 22px;">
+        <div data-toggle="week" data-key="maya" data-active="true" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #14b8a6;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);">Maya · the Longevity Eater</span><span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:9999px;background:#14b8a626;color:#14b8a6;">5/75/20</span></div>
+          <p style="margin:0 0 10px;font-size:0.95rem;">Plant-centered and unhurried. Legumes, whole grains, vegetables and olive oil carry every meal; meat is a garnish.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;">Week on the plate →</span>
+        </div>
+        <div data-toggle="week" data-key="dan" data-active="false" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #71717a;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);">Dan · the Standard Plate</span><span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:9999px;background:#71717a26;color:#71717a;">18/62/20</span></div>
+          <p style="margin:0 0 10px;font-size:0.95rem;">The mixed-omnivore average. A protein, a starch and a side — often refined — three times a day, snacks in between.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#71717a;">Week on the plate →</span>
+        </div>
+        <div data-toggle="week" data-key="priya" data-active="false" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #f4a261;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);">Priya · the Protein Maximizer</span><span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:9999px;background:#f4a26126;color:#f4a261;">50/20/30</span></div>
+          <p style="margin:0 0 10px;font-size:0.95rem;">Atkins / keto style. Meat, eggs, cheese and whey at every meal; carbs kept minimal — mTOR runs hot.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#f4a261;">Week on the plate →</span>
+        </div>
+        <div data-toggle="week" data-key="rob" data-active="false" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #e07b54;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);">Rob · the Western Default</span><span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:9999px;background:#e07b5426;color:#e07b54;">20/35/45</span></div>
+          <p style="margin:0 0 10px;font-size:0.95rem;">High fat and high sugar. Fast food, pastries, fried foods and sweet drinks dominate.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#e07b54;">Week on the plate →</span>
+        </div>
+      </div>
+
+      <div style="margin:0 0 8px;">
+        <div data-panel="week" data-key="maya" data-open="true"><h3>A week on Maya's plate — the Longevity Eater</h3><p>Every meal inside a 12-hour window; protein mostly from legumes, nuts and fish. This is the optimal protocol in practice.</p><div style="overflow-x:auto;margin:12px 0 8px;"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><thead><tr><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);width:12%;">Day</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Breakfast</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Lunch</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Dinner</th></tr></thead><tbody><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Mon</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Steel-cut oats, blueberries, walnuts</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Lentil &amp; farro bowl, roasted veg, olive oil</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Wild salmon, sautéed greens, quinoa</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Tue</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chia pudding, berries, pistachios</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chickpea &amp; kale soup, sourdough</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Black-bean &amp; sweet-potato tacos, avocado</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Wed</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Oatmeal, flax, almond butter, pear</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">White-bean salad, greens, seeds</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Sardine &amp; tomato whole-grain pasta</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Thu</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Overnight oats, walnuts, blackberries</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Lentil-pasta primavera</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Miso tofu, brown rice, bok choy</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Fri</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Whole-grain toast, avocado, hemp</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Minestrone with beans &amp; barley</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Trout, cruciferous veg, wild rice</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Sat</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Veggie &amp; white-bean scramble</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Farro, chickpea &amp; herb bowl, tahini</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Vegetable &amp; lentil curry, brown basmati</td></tr><tr><td style="padding:9px 10px;font-weight:600;color:var(--color-text-primary);">Sun</td><td style="padding:9px 10px;">Buckwheat pancakes, berries, walnuts</td><td style="padding:9px 10px;">Leftover curry over greens</td><td style="padding:9px 10px;">Herb-roasted chickpeas, veg, quinoa</td></tr></tbody></table></div></div>
+        <div data-panel="week" data-key="dan" data-open="false"><h3>A week on Dan's plate — the Standard Plate</h3><p>Not disastrous, but refined grains and daily animal protein add up. The easy wins: swap white starches for whole grains and push one meal a day toward plants.</p><div style="overflow-x:auto;margin:12px 0 8px;"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><thead><tr><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);width:12%;">Day</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Breakfast</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Lunch</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Dinner</th></tr></thead><tbody><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Mon</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Boxed cereal &amp; milk</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Turkey sandwich, chips</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chicken breast, white rice, side salad</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Tue</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Bagel &amp; cream cheese, coffee</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chicken caesar wrap</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Spaghetti &amp; meat sauce, garlic bread</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Wed</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Scrambled eggs, white toast</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Ham &amp; cheese sandwich, soda</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Beef tacos, white rice</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Thu</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Granola bar, latte</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fast-casual burrito bowl</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pork chop, mashed potato, corn</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Fri</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pancakes &amp; syrup</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pizza slice &amp; soda</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Rotisserie chicken, fries, coleslaw</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Sat</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Bacon &amp; eggs, toast</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Cheeseburger &amp; fries</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Takeout pad thai</td></tr><tr><td style="padding:9px 10px;font-weight:600;color:var(--color-text-primary);">Sun</td><td style="padding:9px 10px;">Muffin &amp; orange juice</td><td style="padding:9px 10px;">Deli sub, chips</td><td style="padding:9px 10px;">Roast chicken, white rice, canned veg</td></tr></tbody></table></div></div>
+        <div data-panel="week" data-key="priya" data-open="false"><h3>A week on Priya's plate — the Protein Maximizer</h3><p>Muscle-first and low-carb, but meat, cheese and whey at nearly every meal keep mTOR/IGF-1 saturated and saturated fat high. Great satiety, poor longevity signal.</p><div style="overflow-x:auto;margin:12px 0 8px;"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><thead><tr><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);width:12%;">Day</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Breakfast</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Lunch</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Dinner</th></tr></thead><tbody><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Mon</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Eggs, bacon, avocado</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Steak salad, olive oil</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chicken thighs, cheese, broccoli</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Tue</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Whey shake, eggs</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Tuna &amp; mayo lettuce cups</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pork belly, cauliflower, butter</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Wed</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Omelette, sausage</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Grilled chicken &amp; feta salad</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Ribeye, asparagus</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Thu</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Greek yogurt, whey</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Salmon, spinach, olive oil</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Beef burger patties, cheese</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Fri</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Eggs, cheese, ham</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Chicken &amp; bacon salad</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Lamb chops, zucchini</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Sat</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Almond-flour whey pancakes</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Shrimp &amp; avocado</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Steak, mushrooms, butter</td></tr><tr><td style="padding:9px 10px;font-weight:600;color:var(--color-text-primary);">Sun</td><td style="padding:9px 10px;">Bacon &amp; eggs</td><td style="padding:9px 10px;">Rotisserie chicken (skin on)</td><td style="padding:9px 10px;">Meatballs, parmesan, side salad</td></tr></tbody></table></div></div>
+        <div data-panel="week" data-key="rob" data-open="false"><h3>A week on Rob's plate — the Western Default</h3><p>Refined carbs, sugar and saturated fat at every turn — the pattern most strongly tied to the shortest lifespans in the research. The highest-leverage plate to change.</p><div style="overflow-x:auto;margin:12px 0 8px;"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><thead><tr><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);width:12%;">Day</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Breakfast</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Lunch</th><th style="padding:9px 10px;text-align:left;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;border-bottom:2px solid var(--color-accent-dim);">Dinner</th></tr></thead><tbody><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Mon</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pastry &amp; sweet latte</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fast-food burger, fries, soda</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Delivery pizza, wings</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Tue</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Sugary cereal</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fried chicken sandwich, chips</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Nachos &amp; cheese, soda</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Wed</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Donuts &amp; coffee</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Hot dog &amp; fries</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fettuccine alfredo, garlic bread</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Thu</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Bacon-egg-cheese biscuit</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Double cheeseburger, milkshake</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fried rice takeout, spring rolls</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Fri</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Toaster pastries</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Pepperoni pizza, soda</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Fish &amp; chips, tartar sauce</td></tr><tr><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-text-primary);">Sat</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Waffles, syrup, sausage</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Loaded nachos</td><td style="padding:9px 10px;border-bottom:1px solid var(--color-border);">Burgers &amp; chips, ice cream</td></tr><tr><td style="padding:9px 10px;font-weight:600;color:var(--color-text-primary);">Sun</td><td style="padding:9px 10px;">Croissant &amp; juice</td><td style="padding:9px 10px;">Sub sandwich, chips, cookie</td><td style="padding:9px 10px;">Fried chicken, mac &amp; cheese, soda</td></tr></tbody></table></div></div>
+      </div>
+
+      <h2>Complex vs. simple carbohydrates</h2>
+      <p>Not all carbs behave alike. <strong>Complex</strong> carbs come bound to fiber and release glucose slowly; <strong>simple / refined</strong> carbs are stripped of fiber and spike blood sugar &mdash; the pattern that drives insulin resistance in the data below.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;">
+        <div style="border:1px solid var(--color-border);border-top:3px solid #14b8a6;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:#14b8a6;margin-bottom:4px;">Favor · complex</div>
+          <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:10px;">Slow glucose release · fiber-rich</div>
+          <ul style="margin:0;padding-left:18px;font-size:0.92rem;"><li>Lentils, chickpeas, black &amp; navy beans</li><li>Oats, farro, quinoa, barley, brown &amp; black rice</li><li>Sweet potato, squash, whole corn</li><li>Leafy greens, broccoli, peppers</li><li>Whole fruit &amp; berries (fiber intact)</li><li>Sprouted / 100% whole-grain sourdough</li></ul>
+        </div>
+        <div style="border:1px solid var(--color-border);border-top:3px solid #e07b54;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:#e07b54;margin-bottom:4px;">Limit · simple / refined</div>
+          <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:10px;">Rapid glucose spike · fiber stripped</div>
+          <ul style="margin:0;padding-left:18px;font-size:0.92rem;"><li>Croissants, pastries, white bread &amp; bagels</li><li>White rice &amp; standard white pasta</li><li>Soda, juice, sweetened coffee</li><li>Candy, cookies, cakes, most cereals</li><li>Chips, crackers, refined-flour snacks</li><li>Table sugar, syrups, added sweeteners</li></ul>
+        </div>
+      </div>
+
+      <div data-anchor="science"></div>
+      <h2>What the evidence actually shows</h2>
+      <h3>Human cohort: protein intake &amp; mortality</h3>
+      <p>In NHANES cohort studies led by Morgan Levine and Valter Longo (<em>Cell Metabolism</em>, 2014)<sup><a href="#ref2">2</a></sup>, researchers followed <strong>6,381 adults</strong> grouped by protein intake. High animal-protein subjects showed steep increases in cancer and Type-2-diabetes mortality &mdash; <strong>even though they ate fewer overall calories</strong> than the low-protein group.</p>
+      <p>The same studies reported that high-protein consumers had a <strong>5-fold higher risk of Type-2-diabetes mortality despite eating fewer calories</strong>, supporting a source-quality and amino-acid-mechanism explanation over simple calorie load.<sup><a href="#ref1">1</a>,<a href="#ref2">2</a></sup></p>
+
+      <h3>Diet composition &amp; lifespan &mdash; controlled mouse studies</h3>
+      <p>Solon-Biet et al. (<em>Cell Metabolism</em>, 2014)<sup><a href="#ref3">3</a></sup> tested 30+ macronutrient combinations in mice to isolate how each nutrient shapes lifespan. Across that matrix, low-protein / high-complex-carbohydrate patterns produced the longest median lifespan signals.</p>
+
+      <h2>The methionine lever</h2>
+      <p>Methionine is the amino acid most frequently discussed in this literature as a driver of growth signaling through mTOR/IGF-1 pathways.<sup><a href="#ref1">1</a>,<a href="#ref2">2</a></sup> Measured per calorie, many animal sources carry higher methionine density than common plant staples, which is why source selection matters as much as total grams.</p>
+      <ul>
+        <li><strong>Build the base low:</strong> oats, beans, chickpeas, brown rice, vegetables.</li>
+        <li><strong>Top up deliberately:</strong> tofu, seeds, and fish where needed for complete protein.</li>
+        <li><strong>Use animal protein as a lever:</strong> not the default base of every meal.</li>
+        <li><strong>Time intake around training:</strong> concentrate higher-protein meals near resistance sessions.</li>
+        <li><strong>Adjust for age and activity:</strong> older adults and high-volume athletes may target higher intake.</li>
+      </ul>
+
+      <h2>Optimal vs. pro-aging, at a glance</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;">
+        <div style="border:1px solid var(--color-accent-dim);background:rgba(20,184,166,0.07);border-radius:16px;padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:#14b8a6;margin-bottom:12px;">Optimal protocol</div>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Protein:</strong> legumes, nuts, seeds, low-mercury fish</p>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Carbs:</strong> whole grains, legumes, vegetables, berries</p>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Fats:</strong> extra-virgin olive oil, avocados, tree nuts</p>
+          <p style="margin:0;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Timing:</strong> 12-hour eating window; periodic fasting-mimicking cycles</p>
+        </div>
+        <div style="border:1px solid #7a4636;background:rgba(224,123,84,0.07);border-radius:16px;padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:#e07b54;margin-bottom:12px;">Pro-aging pattern</div>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Protein:</strong> frequent red &amp; processed meat, high whey</p>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Carbs:</strong> refined flour, pastries, white bread, sugar</p>
+          <p style="margin:0 0 8px;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Fats:</strong> butter, trans fats, excess animal fat</p>
+          <p style="margin:0;font-size:0.92rem;"><strong style="color:var(--color-text-primary);">Timing:</strong> continuous grazing, late-night snacking</p>
+        </div>
+      </div>
+
+      <div data-anchor="analysis"></div>
+      <h2>Individual dietary analysis</h2>
+      <p>The framework only matters if it survives contact with a real plate. <strong>Pick the plate that sounds most like your week</strong>; tailored guidance appears below.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin:10px 0 0;font-size:0.8rem;">
+        <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:11px;height:11px;border-radius:3px;background:#14b8a6;display:inline-block;"></span><span style="color:#14b8a6;font-weight:600;">Add / keep</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:11px;height:11px;border-radius:3px;background:#e07b54;display:inline-block;"></span><span style="color:#e07b54;font-weight:600;">Remove / cut back</span></span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0;">
+        <div data-toggle="diet" data-key="allrounder" data-active="true" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #14b8a6;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);margin-bottom:6px;">The all-rounder</div>
+          <p style="margin:0 0 10px;font-size:0.9rem;">Chicken, avocado, nuts, pasta &amp; oats — plus whey, creatine, NMN. Good instincts, refined-carb and animal-protein friction.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#14b8a6;">See my advice →</span>
+        </div>
+        <div data-toggle="diet" data-key="brazilian" data-active="false" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #f4a261;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);margin-bottom:6px;">The Brazilian plate</div>
+          <p style="margin:0 0 10px;font-size:0.9rem;">Steak, beans and rice with whey. Great bean base, excessive red meat, and usually low produce diversity.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#f4a261;">See my advice →</span>
+        </div>
+        <div data-toggle="diet" data-key="gymrat" data-active="false" role="button" tabindex="0" style="border:1px solid var(--color-border);border-top:3px solid #e07b54;background:var(--color-bg-surface);border-radius:16px;padding:18px 20px;cursor:pointer;">
+          <div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:var(--color-text-primary);margin-bottom:6px;">The gym rat</div>
+          <p style="margin:0 0 10px;font-size:0.9rem;">Very high protein and calories to maximize strength and size, often with several daily whey feedings.</p>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#e07b54;">See my advice →</span>
+        </div>
+      </div>
+
+      <div>
+        <div data-panel="diet" data-key="allrounder" data-open="true"><h3>The all-rounder</h3><p><strong>Assessment:</strong> Strong longevity foundation, but frequent poultry/whey + refined carbs can keep growth signaling elevated and fiber density lower than ideal.</p><ul><li><strong>Cut back:</strong> routine whey and refined flour foods.</li><li><strong>Swap:</strong> plant protein blends, legumes, lentil/chickpea pasta, whole grains.</li><li><strong>Keep:</strong> oats, nuts, olive oil, movement, and resistance training.</li></ul></div>
+        <div data-panel="diet" data-key="brazilian" data-open="false"><h3>The Brazilian plate</h3><p><strong>Assessment:</strong> Beans are a major strength. The primary friction is high red-meat frequency and white-rice dependence.</p><ul><li><strong>Reduce:</strong> steak frequency to occasional meals.</li><li><strong>Shift:</strong> brown/black rice, quinoa, and more vegetables per plate.</li><li><strong>Maintain:</strong> beans as a daily anchor; diversify varieties.</li></ul></div>
+        <div data-panel="diet" data-key="gymrat" data-open="false"><h3>The gym rat</h3><p><strong>Assessment:</strong> Strength goals are valid, but all-day high leucine/methionine exposure can over-saturate mTOR signaling.</p><ul><li><strong>Target:</strong> approximately 1.6-1.8 g/kg protein unless specific coaching indicates higher.</li><li><strong>Concentrate:</strong> leucine-rich feedings near training rather than all day.</li><li><strong>Source shift:</strong> more fish/plant proteins, fewer constant red-meat and whey hits.</li></ul></div>
+      </div>
+
+      <h2>Putting it to work</h2>
+      <p>Four practical moves turn this from theory into routine:</p>
+      <ol>
+        <li><strong>Set a 12-hour eating window</strong> (for example, 7am-7pm).</li>
+        <li><strong>Prioritize protein quality</strong> with legumes, fish, nuts, seeds, and targeted supplementation.</li>
+        <li><strong>Replace refined staples</strong> with fiber-dense whole-food carbohydrates.</li>
+        <li><strong>Pair diet with training</strong> and recovery to protect muscle while reducing chronic growth-signal load.</li>
+      </ol>
+
+      <h2>References</h2>
+      <ol style="font-size:0.85rem;color:var(--color-text-muted);">
+        <li id="ref1">Longo, V. D., &amp; Anderson, R. M. (2022). Nutrition, longevity and disease: From molecular mechanisms to interventions. <em>Cell, 185</em>(9), 1455&ndash;1470.</li>
+        <li id="ref2">Levine, M. E., Suarez, J. A., Brandhorst, S., et al. (2014). Low protein intake is associated with a major reduction in IGF-1, cancer, and overall mortality in the 65-and-younger population. <em>Cell Metabolism, 19</em>(3), 407&ndash;417.</li>
+        <li id="ref3">Solon-Biet, S. M., McMahon, A. C., Ballard, J. W. O., et al. (2014). The ratio of dietary carbohydrate to protein shapes healthspan and lifespan in mice. <em>Cell Metabolism, 19</em>(3), 418&ndash;430.</li>
+        <li id="ref4">Fadnes, L. T., Celis-Morales, C., Jomaas, E. S., et al. (2022). Estimating impact of food choices on life expectancy. <em>PLoS Medicine, 19</em>(2), e1003889; related follow-on analysis in <em>Nature Food</em> (2023), 4(11), 961&ndash;965.</li>
+        <li id="ref5">Brandhorst, S., Choi, I. Y., Wei, M., et al. (2015). A periodic diet that mimics fasting promotes multi-system regeneration and healthspan. <em>Cell Metabolism, 22</em>(1), 86&ndash;99.</li>
+      </ol>
+    </div>
+  </article>
+</div>
+</body>
+</html>

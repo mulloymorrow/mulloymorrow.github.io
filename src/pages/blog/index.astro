@@ -29,6 +29,15 @@ type ContentItem = {
 };
 
 const allContent: ContentItem[] = [
+  // Essay: The longevity diet, decoded (standalone designed page in public/)
+  {
+    type: 'essay' as const,
+    title: "The longevity diet, decoded",
+    description: "What we eat tunes the cellular machinery that determines how quickly we age. A practical breakdown of diet patterns, protein quality, methionine load, and evidence-backed plate changes.",
+    slug: '/blog/longevity-diet-research/',
+    publishedAt: new Date('2026-07-23'),
+    tags: ['Longevity', 'Nutrition', 'Healthspan'],
+  },
   // Essay: The Body Beneath the Feeling (standalone designed page in public/)
   {
     type: 'essay' as const,
