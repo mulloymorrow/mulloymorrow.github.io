@@ -252,10 +252,9 @@
     var key = t.getAttribute("data-key");
     var rt = t.getRootNode();
     var target = rt.querySelector('[data-panel="' + group + '"][data-key="' + key + '"]');
-    var wasOpen = target && target.getAttribute("data-open") === "true";
     rt.querySelectorAll('[data-panel="' + group + '"]').forEach(function(p) { p.setAttribute("data-open", "false"); });
     rt.querySelectorAll('[data-toggle="' + group + '"]').forEach(function(c) { c.setAttribute("data-active", "false"); });
-    if (!wasOpen && target) {
+    if (target) {
       target.setAttribute("data-open", "true");
       t.setAttribute("data-active", "true");
     }
