@@ -349,7 +349,11 @@
     var heading = node.querySelector("h3, h4");
     if (heading) return heading.textContent.trim();
     var titleDiv = node.querySelector("div");
-    if (titleDiv) return titleDiv.textContent.trim();
+    if (titleDiv) {
+      var firstSpan = titleDiv.querySelector("span");
+      if (firstSpan) return firstSpan.textContent.trim();
+      return titleDiv.textContent.trim();
+    }
     return "";
   }
 
@@ -396,6 +400,18 @@
       closeMobileModal();
     }
   });
+
+  if (window.matchMedia) {
+    var mql = window.matchMedia("(max-width: 720px)");
+    var onBreakpointChange = function(e) {
+      if (!e.matches) closeMobileModal();
+    };
+    if (mql.addEventListener) {
+      mql.addEventListener("change", onBreakpointChange);
+    } else {
+      mql.addListener(onBreakpointChange);
+    }
+  }
 })();
 </script>
 </head>
