@@ -737,7 +737,7 @@
     var key = ev.key;
     if (key !== "Enter" && key !== " ") return;
     var t = ev.target;
-    if (t && t.getAttribute && (t.getAttribute("data-toggle") || t.getAttribute("data-goto") || t.getAttribute("data-fact"))) {
+    if (t && t.getAttribute && (t.getAttribute("data-toggle") || t.getAttribute("data-goto"))) {
       ev.preventDefault();
       t.click();
     }
