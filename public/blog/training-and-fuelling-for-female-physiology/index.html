@@ -528,6 +528,9 @@
     if (target) {
       target.setAttribute("data-open", "true");
       t.setAttribute("data-active", "true");
+      if (window.innerWidth <= 720) {
+        target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
     }
   });
 
