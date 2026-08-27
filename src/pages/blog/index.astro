@@ -29,6 +29,15 @@ type ContentItem = {
 };
 
 const allContent: ContentItem[] = [
+  // Essay: Training and Fuelling for Female Physiology (standalone designed page in public/)
+  {
+    type: 'essay' as const,
+    title: "Training and Fuelling for Female Physiology",
+    description: "Seven places default training advice gets it wrong for active women, and what to do instead.",
+    slug: '/blog/training-and-fuelling-for-female-physiology/',
+    publishedAt: new Date('2026-08-27'),
+    tags: ['Physiology', 'Training', 'Nutrition', "Women's Health"],
+  },
   // Essay: The longevity diet, decoded (standalone designed page in public/)
   {
     type: 'essay' as const,
