@@ -147,7 +147,7 @@
           </foreignObject>
 
           <!-- Arrow req → l1 -->
-          <line x1={FW/2} y1={EDU_NODES[0].y + NODE_H + 6} x2={FW/2} y2={EDU_NODES[1].y} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1={FW/2} y1={EDU_NODES[0].y + NODE_H + 6} x2={FW/2} y2={EDU_NODES[1].y} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-${industry})`}/>
 
           <!-- L1 node -->
           <rect x={NODE_X} y={EDU_NODES[1].y} width={NODE_W} height={NODE_H + 6} rx="6" fill="#1a1a22" stroke="#14b8a6" stroke-width="1.5"/>
@@ -159,7 +159,7 @@
           </foreignObject>
 
           <!-- Arrow l1 → l2 -->
-          <line x1={FW/2} y1={EDU_NODES[1].y + NODE_H + 6} x2={FW/2} y2={EDU_NODES[2].y} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1={FW/2} y1={EDU_NODES[1].y + NODE_H + 6} x2={FW/2} y2={EDU_NODES[2].y} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-${industry})`}/>
 
           <!-- L2 node -->
           <rect x={NODE_X} y={EDU_NODES[2].y} width={NODE_W} height={NODE_H + 4} rx="6" fill="#1a1a22" stroke="#0ea5e9" stroke-width="1.5"/>
@@ -171,7 +171,7 @@
           </foreignObject>
 
           <!-- Arrow l2 → l3 -->
-          <line x1={FW/2} y1={EDU_NODES[2].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[3].y} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1={FW/2} y1={EDU_NODES[2].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[3].y} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-${industry})`}/>
 
           <!-- L3 node -->
           <rect x={NODE_X} y={EDU_NODES[3].y} width={NODE_W} height={NODE_H + 4} rx="6" fill="#1a1a22" stroke="#6366f1" stroke-width="1.5"/>
@@ -183,7 +183,7 @@
           </foreignObject>
 
           <!-- Arrow l3 → l4 -->
-          <line x1={FW/2} y1={EDU_NODES[3].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[4].y} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1={FW/2} y1={EDU_NODES[3].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[4].y} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-${industry})`}/>
 
           <!-- L4 node -->
           <rect x={NODE_X} y={EDU_NODES[4].y} width={NODE_W} height={NODE_H + 4} rx="6" fill="#1a1a22" stroke="#f59e0b" stroke-width="1.5"/>
@@ -195,18 +195,18 @@
           </foreignObject>
 
           <!-- Arrow l4 → answer -->
-          <line x1={FW/2} y1={EDU_NODES[4].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[5].y} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1={FW/2} y1={EDU_NODES[4].y + NODE_H + 4} x2={FW/2} y2={EDU_NODES[5].y} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-${industry})`}/>
 
           <!-- Answer node -->
           <rect x={NODE_X} y={EDU_NODES[5].y} width={NODE_W} height={NODE_H} rx="6" fill={`${accent}18`} stroke={`${accent}60`} stroke-width="1"/>
           <foreignObject x={NODE_X + 6} y={EDU_NODES[5].y + 4} width={NODE_W - 12} height={NODE_H}>
             <div xmlns="http://www.w3.org/1999/xhtml" style={`font-size:9.5px; line-height:1.35; color:${accent}; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;`}>
-              {d.educationL3Label}
+              {EDU_NODES[5].label}
             </div>
           </foreignObject>
 
           <defs>
-            <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <marker id={`arrow-${industry}`} markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
               <path d="M0,0 L0,6 L6,3 z" fill="#3f3f46"/>
             </marker>
           </defs>
@@ -223,7 +223,7 @@
           </foreignObject>
 
           <!-- Arrow -->
-          <line x1={FW/2} y1={50} x2={FW/2} y2={60} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow-emg)"/>
+          <line x1={FW/2} y1={50} x2={FW/2} y2={60} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-emg-${industry})`}/>
 
           <!-- L1 fires -->
           <rect x={NODE_X} y={60} width={NODE_W} height={42} rx="6" fill="#ef444418" stroke="#ef4444" stroke-width="2"/>
@@ -235,7 +235,7 @@
           </foreignObject>
 
           <!-- Bypass arrow -->
-          <line x1={FW/2} y1={102} x2={FW/2} y2={118} stroke="#ef4444" stroke-width="2" stroke-dasharray="4 2" marker-end="url(#arrow-emg)"/>
+          <line x1={FW/2} y1={102} x2={FW/2} y2={118} stroke="#ef4444" stroke-width="2" stroke-dasharray="4 2" marker-end={`url(#arrow-emg-${industry})`}/>
 
           <!-- Bypass label -->
           <text x={FW/2 + 8} y={113} font-size="9" font-family="monospace" fill="#ef4444">bypasses L2–L3</text>
@@ -250,7 +250,7 @@
           </foreignObject>
 
           <!-- Arrow -->
-          <line x1={FW/2} y1={160} x2={FW/2} y2={178} stroke="#3f3f46" stroke-width="1.5" marker-end="url(#arrow-emg)"/>
+          <line x1={FW/2} y1={160} x2={FW/2} y2={178} stroke="#3f3f46" stroke-width="1.5" marker-end={`url(#arrow-emg-${industry})`}/>
 
           <!-- L5 / expert -->
           <rect x={NODE_X} y={178} width={NODE_W} height={42} rx="6" fill="#8b5cf618" stroke="#8b5cf6" stroke-width="1.5"/>
@@ -266,7 +266,7 @@
           <text x={FW/2} y={248} text-anchor="middle" font-size="9.5" font-family="monospace" fill="#71717a">LLM writes wrapper text only — no generation</text>
 
           <defs>
-            <marker id="arrow-emg" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <marker id={`arrow-emg-${industry}`} markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
               <path d="M0,0 L0,6 L6,3 z" fill="#3f3f46"/>
             </marker>
           </defs>

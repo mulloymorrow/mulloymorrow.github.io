@@ -69,13 +69,12 @@
   }
 </script>
 
-<div class="diagram-embed five-layer-arch" role="img" aria-label="Five-layer defense architecture diagram">
+<div class="diagram-embed five-layer-arch" role="group" aria-label="Five-layer defense architecture diagram">
   <div class="diagram-title">Five-Layer Defense Architecture</div>
   <div class="diagram-subtitle">Hover any layer to see details. Budget bars show relative engineering-reliability investment.</div>
   <svg
     viewBox={`0 0 ${W} ${TOTAL_H}`}
     class="arch-svg"
-    aria-hidden="true"
   >
     <!-- Funnel guide lines -->
     {#each layers as layer, i}
