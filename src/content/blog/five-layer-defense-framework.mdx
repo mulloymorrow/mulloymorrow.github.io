@@ -10,6 +10,9 @@ tags:
 draft: false
 ---
 
+import FiveLayerArchitecture from '../../components/FiveLayerArchitecture.svelte';
+import IndustryFlowDiagram from '../../components/IndustryFlowDiagram.svelte';
+
 # The Five-Layer Defense Architecture for AI Agents in Regulated, Evidence-Bound Industries
 
 
@@ -76,6 +79,7 @@ Defense-in-depth borrowed from security engineering. Every layer assumes the oth
 
 Layers 1 and 4 are where the reliability budget concentrates. They decide whether layers 2-3 even run. A perfect retrieval-and-generation pipeline that fires on a request the system shouldn't be answering is a worse failure than a failed retrieval — it produces confidently-wrong content rather than a refusal.
 
+<FiveLayerArchitecture client:load />
 
 ## 3. The Generic Routing Taxonomy
 
@@ -383,6 +387,7 @@ The **state-licensed-clinician handoff** must route to a clinician licensed in t
 - **Sampling** for routine education and info-lookup to detect diagnosis-creep and false-reassurance drift.
 - **The reviewing clinician's edits are the eval signal** — what got pulled back from a diagnosis, what reassurance got removed, what red flag should have fired and didn't. This is also the AB-3030 review path: clinician-approved templates are exempt from the per-message disclaimer trigger.
 
+<IndustryFlowDiagram industry="healthcare" client:load />
 
 ## H.3 What Routing Looks Like for Three Real Cases
 
@@ -633,6 +638,7 @@ The **state-licensed-attorney handoff** is the legal equivalent of healthcare's 
 - **Sampling** for routine education and info-lookup turns to detect drift and scope creep.
 - **The reviewing attorney's edits are the eval signal** — what got rephrased, what got pulled back from the licensure line, what citations got corrected.
 
+<IndustryFlowDiagram industry="legal" client:load />
 
 ## L.3 What Routing Looks Like for Three Real Cases
 
@@ -878,6 +884,7 @@ The `recommendation_made` field is a structural assertion. The output validator 
 - **Sampling** (10-15%) for any turn that names a specific security, even if classified as education. This is the highest-stakes non-emergency category.
 - **Reviewer edits become the eval signal.** What got pulled back from the recommendation line, what got rephrased to avoid forecasting, what got reclassified as advice rather than education.
 
+<IndustryFlowDiagram industry="financial" client:load />
 
 ## F.3 What Routing Looks Like for Three Real Cases
 
