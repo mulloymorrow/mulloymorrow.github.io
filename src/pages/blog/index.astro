@@ -26,9 +26,25 @@ type ContentItem = {
   slug: string;
   publishedAt: Date;
   tags?: string[];
+  visual?: string;
+};
+
+const postVisuals: Record<string, string> = {
+  'five-layer-defense-framework': 'defense',
+  'trellis-longitudinal-home': 'trellis',
 };
 
 const allContent: ContentItem[] = [
+  // Essay: Training and Fuelling for Female Physiology (standalone designed page in public/)
+  {
+    type: 'essay' as const,
+    title: "Training and Fuelling for Female Physiology",
+    description: "Seven places default training advice gets it wrong for active women, and what to do instead.",
+    slug: '/blog/training-and-fuelling-for-female-physiology/',
+    publishedAt: new Date('2026-08-27'),
+    tags: ['Physiology', 'Training', 'Nutrition', "Women's Health"],
+    visual: 'physiology',
+  },
   // Essay: The longevity diet, decoded (standalone designed page in public/)
   {
     type: 'essay' as const,
@@ -37,6 +53,7 @@ const allContent: ContentItem[] = [
     slug: '/blog/longevity-diet-research/',
     publishedAt: new Date('2026-07-23'),
     tags: ['Longevity', 'Nutrition', 'Healthspan'],
+    visual: 'longevity',
   },
   // Essay: The Body Beneath the Feeling (standalone designed page in public/)
   {
@@ -46,6 +63,7 @@ const allContent: ContentItem[] = [
     slug: '/blog/the-body-beneath-the-feeling/',
     publishedAt: new Date('2026-06-01'),
     tags: ['Essay', 'Consciousness', 'Neuroscience'],
+    visual: 'feeling',
   },
   // Add Spotify case study presentation
   {
@@ -55,6 +73,7 @@ const allContent: ContentItem[] = [
     slug: '/work/spotify-presentation',
     publishedAt: new Date('2026-01-19'),
     tags: ['Case Study', 'AI/ML', 'Personalization'],
+    visual: 'spotify',
   },
   // Add philosophy page
   ...(philosophyPage ? [{
@@ -64,6 +83,7 @@ const allContent: ContentItem[] = [
     slug: 'philosophy',
     publishedAt: philosophyPage.data.publishedAt,
     tags: ['Philosophy', 'Human-Centered AI', 'Leadership'],
+    visual: 'philosophy',
   }] : []),
   // Add blog posts
   ...sortedPosts.map(post => ({
@@ -73,6 +93,7 @@ const allContent: ContentItem[] = [
     slug: post.slug,
     publishedAt: post.data.publishedAt,
     tags: post.data.tags,
+    visual: postVisuals[post.slug] ?? 'fallback',
   }))
 ];
 
@@ -168,6 +189,7 @@ const blogSchema = {
                   publishedAt={item.publishedAt}
                   tags={item.tags}
                   isExternal={item.type === 'page' || item.type === 'case-study' || item.type === 'essay'}
+                  visual={item.visual}
                 />
               ))}
             </div>
