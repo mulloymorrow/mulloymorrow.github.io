@@ -11,6 +11,7 @@ This guide explains how to edit the content on your personal portfolio website.
 - [Logos & Media](#logos--media)
 - [Spotify Embeds](#spotify-embeds-podcasts--playlists)
 - [Other Editable Content](#other-editable-content)
+- [Discoverability](#discoverability)
 - [Quick Reference](#quick-reference)
 
 ---
@@ -383,7 +384,28 @@ Output goes to the `docs/` folder.
 
 ### Deploying
 
-Push to the `main` branch - GitHub Actions will automatically build and deploy to GitHub Pages.
+Push to the `gh-pages` branch - GitHub Actions will automatically build and deploy to GitHub Pages.
+
+---
+
+## Discoverability
+
+Standalone essays live in `public/blog/<slug>/index.html` and are listed in `src/data/writing.ts`. That file is the enrollment list for:
+
+- the homepage Writing section
+- the blog index
+- `/blog/rss.xml`
+- `sitemap-0.xml` (via `customPages` in `astro.config.mjs`)
+
+When you add a new standalone essay, add a row there or it will stay invisible to crawlers.
+
+After a new essay ships:
+
+1. Confirm it appears in `https://mulloymorrow.com/sitemap-index.xml` and `/blog/rss.xml`.
+2. Request indexing in [Google Search Console](https://search.google.com/search-console) for the new URL (this cannot be done from the repo).
+3. Share the canonical URL on LinkedIn (primary) and X (`@thismulloy`). The essays already have share links at the bottom.
+
+`public/robots.txt` allows all crawlers and points at the sitemap.
 
 ---
 
