@@ -60,7 +60,10 @@
         <span>ai-Mulloy</span>
       </a>
       <a href="/blog" class="nav-link" role="menuitem" onclick={close}>
-        <span>Blog</span>
+        <span>Writing</span>
+      </a>
+      <a href="/philosophy" class="nav-link" role="menuitem" onclick={close}>
+        <span>Philosophy</span>
       </a>
       <a href="/#contact" class="nav-link" role="menuitem" onclick={close}>
         <span>Contact</span>
