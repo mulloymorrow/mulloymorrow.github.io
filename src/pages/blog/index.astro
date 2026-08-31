@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import ScrollVideo from '../../components/ScrollVideo.svelte';
+import { standaloneEssays } from '../../data/writing';
 
 const title = "Blog | Mulloy Morrow";
 const description = "Thoughts on AI, machine learning, human-centered technology, and building the future.";
@@ -35,36 +36,15 @@ const postVisuals: Record<string, string> = {
 };
 
 const allContent: ContentItem[] = [
-  // Essay: Training and Fuelling for Female Physiology (standalone designed page in public/)
-  {
+  ...standaloneEssays.map((essay) => ({
     type: 'essay' as const,
-    title: "Training and Fuelling for Female Physiology",
-    description: "Seven places default training advice gets it wrong for active women, and what to do instead.",
-    slug: '/blog/training-and-fuelling-for-female-physiology/',
-    publishedAt: new Date('2026-08-27'),
-    tags: ['Physiology', 'Training', 'Nutrition', "Women's Health"],
-    visual: 'physiology',
-  },
-  // Essay: The longevity diet, decoded (standalone designed page in public/)
-  {
-    type: 'essay' as const,
-    title: "The longevity diet, decoded",
-    description: "What we eat tunes the cellular machinery that determines how quickly we age. A practical breakdown of diet patterns, protein quality, methionine load, and evidence-backed plate changes.",
-    slug: '/blog/longevity-diet-research/',
-    publishedAt: new Date('2026-07-23'),
-    tags: ['Longevity', 'Nutrition', 'Healthspan'],
-    visual: 'longevity',
-  },
-  // Essay: The Body Beneath the Feeling (standalone designed page in public/)
-  {
-    type: 'essay' as const,
-    title: "The Body Beneath the Feeling",
-    description: "Where do emotions come from, and what lies beneath awareness? A guided tour of the rival answers — ending in a staged debate among five thinkers who would not agree about any of it.",
-    slug: '/blog/the-body-beneath-the-feeling/',
-    publishedAt: new Date('2026-06-01'),
-    tags: ['Essay', 'Consciousness', 'Neuroscience'],
-    visual: 'feeling',
-  },
+    title: essay.title,
+    description: essay.description,
+    slug: essay.slug,
+    publishedAt: essay.publishedAt,
+    tags: essay.tags,
+    visual: essay.visual,
+  })),
   // Add Spotify case study presentation
   {
     type: 'case-study' as const,

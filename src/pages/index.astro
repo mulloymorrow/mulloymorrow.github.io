@@ -2,17 +2,47 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import PhilosophyTeaser from '../components/PhilosophyTeaser.astro';
+import WritingSection from '../components/WritingSection.astro';
 import TimelineSection from '../components/TimelineSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
 import PersonalSection from '../components/PersonalSection.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
+
+const site = Astro.site?.toString() ?? 'https://mulloymorrow.com';
+const identitySchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site}#website`,
+      name: 'Mulloy Morrow',
+      url: site,
+      description: 'Essays and notes on AI, recommendation systems, and human-centered products.',
+      author: { '@id': `${site}#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${site}#person`,
+      name: 'Mulloy Morrow',
+      url: site,
+      jobTitle: 'Founder. Tech Leader. Builder.',
+      sameAs: [
+        'https://linkedin.com/in/mulloymorrow',
+        'https://x.com/thismulloy',
+        'https://github.com/mulloymorrow',
+      ],
+    },
+  ],
+};
 ---
 
 <Layout>
+  <script type="application/ld+json" set:html={JSON.stringify(identitySchema)} slot="head" />
   <main>
     <Hero />
     <PhilosophyTeaser />
+    <WritingSection />
     <TimelineSection />
     <ProjectsSection />
     <PersonalSection />

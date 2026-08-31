@@ -33,6 +33,12 @@ import PingPongVideo from './PingPongVideo.svelte';
         </a>
       </SocialLinks>
     </div>
+
+    <nav class="hero__links animate-on-scroll delay-4" aria-label="On this page">
+      <a href="#writing">Writing</a>
+      <a href="/blog/the-body-beneath-the-feeling/">The Body Beneath the Feeling</a>
+      <a href="/philosophy">Philosophy</a>
+    </nav>
     
     <a href="#experience" class="hero__scroll-indicator animate-on-scroll delay-5" aria-label="Scroll to experience">
       <span class="hero__scroll-text">Explore my journey</span>
@@ -162,7 +168,29 @@ import PingPongVideo from './PingPongVideo.svelte';
   .hero__cta {
     display: flex;
     justify-content: center;
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-5);
+    margin-bottom: var(--space-12);
+    font-size: var(--text-sm);
+  }
+
+  .hero__links a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .hero__links a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
   }
   
   .hero__scroll-indicator {

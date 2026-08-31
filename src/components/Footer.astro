@@ -11,6 +11,12 @@ const currentYear = new Date().getFullYear();
       <div class="footer__brand">
         <span class="footer__name">Mulloy Morrow</span>
         <span class="footer__tagline">Building AI systems that matter</span>
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="/blog/">Writing</a>
+          <a href="/blog/the-body-beneath-the-feeling/">The Body Beneath the Feeling</a>
+          <a href="/philosophy">Philosophy</a>
+          <a href="/blog/rss.xml">RSS</a>
+        </nav>
       </div>
       
       <SocialLinks size="md">
@@ -74,6 +80,24 @@ const currentYear = new Date().getFullYear();
   .footer__tagline {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+  }
+
+  .footer__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .footer__nav a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer__nav a:hover {
+    color: var(--color-accent);
   }
   
   .footer__bottom {
