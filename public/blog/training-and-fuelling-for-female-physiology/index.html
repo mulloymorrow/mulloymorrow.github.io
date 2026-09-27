@@ -447,6 +447,9 @@
     padding: 16px 18px 10px;
     background: var(--color-bg-primary);
   }
+  .fp-map__detail:not(:has([data-open="true"])) {
+    display: none;
+  }
   .fp-map__detail h3 { margin-top: 0; }
   .fp-map__detail ul { margin-bottom: 0.6rem; }
 
@@ -755,9 +758,10 @@
     var key = t.getAttribute("data-key");
     var rt = t.getRootNode();
     var target = rt.querySelector('[data-panel="' + group + '"][data-key="' + key + '"]');
+    var alreadyOpen = target && target.getAttribute("data-open") === "true";
     rt.querySelectorAll('[data-panel="' + group + '"]').forEach(function(p) { p.setAttribute("data-open", "false"); });
     rt.querySelectorAll('[data-toggle="' + group + '"]').forEach(function(c) { c.setAttribute("data-active", "false"); });
-    if (target) {
+    if (target && !alreadyOpen) {
       target.setAttribute("data-open", "true");
       t.setAttribute("data-active", "true");
       if (window.innerWidth <= 720) {
@@ -921,7 +925,7 @@
           <span><span class="fp-swatch" style="background:#e07b54;"></span>Contested &mdash; individualize</span>
         </div>
         <div class="fp-map__grid">
-          <div data-toggle="correction" data-key="fuel" data-active="true" role="button" tabindex="0" class="fp-node" aria-label="Correction 1, Fasting">
+          <div data-toggle="correction" data-key="fuel" data-active="false" role="button" tabindex="0" class="fp-node" aria-label="Correction 1, Fasting">
             <span class="fp-node__num">01</span>
             <span class="fp-node__body">
               <span class="fp-node__row">
@@ -1022,7 +1026,7 @@
         </div>
 
         <div class="fp-map__detail">
-          <div data-panel="correction" data-key="fuel" data-open="true">
+          <div data-panel="correction" data-key="fuel" data-open="false">
             <h3>01 · Fuel before you train</h3>
             <p>Most fasting research was run in men or in sedentary populations. In active women, chronically training under-fuelled suppresses the hypothalamic&ndash;pituitary&ndash;ovarian axis and downshifts thyroid output. The body reads low energy availability as a threat and conserves &mdash; the opposite of the adaptation you trained for.<sup><a href="#ref4">4</a>,<a href="#ref5">5</a></sup></p>
             <ul>
