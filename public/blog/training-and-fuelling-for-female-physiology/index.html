@@ -233,6 +233,94 @@
   }
   [data-panel][data-open="false"] { display: none; }
 
+  .lv-click-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 10rem;
+    padding: 20px 18px;
+    border: 1px dashed var(--color-border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--color-bg-primary) 70%, transparent);
+    pointer-events: none;
+    animation: lv-slot-breathe 3.2s ease-in-out infinite;
+  }
+  .lv-click-hint__ghost {
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .lv-click-hint__bar {
+    display: block;
+    height: 9px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-border) 0%, var(--color-border-hover) 45%, var(--color-border) 90%);
+    background-size: 220% 100%;
+    animation: lv-shimmer 2.4s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  .lv-click-hint__bar:nth-child(1) { width: 58%; }
+  .lv-click-hint__bar:nth-child(2) { width: 86%; }
+  .lv-click-hint__bar:nth-child(3) { width: 44%; animation-delay: 0.4s; }
+  .lv-click-hint__cue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .lv-click-hint__arrow {
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    line-height: 1;
+    animation: lv-bounce 1.35s ease-in-out infinite;
+  }
+  .lv-click-hint__label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: center;
+    line-height: 1.45;
+  }
+  @keyframes lv-bounce {
+    0%, 100% { transform: translateY(6px); opacity: 0.45; }
+    50% { transform: translateY(-5px); opacity: 1; }
+  }
+  @keyframes lv-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+  @keyframes lv-slot-breathe {
+    0%, 100% { border-color: var(--color-border); }
+    50% { border-color: var(--color-accent); }
+  }
+  @keyframes lv-invite {
+    0%, 82%, 100% { box-shadow: 0 0 0 0 transparent; }
+    12% { box-shadow: 0 0 0 2px var(--color-accent), var(--shadow-glow); }
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(1) {
+    animation: lv-invite 5s ease-in-out infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(2) {
+    animation: lv-invite 5s ease-in-out 0.55s infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(3) {
+    animation: lv-invite 5s ease-in-out 1.1s infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(4) {
+    animation: lv-invite 5s ease-in-out 1.65s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lv-click-hint,
+    .lv-click-hint__bar,
+    .lv-click-hint__arrow,
+    .lv-choice-grid > * { animation: none !important; }
+  }
+
   .toc {
     border: 1px solid var(--color-border);
     background: var(--color-bg-surface);
@@ -442,7 +530,7 @@
   }
   .fp-map__detail {
     margin-top: 18px;
-    min-height: 10rem;
+    min-height: 0;
     border: none;
     padding: 0;
     background: transparent;
@@ -453,6 +541,9 @@
     border-radius: 14px;
     padding: 16px 18px 10px;
     background: var(--color-bg-primary);
+  }
+  .fp-map__detail:has([data-open="true"]) .lv-click-hint {
+    display: none;
   }
   .fp-map__detail h3 { margin-top: 0; }
   .fp-map__detail ul { margin-bottom: 0.6rem; }
@@ -727,9 +818,14 @@
     gap: 12px;
     margin: 8px 0 0;
   }
+  .fp-plan-slot {
+    min-height: 10rem;
+  }
+  .fp-plan-slot:has(.fp-week) .lv-click-hint {
+    display: none;
+  }
   .fp-weeks:empty {
-    min-height: 9rem;
-    display: block;
+    display: none;
   }
   .fp-week {
     border: 1px solid var(--color-border);
@@ -976,7 +1072,7 @@
           <span><span class="fp-swatch" style="background:#f4a261;"></span>Reasonably supported</span>
           <span><span class="fp-swatch" style="background:#e07b54;"></span>Contested &mdash; individualize</span>
         </div>
-        <div class="fp-map__grid">
+        <div class="fp-map__grid lv-choice-grid">
           <div data-toggle="correction" data-key="fuel" data-active="false" role="button" tabindex="0" class="fp-node" aria-label="Correction 1, Fasting">
             <span class="fp-node__num">01</span>
             <span class="fp-node__body">
@@ -1078,6 +1174,17 @@
         </div>
 
         <div class="fp-map__detail">
+          <div class="lv-click-hint" aria-hidden="true">
+            <div class="lv-click-hint__ghost">
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+            </div>
+            <div class="lv-click-hint__cue">
+              <span class="lv-click-hint__arrow">↑</span>
+              <span class="lv-click-hint__label">Tap a node — the protocol appears here</span>
+            </div>
+          </div>
           <div data-panel="correction" data-key="fuel" data-open="false">
             <h3>01 · Fuel before you train</h3>
             <p>Most fasting research was run in men or in sedentary populations. In active women, chronically training under-fuelled suppresses the hypothalamic&ndash;pituitary&ndash;ovarian axis and downshifts thyroid output. The body reads low energy availability as a threat and conserves &mdash; the opposite of the adaptation you trained for.<sup><a href="#ref4">4</a>,<a href="#ref5">5</a></sup></p>
@@ -1434,7 +1541,7 @@
       <p>Trying to change seven things at once is how programmes fail. Mark what is true of you <em>today</em> &mdash; the plan below keeps only those gaps, in order of leverage.</p>
       <div class="fp-planner">
         <div class="fp-planner__label">True of me today</div>
-        <div class="fp-facts">
+        <div class="fp-facts lv-choice-grid">
           <button type="button" class="fp-fact" data-fact="fasted" aria-pressed="false">
             <span>I often train fasted or skip food before sessions</span>
             <span class="fp-fact__switch">False</span>
@@ -1465,7 +1572,20 @@
           </button>
         </div>
         <p class="fp-plan-hint" id="fp-plan-hint">Mark what is true of you today. The plan appears here.</p>
-        <div class="fp-weeks" id="fp-plan-grid" aria-live="polite"></div>
+        <div class="fp-plan-slot">
+          <div class="lv-click-hint" aria-hidden="true">
+            <div class="lv-click-hint__ghost">
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+            </div>
+            <div class="lv-click-hint__cue">
+              <span class="lv-click-hint__arrow">↑</span>
+              <span class="lv-click-hint__label">Mark a fact — your weeks appear here</span>
+            </div>
+          </div>
+          <div class="fp-weeks" id="fp-plan-grid" aria-live="polite"></div>
+        </div>
       </div>
 
       <p>Women are not smaller men. But the correction is not a separate, more fragile set of rules &mdash; it is a more demanding one: eat more, lift heavier, land harder, and measure your own physiology instead of borrowing someone else&rsquo;s averages.</p>
