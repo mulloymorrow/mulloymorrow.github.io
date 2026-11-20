@@ -233,6 +233,94 @@
   }
   [data-panel][data-open="false"] { display: none; }
 
+  .lv-click-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 10rem;
+    padding: 20px 18px;
+    border: 1px dashed var(--color-border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--color-bg-primary) 70%, transparent);
+    pointer-events: none;
+    animation: lv-slot-breathe 3.2s ease-in-out infinite;
+  }
+  .lv-click-hint__ghost {
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .lv-click-hint__bar {
+    display: block;
+    height: 9px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-border) 0%, var(--color-border-hover) 45%, var(--color-border) 90%);
+    background-size: 220% 100%;
+    animation: lv-shimmer 2.4s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  .lv-click-hint__bar:nth-child(1) { width: 58%; }
+  .lv-click-hint__bar:nth-child(2) { width: 86%; }
+  .lv-click-hint__bar:nth-child(3) { width: 44%; animation-delay: 0.4s; }
+  .lv-click-hint__cue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .lv-click-hint__arrow {
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    line-height: 1;
+    animation: lv-bounce 1.35s ease-in-out infinite;
+  }
+  .lv-click-hint__label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: center;
+    line-height: 1.45;
+  }
+  @keyframes lv-bounce {
+    0%, 100% { transform: translateY(6px); opacity: 0.45; }
+    50% { transform: translateY(-5px); opacity: 1; }
+  }
+  @keyframes lv-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+  @keyframes lv-slot-breathe {
+    0%, 100% { border-color: var(--color-border); }
+    50% { border-color: var(--color-accent); }
+  }
+  @keyframes lv-invite {
+    0%, 72%, 100% { box-shadow: 0 0 0 0 transparent; }
+    14% { box-shadow: 0 0 0 3px var(--color-accent), var(--shadow-glow); }
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(1) {
+    animation: lv-invite 3.2s ease-in-out infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(2) {
+    animation: lv-invite 3.2s ease-in-out 0.4s infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(3) {
+    animation: lv-invite 3.2s ease-in-out 0.8s infinite;
+  }
+  .lv-choice-grid:not(:has([data-active="true"])):not(:has([aria-pressed="true"])) > *:nth-child(4) {
+    animation: lv-invite 3.2s ease-in-out 1.2s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lv-click-hint,
+    .lv-click-hint__bar,
+    .lv-click-hint__arrow,
+    .lv-choice-grid > * { animation: none !important; }
+  }
+
   .toc {
     border: 1px solid var(--color-border);
     background: var(--color-bg-surface);
@@ -441,13 +529,20 @@
     line-height: 1.35;
   }
   .fp-map__detail {
-    margin-top: 14px;
+    margin-top: 18px;
+    min-height: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+  .fp-map__detail:has([data-open="true"]) {
+    min-height: 0;
     border: 1px dashed var(--color-border);
     border-radius: 14px;
     padding: 16px 18px 10px;
     background: var(--color-bg-primary);
   }
-  .fp-map__detail:not(:has([data-open="true"])) {
+  .fp-map__detail:has([data-open="true"]) .lv-click-hint {
     display: none;
   }
   .fp-map__detail h3 { margin-top: 0; }
@@ -723,6 +818,15 @@
     gap: 12px;
     margin: 8px 0 0;
   }
+  .fp-plan-slot {
+    min-height: 10rem;
+  }
+  .fp-plan-slot:has(.fp-week) .lv-click-hint {
+    display: none;
+  }
+  .fp-weeks:empty {
+    display: none;
+  }
   .fp-week {
     border: 1px solid var(--color-border);
     border-top: 3px solid var(--color-accent);
@@ -856,12 +960,6 @@
     reds: "Run the LEAF-Q. Escalate early for labs (ferritin, thyroid, vitamin D). Fix energy availability by eating more, not training less.",
     cycle: "Log three cycles: cycle day, sleep, session RPE, top-set load, mood, symptoms. Adjust only what your data supports."
   };
-  var DEFAULT_WEEKS = [
-    { title: "Fuel", body: "Eat before training and hit your protein target. Highest-leverage change; everything downstream works better." },
-    { title: "Load", body: "Move lifting to heavy compounds at 1–3 RIR. Add two minutes of jumps three times a week." },
-    { title: "Distribute", body: "Audit your cardio. Push the moderate middle out toward the easy and hard ends." },
-    { title: "Measure", body: "Start a cycle and session log. Get ferritin, thyroid, and vitamin D tested so you are working from data." }
-  ];
   var ORDER = ["fuel", "load", "distribute", "measure"];
 
   function renderPlan() {
@@ -877,19 +975,19 @@
         .map(function(f) { return COPY[f.key]; });
       if (bits.length) weeks.push({ title: BUCKET_TITLE[bucket], body: bits.join(" ") });
     });
-    var usingDefault = weeks.length === 0;
-    if (usingDefault) weeks = DEFAULT_WEEKS;
     var hint = document.getElementById("fp-plan-hint");
-    if (hint) {
-      hint.textContent = usingDefault
-        ? "Nothing toggled yet, so this is the default four-week sequence. Mark what is true of you today to compress it."
-        : "Your sequence, in order of leverage — only the gaps you marked.";
-    }
     var grid = document.getElementById("fp-plan-grid");
+    if (hint) {
+      hint.textContent = weeks.length
+        ? "Your sequence, in order of leverage — only the gaps you marked."
+        : "Mark what is true of you today. The plan appears here.";
+    }
     if (!grid) return;
-    grid.innerHTML = weeks.map(function(w, i) {
-      return '<div class="fp-week"><div class="fp-week__n">Week ' + (i + 1) + '</div><h3>' + w.title + '</h3><p>' + w.body + '</p></div>';
-    }).join("");
+    grid.innerHTML = weeks.length
+      ? weeks.map(function(w, i) {
+          return '<div class="fp-week"><div class="fp-week__n">Week ' + (i + 1) + '</div><h3>' + w.title + '</h3><p>' + w.body + '</p></div>';
+        }).join("")
+      : "";
   }
 
   document.addEventListener("click", function(ev) {
@@ -974,7 +1072,7 @@
           <span><span class="fp-swatch" style="background:#f4a261;"></span>Reasonably supported</span>
           <span><span class="fp-swatch" style="background:#e07b54;"></span>Contested &mdash; individualize</span>
         </div>
-        <div class="fp-map__grid">
+        <div class="fp-map__grid lv-choice-grid">
           <div data-toggle="correction" data-key="fuel" data-active="false" role="button" tabindex="0" class="fp-node" aria-label="Correction 1, Fasting">
             <span class="fp-node__num">01</span>
             <span class="fp-node__body">
@@ -1076,6 +1174,17 @@
         </div>
 
         <div class="fp-map__detail">
+          <div class="lv-click-hint" aria-hidden="true">
+            <div class="lv-click-hint__ghost">
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+            </div>
+            <div class="lv-click-hint__cue">
+              <span class="lv-click-hint__arrow">↑</span>
+              <span class="lv-click-hint__label">Tap a node — the protocol appears here</span>
+            </div>
+          </div>
           <div data-panel="correction" data-key="fuel" data-open="false">
             <h3>01 · Fuel before you train</h3>
             <p>Most fasting research was run in men or in sedentary populations. In active women, chronically training under-fuelled suppresses the hypothalamic&ndash;pituitary&ndash;ovarian axis and downshifts thyroid output. The body reads low energy availability as a threat and conserves &mdash; the opposite of the adaptation you trained for.<sup><a href="#ref4">4</a>,<a href="#ref5">5</a></sup></p>
@@ -1432,7 +1541,7 @@
       <p>Trying to change seven things at once is how programmes fail. Mark what is true of you <em>today</em> &mdash; the plan below keeps only those gaps, in order of leverage.</p>
       <div class="fp-planner">
         <div class="fp-planner__label">True of me today</div>
-        <div class="fp-facts">
+        <div class="fp-facts lv-choice-grid">
           <button type="button" class="fp-fact" data-fact="fasted" aria-pressed="false">
             <span>I often train fasted or skip food before sessions</span>
             <span class="fp-fact__switch">False</span>
@@ -1462,28 +1571,20 @@
             <span class="fp-fact__switch">False</span>
           </button>
         </div>
-        <p class="fp-plan-hint" id="fp-plan-hint">Nothing toggled yet, so this is the default four-week sequence. Mark what is true of you today to compress it.</p>
-        <div class="fp-weeks" id="fp-plan-grid">
-          <div class="fp-week">
-            <div class="fp-week__n">Week 1</div>
-            <h3>Fuel</h3>
-            <p>Eat before training and hit your protein target. Highest-leverage change; everything downstream works better.</p>
+        <p class="fp-plan-hint" id="fp-plan-hint">Mark what is true of you today. The plan appears here.</p>
+        <div class="fp-plan-slot">
+          <div class="lv-click-hint" aria-hidden="true">
+            <div class="lv-click-hint__ghost">
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+              <span class="lv-click-hint__bar"></span>
+            </div>
+            <div class="lv-click-hint__cue">
+              <span class="lv-click-hint__arrow">↑</span>
+              <span class="lv-click-hint__label">Mark a fact — your weeks appear here</span>
+            </div>
           </div>
-          <div class="fp-week">
-            <div class="fp-week__n">Week 2</div>
-            <h3>Load</h3>
-            <p>Move lifting to heavy compounds at 1&ndash;3 RIR. Add two minutes of jumps three times a week.</p>
-          </div>
-          <div class="fp-week">
-            <div class="fp-week__n">Week 3</div>
-            <h3>Distribute</h3>
-            <p>Audit your cardio. Push the moderate middle out toward the easy and hard ends.</p>
-          </div>
-          <div class="fp-week">
-            <div class="fp-week__n">Week 4</div>
-            <h3>Measure</h3>
-            <p>Start a cycle and session log. Get ferritin, thyroid, and vitamin D tested so you are working from data.</p>
-          </div>
+          <div class="fp-weeks" id="fp-plan-grid" aria-live="polite"></div>
         </div>
       </div>
 
