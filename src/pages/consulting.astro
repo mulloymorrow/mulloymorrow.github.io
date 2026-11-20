@@ -4,7 +4,7 @@ import Footer from '../components/Footer.astro';
 import ConsultingVisual from '../components/ConsultingVisual.astro';
 
 const title = 'Consulting | Mulloy Morrow';
-const description = 'Paid advisory, talks, and webinars on multi-agent LLM systems, generative-AI safety in health and HIPAA, personalization at Spotify scale, and LTV and causal metrics. Book a time that works for you.';
+const description = 'Paid advisory, talks, and webinars for leaders facing AI problems: scaling product velocity, managing risk in front of customers, elevating teams to judgment over grunt work, and knowing whether personalization is moving the business. Book a time that works for you.';
 const canonicalUrl = new URL('/consulting/', Astro.site).toString();
 
 const bookingPageUrl = 'https://calendar.app.google/Tak6NqBNFPbW1v3u8';
@@ -12,28 +12,36 @@ const bookingEmbedUrl = 'https://calendar.google.com/calendar/appointments/sched
 
 const offerings = [
   {
-    title: 'Multi-agent LLM systems in production',
+    title: 'Scaling product velocity without growing headcount linearly',
     format: 'Talk or workshop',
     visual: 'agents',
-    description: 'How persona agents with distinct contexts move work through shared engineering, legal, and visual QA registries, from design to production — the multi-agent development system built at Trellis Health, alongside agentic product work like Lumi, which finds players and books sports matches end to end through live third-party APIs.',
+    problem: 'You need more product shipped, but hiring in lockstep with the roadmap is slow, expensive, and does not scale. Work still piles up across engineering, legal, and QA.',
+    help: 'I show how to design multi-agent development systems that move work from design to production, so a small team can increase throughput without a matching increase in headcount.',
+    proof: 'At Trellis Health I built a multi-agent development system in which persona agents with distinct contexts move work through shared engineering, legal, and visual QA registries, from design to production.',
   },
   {
-    title: 'Generative-AI safety in health and HIPAA',
+    title: 'Managing risk when you put generative AI in front of customers',
     format: 'Talk or webinar',
     visual: 'safety',
-    description: 'Designing a five-layer generative AI safety stack for a HIPAA-compliant agentic health assistant that books appointments, sets reminders, and builds care cards for the whole family, with role-based access for parents, co-guardians, and teens. Draws on production work in HIPAA- and HITECH-compliant environments in health and legal tech.',
+    problem: 'Putting generative AI in front of customers is a business risk, especially in health and other regulated settings. One bad answer, a privacy miss, or the wrong person seeing the wrong data can erode trust and create liability.',
+    help: 'I work with teams on the safety, access, and compliance practices needed to ship customer-facing AI with a clear risk posture.',
+    proof: 'At Trellis Health I am designing a five-layer generative AI safety stack and architecting a HIPAA-compliant agentic health assistant with role-based access for parents, co-guardians, and teens, building on production work in HIPAA- and HITECH-compliant legal-tech systems.',
   },
   {
-    title: 'Personalization and recommenders at Spotify scale',
-    format: 'Talk',
-    visual: 'spotify',
-    description: 'Leading the 25+ person Home org that owned the recommendation systems where 95% of consumption begins for 600M+ MAU, and rebuilding the main-feed recommender for video, podcasts, and audiobooks with two-tower, wide-and-deep, and transformer models. Outcomes included a $10M/month margin lift, a 26% discovery boost, and a $4M/year cost cut.',
-  },
-  {
-    title: 'LTV and causal metrics',
+    title: 'Elevating your people to judgment, not grunt work',
     format: 'Talk or workshop',
-    visual: 'ltv',
-    description: 'Creating the User-LTV metric, adopted company-wide as the north star for long-term causal impact (Investor Day 2022), and building the experimentation frameworks used to ship ranking changes safely.',
+    visual: 'hitl',
+    problem: 'Too much of your team\'s time goes to technical grunt work — reviewing documents, moving tickets, repeating routine analysis — while the judgment that actually changes outcomes gets crowded out.',
+    help: 'I help you design human-in-the-loop systems where AI handles the rote work and people own the critical decisions.',
+    proof: 'At a legal-tech joint venture, production agentic systems analyzed legal, environmental, and medical documents for veterans\' claims and accelerated $24M in settlements in 6 months, in a HIPAA- and HITECH-compliant environment.',
+  },
+  {
+    title: 'Knowing whether AI and personalization are actually moving the business',
+    format: 'Talk or workshop',
+    visual: 'spotify',
+    problem: 'Teams ship models and personalization features, then struggle to prove they changed customer behavior or the P&L. Vanity metrics make it hard to decide what to double down on — and what to stop.',
+    help: 'I work with leaders on causal metrics and experimentation so AI and personalization investments can be judged by long-term business impact, not just short-term engagement.',
+    proof: 'At Spotify I created the User-LTV metric, adopted company-wide as the north star for long-term causal impact (Investor Day 2022). The Home personalization work drove a $10M/month lift in user margins, a 26% boost in discovery, and a $4M/year cost cut.',
   },
 ];
 ---
@@ -50,12 +58,12 @@ const offerings = [
       <p class="consulting__label">Consulting</p>
       <h1 class="consulting__title">Talks, webinars, and paid advisory</h1>
       <p class="consulting__lede">
-        I work with teams taking AI/ML systems from research to production — including multi-agent LLM systems, personalization and recommenders, and regulated domains such as HIPAA and HITECH. Book a talk, webinar, or advisory session below.
+        I work with founders, executives, and product and engineering leaders on the problems AI creates for the business: shipping faster without growing headcount in lockstep, managing risk when models face customers, freeing people for judgment instead of grunt work, and knowing whether the investment is actually paying off. Book a talk, webinar, or advisory session below.
       </p>
     </header>
 
     <section class="consulting__offerings container" aria-labelledby="offerings-heading">
-      <h2 id="offerings-heading" class="consulting__section-title">What I can offer</h2>
+      <h2 id="offerings-heading" class="consulting__section-title">Problems I help with</h2>
       <ul class="offerings">
         {offerings.map((item) => (
           <li class="offering">
@@ -63,7 +71,13 @@ const offerings = [
               <h3 class="offering__title">{item.title}</h3>
               <p class="offering__format">{item.format}</p>
             </div>
-            <p class="offering__description">{item.description}</p>
+            <div class="offering__copy">
+              <p class="offering__problem">{item.problem}</p>
+              <p class="offering__help">{item.help}</p>
+              <p class="offering__proof">
+                <span class="offering__proof-label">From my work.</span> {item.proof}
+              </p>
+            </div>
             <ConsultingVisual kind={item.visual} />
           </li>
         ))}
@@ -189,7 +203,7 @@ const offerings = [
     grid-template-columns: 1fr minmax(220px, 46%);
     grid-template-areas:
       "meta visual"
-      "desc visual";
+      "copy visual";
     column-gap: var(--space-5);
     row-gap: var(--space-3);
     align-items: center;
@@ -226,13 +240,36 @@ const offerings = [
     margin: 0;
   }
 
-  .offering__description {
-    grid-area: desc;
+  .offering__copy {
+    grid-area: copy;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-self: start;
+    min-width: 0;
+  }
+
+  .offering__problem,
+  .offering__help,
+  .offering__proof {
     font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0;
-    align-self: start;
+  }
+
+  .offering__problem {
+    color: var(--color-text-primary);
+  }
+
+  .offering__proof-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-right: 0.25rem;
   }
 
   .offering :global(.consulting-visual) {
@@ -287,7 +324,7 @@ const offerings = [
       grid-template-areas:
         "meta"
         "visual"
-        "desc";
+        "copy";
       align-items: stretch;
     }
 

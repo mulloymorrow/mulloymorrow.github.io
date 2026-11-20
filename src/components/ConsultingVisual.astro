@@ -1,6 +1,6 @@
 ---
 interface Props {
-  kind: 'agents' | 'safety' | 'spotify' | 'ltv';
+  kind: 'agents' | 'safety' | 'hitl' | 'spotify' | 'ltv';
 }
 
 const { kind } = Astro.props;
@@ -9,10 +9,10 @@ const { kind } = Astro.props;
 <figure class={`consulting-visual consulting-visual--${kind}`}>
   {kind === 'agents' && (
     <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-agents-title vis-agents-caption">
-      <title id="vis-agents-title">Persona agents moving work through shared engineering, legal, and visual QA registries</title>
+      <title id="vis-agents-title">Work moving from design to production through shared engineering, legal, and visual QA registries</title>
       <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
 
-      <text x="16" y="22" class="label-kicker">Persona agents</text>
+      <text x="16" y="22" class="label-kicker">From design to production</text>
       <g class="chip" transform="translate(16,32)">
         <rect width="72" height="28" rx="8" />
         <text x="36" y="18" text-anchor="middle">Design</text>
@@ -94,16 +94,17 @@ const { kind } = Astro.props;
 
   {kind === 'spotify' && (
     <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-spotify-title">
-      <title id="vis-spotify-title">Spotify Home personalization outcomes: 600 million plus monthly active users, 95 percent of consumption starts on Home, 10 million dollars per month margin lift, 26 percent discovery boost, and 4 million dollars per year cost cut</title>
+      <title id="vis-spotify-title">Spotify outcomes: User-LTV as company-wide north star, 600 million plus monthly active users, 95 percent of consumption starts on Home, 10 million dollars per month margin lift, 26 percent discovery boost, and 4 million dollars per year cost cut</title>
       <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+      <text x="20" y="22" class="label-kicker">User-LTV · north star (Investor Day 2022)</text>
 
-      <text x="20" y="36" class="stat-number">600M+</text>
-      <text x="20" y="56" class="stat-label">MAU on Home recommenders</text>
+      <text x="20" y="50" class="stat-number">600M+</text>
+      <text x="20" y="68" class="stat-label">MAU on Home recommenders</text>
 
-      <text x="20" y="88" class="stat-emphasis">95%</text>
-      <text x="86" y="88" class="stat-label">of consumption starts on Home</text>
-      <rect x="20" y="98" width="400" height="8" rx="4" class="bar-track" />
-      <rect x="20" y="98" width="380" height="8" rx="4" class="bar-fill" />
+      <text x="20" y="96" class="stat-emphasis">95%</text>
+      <text x="86" y="96" class="stat-label">of consumption starts on Home</text>
+      <rect x="20" y="106" width="400" height="8" rx="4" class="bar-track" />
+      <rect x="20" y="106" width="380" height="8" rx="4" class="bar-fill" />
 
       <g class="metric" transform="translate(16,126)">
         <rect width="130" height="58" rx="8" />
@@ -120,6 +121,45 @@ const { kind } = Astro.props;
         <text x="65" y="26" text-anchor="middle" class="metric-value">$4M/yr</text>
         <text x="65" y="44" text-anchor="middle" class="metric-label">cost cut</text>
       </g>
+    </svg>
+  )}
+
+
+  {kind === 'hitl' && (
+    <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-hitl-title vis-hitl-caption">
+      <title id="vis-hitl-title">Human-in-the-loop: AI handles rote work, humans own critical decisions</title>
+      <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+      <text x="220" y="28" text-anchor="middle" class="label-kicker">Human-in-the-loop</text>
+
+      <g class="column" transform="translate(16,56)">
+        <rect width="120" height="100" rx="10" />
+        <text x="60" y="32" text-anchor="middle" class="col-title">AI</text>
+        <text x="60" y="58" text-anchor="middle">Handles the</text>
+        <text x="60" y="74" text-anchor="middle">rote work</text>
+      </g>
+
+      <path d="M148 106 h28" class="flow-line" marker-end="url(#arrow-hitl)" />
+
+      <g class="hitl-human" transform="translate(188,56)">
+        <rect width="120" height="100" rx="10" />
+        <circle cx="60" cy="30" r="11" />
+        <path d="M42 62 C42 50, 78 50, 78 62 V72 H42 Z" />
+        <text x="60" y="90" text-anchor="middle" class="col-title">Judgment</text>
+      </g>
+
+      <path d="M320 106 h28" class="flow-line" marker-end="url(#arrow-hitl)" />
+
+      <g class="output" transform="translate(360,72)">
+        <rect width="64" height="68" rx="10" />
+        <text x="32" y="30" text-anchor="middle">Human</text>
+        <text x="32" y="46" text-anchor="middle">decision</text>
+      </g>
+
+      <defs>
+        <marker id="arrow-hitl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-accent)" />
+        </marker>
+      </defs>
     </svg>
   )}
 
@@ -318,5 +358,21 @@ const { kind } = Astro.props;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.04em;
+  }
+
+  .hitl-human rect {
+    fill: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    stroke: var(--color-accent);
+    stroke-width: 1;
+  }
+
+  .hitl-human circle,
+  .hitl-human path {
+    fill: var(--color-accent);
+  }
+
+  .hitl-human text:not(.col-title) {
+    fill: var(--color-text-secondary);
+    font-size: 11px;
   }
 </style>
