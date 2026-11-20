@@ -5,6 +5,7 @@ import TimelineCard from './TimelineCard.svelte';
 const experiences = [
   {
     company: "Trellis Health",
+    companyUrl: "https://www.jointrellishealth.com/",
     role: "Founding CTO",
     period: "August 2026 - Present",
     location: "Seattle, WA",
@@ -17,6 +18,8 @@ const experiences = [
     ],
     technologies: ["Multi-Agent LLMs", "HIPAA", "Generative AI Safety", "Thompson Sampling", "Personalization"],
     isCurrent: true,
+    logo: "/logos/trellis.svg",
+    logoOnDark: true,
     pinnedLink: { label: "Case Study", url: "/work/trellis-longitudinal-home/", icon: "document", external: false }
   },
   {
@@ -194,7 +197,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Python", "Scikit-learn", "PostgreSQL", "Geospatial ML"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idkzWJO3jq/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667584595553"
+    logo: "/logos/compass.png"
   },
   {
     company: "OfferUp",
@@ -210,7 +213,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL", "NLP", "Computer Vision"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/id5p1Knwlt/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1668515956474"
+    logo: "/logos/offerup.svg"
   },
   {
     company: "Surgical Robotics Company (Confidential)",
@@ -245,7 +248,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Python", "Scikit-learn", "AWS", "PostgreSQL", "Unsupervised Learning", "Collaborative Filtering", "Geospatial ML", "Data Pipelines"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/id7-jGlWt3/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1668516040149"
+    logo: "/logos/porch.png"
   },
   {
     company: "Opera Solutions",
@@ -254,7 +257,8 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     summary: "Earlier experience as a Senior Machine Learning Specialist, before Porch, OfferUp, and later consumer and health work.",
     highlights: [],
     technologies: [],
-    isCurrent: false
+    isCurrent: false,
+    logo: "/logos/opera-solutions.png"
   },
   {
     company: "UC San Diego",
@@ -275,7 +279,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
       { label: "Read Thesis", url: "https://escholarship.org/uc/item/2kd829gf" }
     ],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+    logo: "/logos/ucsd.svg"
   },
   {
     company: "UC San Diego",
@@ -292,7 +296,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Physics", "Electrical Engineering", "Mathematics", "Digital Media", "Creative Technology"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+    logo: "/logos/ucsd.svg"
   }
 ];
 ---

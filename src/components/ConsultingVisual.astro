@@ -1,0 +1,322 @@
+---
+interface Props {
+  kind: 'agents' | 'safety' | 'spotify' | 'ltv';
+}
+
+const { kind } = Astro.props;
+---
+
+<figure class={`consulting-visual consulting-visual--${kind}`}>
+  {kind === 'agents' && (
+    <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-agents-title vis-agents-caption">
+      <title id="vis-agents-title">Persona agents moving work through shared engineering, legal, and visual QA registries</title>
+      <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+
+      <text x="16" y="22" class="label-kicker">Persona agents</text>
+      <g class="chip" transform="translate(16,32)">
+        <rect width="72" height="28" rx="8" />
+        <text x="36" y="18" text-anchor="middle">Design</text>
+      </g>
+      <g class="chip" transform="translate(96,32)">
+        <rect width="72" height="28" rx="8" />
+        <text x="36" y="18" text-anchor="middle">Eng</text>
+      </g>
+      <g class="chip" transform="translate(176,32)">
+        <rect width="72" height="28" rx="8" />
+        <text x="36" y="18" text-anchor="middle">Legal</text>
+      </g>
+      <g class="chip" transform="translate(256,32)">
+        <rect width="92" height="28" rx="8" />
+        <text x="46" y="18" text-anchor="middle">Visual QA</text>
+      </g>
+
+      <path d="M184 68 v12" class="flow-line" marker-end="url(#arrow-agents)" />
+
+      <text x="16" y="104" class="label-kicker">Shared registries</text>
+      <g class="column" transform="translate(16,112)">
+        <rect width="96" height="72" rx="8" />
+        <text x="48" y="16" text-anchor="middle" class="col-title">Engineering</text>
+        <rect x="10" y="24" width="76" height="16" rx="3" class="card" />
+        <rect x="10" y="44" width="76" height="16" rx="3" class="card" />
+      </g>
+      <g class="column" transform="translate(124,112)">
+        <rect width="96" height="72" rx="8" />
+        <text x="48" y="16" text-anchor="middle" class="col-title">Legal</text>
+        <rect x="10" y="24" width="76" height="16" rx="3" class="card" />
+        <rect x="10" y="44" width="76" height="16" rx="3" class="card" />
+      </g>
+      <g class="column" transform="translate(232,112)">
+        <rect width="96" height="72" rx="8" />
+        <text x="48" y="16" text-anchor="middle" class="col-title">Visual QA</text>
+        <rect x="10" y="24" width="76" height="16" rx="3" class="card" />
+        <rect x="10" y="44" width="76" height="16" rx="3" class="card" />
+      </g>
+
+      <path d="M338 148 h18" class="flow-line" marker-end="url(#arrow-agents)" />
+
+      <g class="output" transform="translate(364,124)">
+        <rect width="60" height="48" rx="8" />
+        <text x="30" y="28" text-anchor="middle">Prod</text>
+      </g>
+
+      <defs>
+        <marker id="arrow-agents" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-accent)" />
+        </marker>
+      </defs>
+    </svg>
+  )}
+
+  {kind === 'safety' && (
+    <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-safety-title vis-safety-caption">
+      <title id="vis-safety-title">Five-layer generative AI safety stack</title>
+      <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+      <text x="220" y="24" text-anchor="middle" class="label-kicker">Five-layer generative AI safety stack</text>
+
+      <g transform="translate(70,40)">
+        <rect x="0" y="0" width="300" height="26" rx="6" class="layer layer-5" />
+        <text x="150" y="17" text-anchor="middle">Layer 5</text>
+
+        <rect x="16" y="30" width="268" height="26" rx="6" class="layer layer-4" />
+        <text x="150" y="47" text-anchor="middle">Layer 4</text>
+
+        <rect x="32" y="60" width="236" height="26" rx="6" class="layer layer-3" />
+        <text x="150" y="77" text-anchor="middle">Layer 3</text>
+
+        <rect x="48" y="90" width="204" height="26" rx="6" class="layer layer-2" />
+        <text x="150" y="107" text-anchor="middle">Layer 2</text>
+
+        <rect x="64" y="120" width="172" height="26" rx="6" class="layer layer-1" />
+        <text x="150" y="137" text-anchor="middle">Layer 1</text>
+      </g>
+    </svg>
+  )}
+
+  {kind === 'spotify' && (
+    <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-spotify-title">
+      <title id="vis-spotify-title">Spotify Home personalization outcomes: 600 million plus monthly active users, 95 percent of consumption starts on Home, 10 million dollars per month margin lift, 26 percent discovery boost, and 4 million dollars per year cost cut</title>
+      <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+
+      <text x="20" y="36" class="stat-number">600M+</text>
+      <text x="20" y="56" class="stat-label">MAU on Home recommenders</text>
+
+      <text x="20" y="88" class="stat-emphasis">95%</text>
+      <text x="86" y="88" class="stat-label">of consumption starts on Home</text>
+      <rect x="20" y="98" width="400" height="8" rx="4" class="bar-track" />
+      <rect x="20" y="98" width="380" height="8" rx="4" class="bar-fill" />
+
+      <g class="metric" transform="translate(16,126)">
+        <rect width="130" height="58" rx="8" />
+        <text x="65" y="26" text-anchor="middle" class="metric-value">$10M/mo</text>
+        <text x="65" y="44" text-anchor="middle" class="metric-label">margin lift</text>
+      </g>
+      <g class="metric" transform="translate(155,126)">
+        <rect width="130" height="58" rx="8" />
+        <text x="65" y="26" text-anchor="middle" class="metric-value">26%</text>
+        <text x="65" y="44" text-anchor="middle" class="metric-label">discovery boost</text>
+      </g>
+      <g class="metric" transform="translate(294,126)">
+        <rect width="130" height="58" rx="8" />
+        <text x="65" y="26" text-anchor="middle" class="metric-value">$4M/yr</text>
+        <text x="65" y="44" text-anchor="middle" class="metric-label">cost cut</text>
+      </g>
+    </svg>
+  )}
+
+  {kind === 'ltv' && (
+    <svg viewBox="0 0 440 200" role="img" aria-labelledby="vis-ltv-title vis-ltv-caption">
+      <title id="vis-ltv-title">User-LTV as cumulative causal impact over time</title>
+      <rect x="0" y="0" width="440" height="200" rx="12" fill="var(--color-bg-elevated)" />
+      <text x="16" y="22" class="label-kicker">User-LTV · north star (Investor Day 2022)</text>
+
+      <!-- axes -->
+      <path d="M40 160 H410 M40 160 V40" class="axis" />
+      <text x="225" y="186" text-anchor="middle" class="axis-label">time</text>
+      <text x="16" y="100" text-anchor="middle" class="axis-label" transform="rotate(-90 16 100)">cumulative causal impact</text>
+
+      <!-- conceptual cumulative curve -->
+      <path d="M40 158 C 110 156, 160 140, 210 110 S 320 55, 400 48" fill="none" class="curve" />
+      <path d="M40 158 C 110 156, 160 140, 210 110 S 320 55, 400 48 V160 H40 Z" class="curve-fill" />
+
+      <!-- north-star annotation -->
+      <path d="M40 70 H400" class="star-line" />
+      <text x="392" y="64" text-anchor="end" class="star-label">User-LTV</text>
+    </svg>
+  )}
+
+  {kind !== 'spotify' && (
+    <figcaption id={`vis-${kind}-caption`} class="consulting-visual__caption">Illustrative</figcaption>
+  )}
+</figure>
+
+<style>
+  .consulting-visual {
+    margin: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .consulting-visual svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  .consulting-visual__caption {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-align: right;
+  }
+
+  .consulting-visual svg text {
+    fill: currentColor;
+    font-size: 11px;
+  }
+
+  .label-kicker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: var(--color-text-muted);
+  }
+
+  .chip rect {
+    fill: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    stroke: var(--color-accent);
+    stroke-width: 1;
+  }
+
+  .chip text,
+  .output text,
+  .col-title,
+  .layer text {
+    fill: var(--color-text-primary);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .flow-line,
+  .axis {
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .axis {
+    stroke: var(--color-border-hover);
+    stroke-width: 1;
+  }
+
+  .axis-label {
+    fill: var(--color-text-muted);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .column rect:first-of-type {
+    fill: var(--color-bg-surface);
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .column .card {
+    fill: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    stroke: none;
+  }
+
+  .output rect {
+    fill: var(--color-accent);
+  }
+
+  .output text {
+    fill: var(--color-bg-primary);
+    font-weight: 700;
+    font-size: 11px;
+  }
+
+  .layer {
+    stroke: none;
+  }
+
+  .layer-5 { fill: color-mix(in srgb, var(--color-accent) 85%, transparent); }
+  .layer-4 { fill: color-mix(in srgb, var(--color-accent) 70%, transparent); }
+  .layer-3 { fill: color-mix(in srgb, var(--color-accent) 55%, transparent); }
+  .layer-2 { fill: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+  .layer-1 { fill: color-mix(in srgb, var(--color-accent) 28%, transparent); }
+
+  .layer text {
+    fill: var(--color-text-primary);
+  }
+
+  .stat-number {
+    fill: var(--color-text-primary);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .stat-emphasis {
+    fill: var(--color-accent);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .stat-label,
+  .metric-label {
+    fill: var(--color-text-secondary);
+    font-size: 11px;
+  }
+
+  .bar-track {
+    fill: var(--color-border);
+  }
+
+  .bar-fill {
+    fill: var(--color-accent);
+  }
+
+  .metric rect {
+    fill: var(--color-bg-surface);
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .metric-value {
+    fill: var(--color-text-primary);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .curve {
+    stroke: var(--color-accent);
+    stroke-width: 2.25;
+    fill: none;
+  }
+
+  .curve-fill {
+    fill: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    stroke: none;
+  }
+
+  .star-line {
+    stroke: var(--color-accent-warm);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+    fill: none;
+  }
+
+  .star-label {
+    fill: var(--color-accent-warm);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+</style>

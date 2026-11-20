@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
+import ConsultingVisual from '../components/ConsultingVisual.astro';
 
 const title = 'Consulting | Mulloy Morrow';
 const description = 'Paid advisory, talks, and webinars on multi-agent LLM systems, generative-AI safety in health and HIPAA, personalization at Spotify scale, and LTV and causal metrics. Book a time that works for you.';
@@ -13,21 +14,25 @@ const offerings = [
   {
     title: 'Multi-agent LLM systems in production',
     format: 'Talk or workshop',
+    visual: 'agents',
     description: 'How persona agents with distinct contexts move work through shared engineering, legal, and visual QA registries, from design to production — the multi-agent development system built at Trellis Health, alongside agentic product work like Lumi, which finds players and books sports matches end to end through live third-party APIs.',
   },
   {
     title: 'Generative-AI safety in health and HIPAA',
     format: 'Talk or webinar',
+    visual: 'safety',
     description: 'Designing a five-layer generative AI safety stack for a HIPAA-compliant agentic health assistant that books appointments, sets reminders, and builds care cards for the whole family, with role-based access for parents, co-guardians, and teens. Draws on production work in HIPAA- and HITECH-compliant environments in health and legal tech.',
   },
   {
     title: 'Personalization and recommenders at Spotify scale',
     format: 'Talk',
-    description: 'Leading the 25+ person Home org that owned the recommendation systems where 95% of consumption begins for 600M+ MAU, and rebuilding the main-feed recommender for video, podcasts, and audiobooks with two-tower, wide-and-deep, and transformer models.',
+    visual: 'spotify',
+    description: 'Leading the 25+ person Home org that owned the recommendation systems where 95% of consumption begins for 600M+ MAU, and rebuilding the main-feed recommender for video, podcasts, and audiobooks with two-tower, wide-and-deep, and transformer models. Outcomes included a $10M/month margin lift, a 26% discovery boost, and a $4M/year cost cut.',
   },
   {
     title: 'LTV and causal metrics',
     format: 'Talk or workshop',
+    visual: 'ltv',
     description: 'Creating the User-LTV metric, adopted company-wide as the north star for long-term causal impact (Investor Day 2022), and building the experimentation frameworks used to ship ranking changes safely.',
   },
 ];
@@ -59,6 +64,7 @@ const offerings = [
               <p class="offering__format">{item.format}</p>
             </div>
             <p class="offering__description">{item.description}</p>
+            <ConsultingVisual kind={item.visual} />
           </li>
         ))}
       </ul>
@@ -67,8 +73,8 @@ const offerings = [
     <section class="consulting__booking container" id="book" aria-labelledby="booking-heading">
       <h2 id="booking-heading" class="consulting__section-title">Book a time</h2>
       <p class="consulting__booking-lede">
-        Choose a time that works for you. If the calendar does not load,
-        <a href={bookingPageUrl} target="_blank" rel="noopener noreferrer">open the booking page in a new tab</a>.
+        Choose a time that works for you. If the calendar does not load,{' '}
+        <a href={bookingPageUrl} target="_blank" rel="noopener noreferrer">open the booking page</a>.
       </p>
       <div class="consulting__calendar">
         <iframe
@@ -148,7 +154,13 @@ const offerings = [
     margin: 0;
   }
 
-  .consulting__offerings,
+  .consulting__offerings {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
   .consulting__booking {
     max-width: 800px;
     margin: 0 auto;
@@ -173,6 +185,14 @@ const offerings = [
   }
 
   .offering {
+    display: grid;
+    grid-template-columns: 1fr minmax(220px, 46%);
+    grid-template-areas:
+      "meta visual"
+      "desc visual";
+    column-gap: var(--space-5);
+    row-gap: var(--space-3);
+    align-items: center;
     padding: var(--space-6);
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
@@ -180,12 +200,13 @@ const offerings = [
   }
 
   .offering__meta {
+    grid-area: meta;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
     gap: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-3);
+    margin: 0;
+    align-self: end;
   }
 
   .offering__title {
@@ -206,10 +227,16 @@ const offerings = [
   }
 
   .offering__description {
+    grid-area: desc;
     font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0;
+    align-self: start;
+  }
+
+  .offering :global(.consulting-visual) {
+    grid-area: visual;
   }
 
   .consulting__booking-lede {
@@ -223,6 +250,7 @@ const offerings = [
     color: var(--color-accent);
     text-decoration: none;
     border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
     transition: border-color var(--transition-fast), color var(--transition-fast);
   }
 
@@ -231,33 +259,52 @@ const offerings = [
   }
 
   .consulting__calendar {
-    background: var(--color-bg-surface);
+    background: #fff;
+    color: #1f2937;
+    color-scheme: light;
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
+    padding: var(--space-3);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
   }
 
   .consulting__calendar iframe {
     width: 100%;
-    height: 600px;
+    height: 720px;
     border: 0;
     display: block;
+    background: #fff;
+    color-scheme: light;
+    filter: none;
+    opacity: 1;
+    mix-blend-mode: normal;
   }
 
   @media (max-width: 768px) {
+    .offering {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "meta"
+        "visual"
+        "desc";
+      align-items: stretch;
+    }
+
+    .offering__meta {
+      align-self: start;
+    }
+
     .consulting__header {
       padding: var(--space-8) 0 var(--space-6);
     }
 
-    .consulting__calendar iframe {
-      height: 820px;
+    .consulting__calendar {
+      padding: var(--space-2);
     }
-  }
 
-  @media (max-width: 480px) {
     .consulting__calendar iframe {
-      height: 880px;
+      height: 960px;
     }
   }
 </style>

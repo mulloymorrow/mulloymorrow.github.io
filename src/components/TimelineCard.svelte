@@ -132,6 +132,7 @@
                 src={experience.logo} 
                 alt="{experience.company} logo" 
                 class="timeline-logo"
+                class:timeline-logo--on-dark={experience.logoOnDark}
               />
             </a>
           {:else}
@@ -139,6 +140,7 @@
               src={experience.logo} 
               alt="{experience.company} logo" 
               class="timeline-logo"
+              class:timeline-logo--on-dark={experience.logoOnDark}
             />
           {/if}
         {/if}
@@ -578,6 +580,10 @@
     border: 1px solid var(--color-border);
     flex-shrink: 0;
     transition: all 0.3s ease;
+  }
+
+  .timeline-logo--on-dark {
+    background: #0b1220;
   }
   
   .timeline-content:hover .timeline-logo {
