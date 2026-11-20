@@ -407,7 +407,7 @@
               </div>
             {/each}
           </div>
-        {:else}
+        {:else if experience.highlights && experience.highlights.length > 0}
           <div class="timeline-highlights">
             <h5>Key Achievements</h5>
             <ul>

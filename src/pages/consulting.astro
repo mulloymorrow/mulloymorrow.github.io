@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Consulting | Mulloy Morrow';
+const description = 'Paid advisory, talks, and webinars on multi-agent LLM systems, generative-AI safety in health and HIPAA, personalization at Spotify scale, and LTV and causal metrics. Book a time that works for you.';
+const canonicalUrl = new URL('/consulting/', Astro.site).toString();
+
+const bookingPageUrl = 'https://calendar.app.google/3KaFEHDGUNAFMVep9';
+const bookingEmbedUrl = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1qoddKzeabwxjRm9JJsMqXcEWbBkMNSEjgrPvRFvoLoJvWWq1A14nDFfCt0d7VNExJqVlX244q?gv=true';
+
+const offerings = [
+  {
+    title: 'Multi-agent LLM systems in production',
+    format: 'Talk or workshop',
+    description: 'How persona agents with distinct contexts move work through shared engineering, legal, and visual QA registries, from design to production — the multi-agent development system built at Trellis Health, alongside agentic product work like Lumi, which finds players and books sports matches end to end through live third-party APIs.',
+  },
+  {
+    title: 'Generative-AI safety in health and HIPAA',
+    format: 'Talk or webinar',
+    description: 'Designing a five-layer generative AI safety stack for a HIPAA-compliant agentic health assistant that books appointments, sets reminders, and builds care cards for the whole family, with role-based access for parents, co-guardians, and teens. Draws on production work in HIPAA- and HITECH-compliant environments in health and legal tech.',
+  },
+  {
+    title: 'Personalization and recommenders at Spotify scale',
+    format: 'Talk',
+    description: 'Leading the 25+ person Home org that owned the recommendation systems where 95% of consumption begins for 600M+ MAU, and rebuilding the main-feed recommender for video, podcasts, and audiobooks with two-tower, wide-and-deep, and transformer models.',
+  },
+  {
+    title: 'LTV and causal metrics',
+    format: 'Talk or workshop',
+    description: 'Creating the User-LTV metric, adopted company-wide as the north star for long-term causal impact (Investor Day 2022), and building the experimentation frameworks used to ship ranking changes safely.',
+  },
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl}>
+  <div class="consulting-page">
+    <nav class="breadcrumb container" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="breadcrumb__separator" aria-hidden="true">/</span>
+      <span class="breadcrumb__current">Consulting</span>
+    </nav>
+
+    <header class="consulting__header container">
+      <p class="consulting__label">Consulting</p>
+      <h1 class="consulting__title">Talks, webinars, and paid advisory</h1>
+      <p class="consulting__lede">
+        I work with teams taking AI/ML systems from research to production — including multi-agent LLM systems, personalization and recommenders, and regulated domains such as HIPAA and HITECH. Book a talk, webinar, or advisory session below.
+      </p>
+    </header>
+
+    <section class="consulting__offerings container" aria-labelledby="offerings-heading">
+      <h2 id="offerings-heading" class="consulting__section-title">What I can offer</h2>
+      <ul class="offerings">
+        {offerings.map((item) => (
+          <li class="offering">
+            <div class="offering__meta">
+              <h3 class="offering__title">{item.title}</h3>
+              <p class="offering__format">{item.format}</p>
+            </div>
+            <p class="offering__description">{item.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="consulting__booking container" id="book" aria-labelledby="booking-heading">
+      <h2 id="booking-heading" class="consulting__section-title">Book a time</h2>
+      <p class="consulting__booking-lede">
+        Choose a time that works for you. If the calendar does not load,
+        <a href={bookingPageUrl} target="_blank" rel="noopener noreferrer">open the booking page in a new tab</a>.
+      </p>
+      <div class="consulting__calendar">
+        <iframe
+          src={bookingEmbedUrl}
+          title="Book a consulting appointment with Mulloy Morrow"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  .consulting-page {
+    min-height: 100vh;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-16);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-accent);
+  }
+
+  .breadcrumb__separator {
+    margin: 0 var(--space-2);
+    color: var(--color-border);
+  }
+
+  .breadcrumb__current {
+    color: var(--color-text-primary);
+  }
+
+  .consulting__header {
+    text-align: center;
+    padding: var(--space-12) 0 var(--space-8);
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .consulting__label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 var(--space-3);
+  }
+
+  .consulting__title {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 700;
+    margin: 0 0 var(--space-5);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .consulting__lede {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .consulting__offerings,
+  .consulting__booking {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .consulting__section-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6);
+  }
+
+  .offerings {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .offering {
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .offering__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .offering__title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .offering__format {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .offering__description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .consulting__booking-lede {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-6);
+  }
+
+  .consulting__booking-lede a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .consulting__booking-lede a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .consulting__calendar {
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .consulting__calendar iframe {
+    width: 100%;
+    height: 600px;
+    border: 0;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .consulting__header {
+      padding: var(--space-8) 0 var(--space-6);
+    }
+
+    .consulting__calendar iframe {
+      height: 820px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .consulting__calendar iframe {
+      height: 880px;
+    }
+  }
+</style>
