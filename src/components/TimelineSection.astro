@@ -4,18 +4,37 @@ import TimelineCard from './TimelineCard.svelte';
 // Experience data - could be moved to content collections for easier editing
 const experiences = [
   {
+    company: "Trellis Health",
+    companyUrl: "https://www.jointrellishealth.com/",
+    role: "Founding CTO",
+    period: "August 2026 - Present",
+    location: "Seattle, WA",
+    summary: "Lead all product and engineering for a maternal and family health platform: consumer app, health system platform, and lab ordering system.",
+    highlights: [
+      "Built a multi-agent development system in which persona agents with distinct contexts move work through shared engineering, legal, and visual QA registries, from design to production.",
+      "Architecting a HIPAA-compliant agentic health assistant that books appointments, sets reminders, and builds care cards for the whole family, with role-based access for parents, co-guardians, and teens.",
+      "Designing a five-layer generative AI safety stack and a Bayesian Thompson Sampling personalization policy.",
+      "Built first-party marketing, analytics, and personalization platforms, keeping user data in-house."
+    ],
+    technologies: ["Multi-Agent LLMs", "HIPAA", "Generative AI Safety", "Thompson Sampling", "Personalization"],
+    isCurrent: true,
+    logo: "/logos/trellis.svg",
+    logoOnDark: true,
+    pinnedLink: { label: "Case Study", url: "/work/trellis-longitudinal-home/", icon: "document", external: false }
+  },
+  {
     company: "Nalya.ai",
     companyUrl: "https://nalya.ai",
     role: "Founder & AI Architect",
-    period: "April 2025 - Present",
-    location: "Remote",
+    period: "April 2025 - August 2026",
+    location: "Miami, FL",
     summary: `There's a quiet gap between two categories of apps. The **know-yourself tools** — Headspace, Hinge, BetterHelp — help you understand who you are. The **activity marketplaces** — Playtomic, PlayByPoint, Resy, OpenTable — help you book a court or a table. Neither helps you **find your people** and actually **show up together**.
 
 A Sunday evening, an empty week ahead, a **padel** court two taps away and no one to play with — that's the gap. **Nalya flips it.** By default, you wake up Monday with three **padel matches** already on your calendar, matched to your **level**, your **schedule**, and your **vibe**. Your only job is to opt out if something comes up, and we find a replacement so the other three still play.
 
 When showing up is the easy thing, a **rhythm** forms. When the rhythm forms, the **community** grows, the courts fill, and the **loneliness number** starts moving the other way. The know-yourself layer and the activity layer finally talk to each other.
 
-I've spent **15 years** at **Spotify**, **Compass**, and **OfferUp** building **recommendation systems** on the activity side of that gap. I'm starting with the padel crew I play with in **Miami** because it's where I can feel the loop close every week. The **Surgeon General** equates loneliness to **15 cigarettes a day**; **racket sports** in community add nearly a **decade of life back**. I love building big ideas that do that math — **longer lives, vibrant communities**.
+I've spent **14 years** at **Spotify**, **Compass**, and **OfferUp** building **recommendation systems** on the activity side of that gap. I'm starting with the padel crew I play with in **Miami** because it's where I can feel the loop close every week. The **Surgeon General** equates loneliness to **15 cigarettes a day**; **racket sports** in community add nearly a **decade of life back**. I love building big ideas that do that math — **longer lives, vibrant communities**.
 
 Inside the deck: the thesis, the product, what we've learned in beta, and the path forward. Request access below — I review every one personally and reply within 24 hours.`,
     summaryCollapsedParagraphs: 3,
@@ -69,7 +88,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
       }
     ],
     technologies: ["Python", "LLMs", "RAG", "Vector Databases", "Agentic AI", "Embeddings", "React Native", "Firebase", "Voice Pipeline", "Messaging Infra", "Weather APIs", "Oura API", "Cloud Run", "Firestore", "Pub/Sub", "Cloud Infrastructure"],
-    isCurrent: true,
+    isCurrent: false,
     logo: "/logos/stealth-ai.png",
     showLumiDemo: true,
     links: [
@@ -81,15 +100,13 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
   },
   {
     company: "Legal-Tech Joint Venture",
-    role: "Technical Co-founder, AI & Systems Lead",
+    role: "Technical Co-founder & AI/Systems Lead",
     period: "2024",
     location: "Remote",
-    summary: "Led an AI-enabled remediation initiative applying machine learning, LLM-based retrieval systems, and systems thinking to environmental damage claims related to PFAS contamination in drinking water. Led fundraising efforts securing $4M in funding, grew team from 1 to 15 FTEs, achieving $80M valuation within 6 months.",
+    summary: "Set technical direction for production agentic LLM/RAG systems analyzing legal, environmental, and medical documents for veterans' claims (AWS Bedrock, knowledge graphs, HIPAA/HITECH). Accelerated $24M in settlements in 6 months; grew the team from 1 to 15, raised $6M, and reached an $80M valuation.",
     highlights: [
-      "Led fundraising efforts, securing $4M in total funding and achieving $80M valuation within 6 months",
-      "Designed and deployed production ML and agentic LLM RAG systems with end-to-end decision workflows to analyze legal, environmental, and medical documents, prioritizing speed, reliability, correctness, traceability, and human oversight in a highly regulated environment",
-      "Built and led cross-functional team of 15 across ML, backend, product, legal, and operations; managed P&L",
-      "Delivered concrete outcomes: accelerated $24M in settlements within 6 months, decreased time-to-settlement for military veterans, and automated surfacing of corporate liability"
+      "Set technical direction for production agentic LLM/RAG systems analyzing legal, environmental, and medical documents for veterans' claims (AWS Bedrock, knowledge graphs, HIPAA/HITECH)",
+      "Accelerated $24M in settlements in 6 months; grew the team from 1 to 15, raised $6M, and reached an $80M valuation"
     ],
     technologies: ["Python", "LLMs", "Vector DBs", "RAG", "Agentic-AI", "Document AI", "Cloud Infrastructure"],
     isCurrent: false,
@@ -98,10 +115,10 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
   {
     company: "Spotify",
     companyUrl: "https://spotify.com",
-    role: "IC → Engineering Manager → Group Lead",
-    period: "2020 - 2024",
+    role: "Group Manager / ML Personalization Lead",
+    period: "February 2020 - February 2024",
     location: "New York, NY",
-    summary: "Grew from founding engineer to group lead over 4 years, driving Spotify's personalization strategy from early-stage R&D through company-wide adoption. Led the Home Construction organization (25+ engineers) owning recommendation systems that power the homepage where 95% of consumption begins for 600M+ MAU.",
+    summary: "Led the 25+ person Home org owning the recommendation systems where 95% of consumption begins for 600M+ MAU; hired and mentored engineers and managers. Rebuilt the main-feed recommender for video, podcasts, and audiobooks with two-tower, wide-and-deep, and transformer models. Drove a $10M/month lift in user margins, a 26% boost in discovery, and a $4M/year cost cut; featured by CEO Daniel Ek at Stream On 2023. Created the User-LTV metric, adopted company-wide as the north star for long-term causal impact (Investor Day 2022), and built the experimentation frameworks used to ship ranking changes safely.",
     highlights: [],
     phases: [
       {
@@ -169,37 +186,34 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
   {
     company: "Compass Real Estate",
     companyUrl: "https://compass.com",
-    role: "Staff Machine Learning Engineer / Founding MLE",
+    role: "Staff ML Engineer / Founding MLE",
     period: "January 2019 - January 2020",
     location: "New York, NY",
-    summary: "Built early ML infrastructure and applied models supporting growth and personalization. Founded AI teams in New York and Seattle, developed ML platform, created new ML product metrics, and increased MRR and CTR of Compass search.",
+    summary: "Founded the New York and Seattle AI teams, built the early ML platform, and shipped search ranking gains in MRR and CTR.",
     highlights: [
-      "Founded AI teams in New York and Seattle",
-      "Developed ML platform and infrastructure",
-      "Created new ML product metrics",
-      "Increased MRR and CTR of Compass search"
+      "Founded the New York and Seattle AI teams",
+      "Built the early ML platform",
+      "Shipped search ranking gains in MRR and CTR"
     ],
     technologies: ["Python", "Scikit-learn", "PostgreSQL", "Geospatial ML"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idkzWJO3jq/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667584595553"
+    logo: "/logos/compass.png"
   },
   {
     company: "OfferUp",
     companyUrl: "https://offerup.com",
-    role: "Founding MLE / Head of Machine Learning",
+    role: "Founding ML Engineer / ML Lead",
     period: "July 2015 - August 2018",
     location: "Seattle, WA",
-    summary: "Founding Machine Learning Engineer focused on content understanding models spanning language, vision, and user behavior. Applied ML to search ranking, recommendations, user and content moderation, and automating item-posting flows. Helped scale and structure the Data and ML organizations.",
+    summary: "Founded the Data Engineering (9) and ML (7) teams; shipped 100+ ML products across personalization, ranking, NLP, vision, and fraud detection; helped grow GMV to $64B.",
     highlights: [
-      "Built content understanding models across NLP, computer vision, and user behavior analysis",
-      "Applied ML to search ranking, recommendations, and content moderation",
-      "Automated item-posting flows using vision and language models",
-      "Helped scale ML team to 7 ICs and Data Engineering to 9 ICs",
-      "Contributed to growing Gross Market Value to $64B through cross-functional ML initiatives"
+      "Founded the Data Engineering (9) and ML (7) teams from scratch",
+      "Shipped 100+ ML products across personalization, ranking, NLP, vision, and fraud detection",
+      "Helped grow Gross Market Value to $64B"
     ],
     technologies: ["Python", "TensorFlow", "AWS", "Spark", "Elasticsearch", "PostgreSQL", "NLP", "Computer Vision"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/id5p1Knwlt/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1668515956474"
+    logo: "/logos/offerup.svg"
   },
   {
     company: "Surgical Robotics Company (Confidential)",
@@ -222,8 +236,8 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
   {
     company: "Porch Group",
     companyUrl: "https://porch.com",
-    role: "Senior Machine Learning Engineer",
-    period: "2013 - 2015",
+    role: "Senior Data Scientist / ML Engineer",
+    period: "September 2013 - August 2015",
     location: "Seattle, WA",
     summary: "Built ML systems for the leading home services marketplace connecting homeowners with local service professionals—electricians, plumbers, contractors, and more. Developed unsupervised learning models to understand service professional behavior and optimize matching.",
     highlights: [
@@ -234,7 +248,17 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Python", "Scikit-learn", "AWS", "PostgreSQL", "Unsupervised Learning", "Collaborative Filtering", "Geospatial ML", "Data Pipelines"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/id7-jGlWt3/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1668516040149"
+    logo: "/logos/porch.png"
+  },
+  {
+    company: "Opera Solutions",
+    role: "Senior Machine Learning Specialist",
+    period: "January 2012 - September 2013",
+    summary: "Earlier experience as a Senior Machine Learning Specialist, before Porch, OfferUp, and later consumer and health work.",
+    highlights: [],
+    technologies: [],
+    isCurrent: false,
+    logo: "/logos/opera-solutions.png"
   },
   {
     company: "UC San Diego",
@@ -255,7 +279,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
       { label: "Read Thesis", url: "https://escholarship.org/uc/item/2kd829gf" }
     ],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+    logo: "/logos/ucsd.svg"
   },
   {
     company: "UC San Diego",
@@ -272,7 +296,7 @@ Inside the deck: the thesis, the product, what we've learned in beta, and the pa
     ],
     technologies: ["Physics", "Electrical Engineering", "Mathematics", "Digital Media", "Creative Technology"],
     isCurrent: false,
-    logo: "https://cdn.brandfetch.io/idSzNJesGu/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1764487121207"
+    logo: "/logos/ucsd.svg"
   }
 ];
 ---

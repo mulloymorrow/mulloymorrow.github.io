@@ -65,6 +65,9 @@
       <a href="/philosophy" class="nav-link" role="menuitem" onclick={close}>
         <span>Philosophy</span>
       </a>
+      <a href="/consulting" class="nav-link" role="menuitem" onclick={close}>
+        <span>Consulting</span>
+      </a>
       <a href="/#contact" class="nav-link" role="menuitem" onclick={close}>
         <span>Contact</span>
       </a>
@@ -179,6 +182,8 @@
   .nav-link:nth-child(2) { animation-delay: 0.1s; }
   .nav-link:nth-child(3) { animation-delay: 0.15s; }
   .nav-link:nth-child(4) { animation-delay: 0.2s; }
+  .nav-link:nth-child(5) { animation-delay: 0.25s; }
+  .nav-link:nth-child(6) { animation-delay: 0.3s; }
   
   .nav-link:hover {
     color: var(--color-accent, #14b8a6);

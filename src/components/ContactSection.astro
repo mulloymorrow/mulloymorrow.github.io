@@ -1,5 +1,5 @@
 ---
-// Contact section with Google Calendar booking
+// Contact section: CTA to consulting bookings, plus Buy Me a Coffee
 ---
 
 <section class="contact section" id="contact">
@@ -7,8 +7,7 @@
     <div class="contact__header animate-on-scroll">
       <h2 class="contact__title">Let's Connect</h2>
       <p class="contact__subtitle">
-        Interested in collaborating, discussing AI/ML, or just saying hello? 
-        Book a time that works for you.
+        Interested in collaborating, discussing AI/ML, or just saying hello?
       </p>
     </div>
     
@@ -22,18 +21,20 @@
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
         </div>
-        <p class="contact__description">
-          Whether you're exploring a new venture, need ML expertise, or want to chat about 
-          building AI systems that matter — I'd love to hear from you.
-        </p>
-      </div>
-      
-      <div class="contact__calendar">
-        <iframe 
-          src="https://calendar.google.com/calendar/appointments/AcZssZ0oXa6OFoGV-CgTGC4kL_IqweyP87-YxQeAy1s=?gv=true" 
-          title="Book a meeting with Mulloy"
-          loading="lazy"
-        ></iframe>
+        <div class="contact__intro-text">
+          <p class="contact__description">
+            For paid advisory, talks, and webinars — including multi-agent LLM systems,
+            generative-AI safety in health, personalization at scale, and LTV and causal metrics —
+            book a time on the consulting page.
+          </p>
+          <a href="/consulting" class="contact__cta">
+            <span>View consulting &amp; book a time</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
       </div>
       
       <!-- Buy Me a Coffee -->
@@ -136,26 +137,39 @@
     color: white;
   }
   
+  .contact__intro-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
   .contact__description {
     font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0;
   }
-  
-  .contact__calendar {
-    background: var(--color-bg-surface);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
+
+  .contact__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-accent);
+    color: white;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background var(--transition-base), transform var(--transition-base);
   }
-  
-  .contact__calendar iframe {
-    width: 100%;
-    height: 600px;
-    border: 0;
-    display: block;
+
+  .contact__cta:hover {
+    background: var(--color-accent-dim);
+    transform: translateX(4px);
+    color: white;
   }
   
   /* Responsive adjustments */
@@ -169,15 +183,9 @@
       text-align: center;
       align-items: center;
     }
-    
-    .contact__calendar iframe {
-      height: 820px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .contact__calendar iframe {
-      height: 880px;
+
+    .contact__intro-text {
+      align-items: center;
     }
   }
   

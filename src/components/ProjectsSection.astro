@@ -3,8 +3,19 @@ import ProjectCard from './ProjectCard.svelte';
 
 const projects = [
   {
+    title: "Trellis Longitudinal Home",
+    description: "A live design handoff for Trellis Health: a longitudinal home feed and journey view for a maternal and family health platform, built around accumulated patient record, a five-layer generative AI safety stack, and first-party personalization.",
+    longDescription: "At Trellis Health I lead product and engineering for a maternal and family health platform spanning the consumer app, a health system platform, and a lab ordering system. This case study turns that product thesis into working surfaces: a ranked home feed, a co-equal journey view, and operational dashboards that treat safety and reliability as first-class requirements. The work sits alongside a HIPAA-compliant agentic health assistant, a five-layer generative AI safety stack, and a Bayesian Thompson Sampling personalization policy — plus first-party marketing, analytics, and personalization platforms that keep user data in-house.",
+    technologies: ["Multi-Agent LLMs", "HIPAA", "Generative AI Safety", "Thompson Sampling", "Personalization"],
+    featured: true,
+    logo: "/logos/trellis.svg",
+    links: {
+      caseStudy: "/work/trellis-longitudinal-home/"
+    }
+  },
+  {
     title: "Spotify's New Home Feed",
-    description: "Led the redesign and modernization of Spotify's main-feed recommendation system serving 800M+ users. Delivered $10M/month increase in user margins, 26% boost in discovery, and $4M/year reduction in operating costs.",
+    description: "Led the redesign and modernization of Spotify's main-feed recommendation system serving 600M+ users. Delivered $10M/month increase in user margins, 26% boost in discovery, and $4M/year reduction in operating costs.",
     longDescription: "Led the Home Feed personalization initiative through a period of high ambiguity, aligning product, design, and multiple ML and engineering teams around a unified vision for the feed. The work included re-architecting the recommendation pipeline, modernizing ranking and candidate generation systems, and replacing heuristic-driven decisioning with data-driven models optimized for long-term engagement and user satisfaction. Leveraged two-tower models, wide-and-deep, and transformer architectures to personalize emerging formats (video, podcasts, audiobooks). We balanced competing objectives across content producers and consumers, introduced clearer success metrics, and built infrastructure that supported rapid experimentation and iteration. The result was a more coherent, scalable Home Feed that improved personalization quality while enabling the organization to move faster and make better long-term tradeoffs. Featured at Stream On 2023 by CEO Daniel Ek and CPO Gustav Söderström.",
     technologies: ["Python", "TensorFlow", "GCP", "Scala", "Transformers", "Two-Tower Models", "Wide-and-Deep", "Apache Beam", "BigQuery", "Kubernetes"],
     impact: "$10M/month increase in user margins, 26% boost in discovery, $4M/year reduction in operating costs. Expanded ranker to support full catalog of audiobooks, podcasts, and video.",
